@@ -1,4 +1,14 @@
 " -----------------------------------------------------
+" Setup
+" -----------------------------------------------------
+
+if has("unix")
+  let s:uname = substitute(system("uname -s"), '\n', '', '')
+else
+  let s:uname = 'unknown'
+endif
+
+" -----------------------------------------------------
 " Use UTF-8
 " -----------------------------------------------------
 set fencs=ucs-bom
@@ -35,7 +45,7 @@ endtry
 " -----------------------------------------------------
 " Backspace settings
 "   indent  allow backspacing over autoindent
-"   eol     allow backspacing over line breaks (join lines)                                                                                                                                                                                                                                                                           
+"   eol     allow backspacing over line breaks (join lines)
 "   start   allow backspacing over the start of insert; CTRL-W and CTRL-U
 "   0     same as ":set backspace=" (Vi compatible)
 "   1     same as ":set backspace=indent,eol"
@@ -142,6 +152,16 @@ nnoremap <leader>c :TagbarToggle<CR>
 
 " Start NERDTreeTabs on launch
 let g:nerdtree_tabs_open_on_console_startup = 1
+
+" -----------------------------------------------------
+" Ack config
+" -----------------------------------------------------
+
+if s:uname == "Linux"
+  let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+elseif s:uname == "Darwin"
+  let g:ackprg="ack -H -s --nocolor --nogroup --column"
+endif
 
 " -----------------------------------------------------
 " mustache config
