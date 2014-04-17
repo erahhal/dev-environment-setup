@@ -1,5 +1,1 @@
 alias vi='/usr/local/bin/vim'
-alias vim='/usr/local/bin/vim'
-alias vimdiff='/usr/local/bin/vimdiff'
-alias vimtutor='/usr/local/bin/vimtutor'
-alias jshint='~/node_modules/.bin/jshint'
