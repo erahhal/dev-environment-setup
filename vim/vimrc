@@ -97,6 +97,13 @@ autocmd BufWritePre *.php :%s/\s\+$//e
 autocmd BufWritePre *.phtml :%s/\s\+$//e
 
 " -----------------------------------------------------
+" Vimdiff settings
+" -----------------------------------------------------
+
+" ignore whitespace
+set diffopt+=iwhite
+
+" -----------------------------------------------------
 " JSHint
 " -----------------------------------------------------
 
@@ -120,7 +127,7 @@ endif
 
 
 " compare against last ancestor commit before branch
-" let g:gitgutter_diff_args = "`git merge-base HEAD master`"
+let g:gitgutter_diff_args = "`git merge-base HEAD master`"
 
 highlight GitGutterAddLine ctermbg=17
 highlight GitGutterChangeLine ctermbg=237
@@ -152,6 +159,8 @@ nnoremap <leader>c :TagbarToggle<CR>
 
 " Start NERDTreeTabs on launch
 let g:nerdtree_tabs_open_on_console_startup = 1
+" Show hidden files
+let NERDTreeShowHidden=1
 
 " -----------------------------------------------------
 " Ack config
