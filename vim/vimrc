@@ -4,6 +4,7 @@
 
 if has("unix")
   let s:uname = substitute(system("uname -s"), '\n', '', '')
+elseif 
 else
   let s:uname = 'unknown'
 endif
@@ -18,9 +19,18 @@ set enc=utf-8
 " General settings
 " -----------------------------------------------------
 
-set nocompatible    " Be iMproved
-set exrc            " enable per-directory .vimrc files
-set secure          " disable unsafe commands in local .vimrc files
+set nocompatible     " Be iMproved
+set exrc             " enable per-directory .vimrc files
+set secure           " disable unsafe commands in local .vimrc files
+set pastetoggle=<F10> " use F10 to disable and enable all indentation options
+
+" -----------------------------------------------------
+" External commands
+" -----------------------------------------------------
+
+if s:uname == "Darwin"
+  nnoremap <Leader>o :exe ':silent !open %'<CR>
+endif
 
 " -----------------------------------------------------
 " Look and feel
@@ -31,6 +41,13 @@ set bg=dark     " set colors for dark background
 set nonumber    " don't display row numbers
 set ruler       " display ruler
 set vb t_vb=    " visual bell
+
+" -----------------------------------------------------
+" Spell checking
+" -----------------------------------------------------
+
+au BufRead *.txt setlocal spell
+au BufRead *.md setlocal spell
 
 " -----------------------------------------------------
 " Solarized color scheme
@@ -261,6 +278,8 @@ Bundle 'tyok/nerdtree-ack'
 Bundle 'vim-scripts/DirDiff.vim'
 " markdown syntax highlighting
 Bundle 'plasticboy/vim-markdown'
+" vim tmux integration
+Bundle 'christoomey/vim-tmux-navigator'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'

@@ -45,3 +45,5 @@ export LSCOLORS=gxfxaxdxcxegedabagacad
 # enable git autocomplete
 source ~/Scripts/git-completion.sh
 
+# load any custom scripts
+source ~/Scripts/local/*
