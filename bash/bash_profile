@@ -46,4 +46,6 @@ export LSCOLORS=gxfxaxdxcxegedabagacad
 source ~/Scripts/git-completion.sh
 
 # load any custom scripts
-source ~/Scripts/local/*
+if [ "$(ls ~/Scripts/local)" ]; then
+  source ~/Scripts/local/*
+fi
