@@ -20,21 +20,6 @@ if [ "$DIR/bash/bash_profile" != "$(ls -l ~/.bash_profile | awk '{print $11}')" 
 fi
 
 #-------------------------------------------------------------
-# VIM
-#-------------------------------------------------------------
-
-if [ "$DIR/vim/vimrc" != "$(ls -l ~/.vimrc | awk '{print $11}')" ]; then
-  mv ~/.vimrc ~/.vimrc.orig
-  ln -s $DIR/vim/vimrc ~/.vimrc     
-fi
-mkdir -p ~/.vim                
-if [ ! -e ~/.vim/bundle/vundle ]; then
-  git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-fi
-vim -c "execute 'BundleInstall' | qa"
-cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
-
-#-------------------------------------------------------------
 # Platform specific
 #-------------------------------------------------------------
 
@@ -67,7 +52,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   fi
 
   if hash apt-get 2>/dev/null; then
-    sudo apt-get install -y ack-grep
+    sudo apt-get install -y ack-grep vim
   elif hash yum 2>/dev/null; then
     sudo yum install -y ack
   else
@@ -83,3 +68,18 @@ else
   # Unknown platform
   echo "Unknown platform"
 fi
+
+#-------------------------------------------------------------
+# VIM
+#-------------------------------------------------------------
+
+if [ "$DIR/vim/vimrc" != "$(ls -l ~/.vimrc | awk '{print $11}')" ]; then
+  mv ~/.vimrc ~/.vimrc.orig
+  ln -s $DIR/vim/vimrc ~/.vimrc     
+fi
+mkdir -p ~/.vim                
+if [ ! -e ~/.vim/bundle/vundle ]; then
+  git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+fi
+vim -c "execute 'BundleInstall' | qa"
+cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
