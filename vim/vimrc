@@ -280,6 +280,8 @@ Bundle 'vim-scripts/DirDiff.vim'
 Bundle 'plasticboy/vim-markdown'
 " vim tmux integration
 Bundle 'christoomey/vim-tmux-navigator'
+" stylus syntax highlighting
+Bundle 'wavded/vim-stylus'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'

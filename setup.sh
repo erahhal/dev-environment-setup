@@ -6,6 +6,9 @@ DIR="$( cd "$( dirname "$0" )" && pwd )"
 # Bash
 #-------------------------------------------------------------
 
+echo $DIR/Scripts
+echo $(ls -l ~/Scripts | awk '{print $11}') 
+exit 1
 if [ "$DIR/Scripts" != "$(ls -l ~/Scripts | awk '{print $11}')" ]; then
   mv ~/Scripts ~/Scripts.orig
   ln -s $DIR/Scripts ~/Scripts
@@ -39,41 +42,9 @@ cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
 #-------------------------------------------------------------
 
 if [ "$(uname)" == "Darwin" ]; then
-  #-------------------------------------------------------------
-  # Mac
-  #-------------------------------------------------------------
-
-  # Install homebrew
-  if hash brew 2>/dev/null; then
-    echo "Homebrew already installed"
-  else 
-    ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
-  fi
-
+  $DIR/setup-osx.sh
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-  #-------------------------------------------------------------
-  # Linux
-  #-------------------------------------------------------------
-
-  arch=`uname -m`
-  if [[ "$arch" == "i686" ]]; then
-    echo "Linux i686"
-  elif [[ "$arch" == "x86_64" ]]; then
-    echo "Linux x86_64"
-  else
-    # Unknown architecture
-    echo "Unknown architecture"
-    exit 1
-  fi
-
-  if hash apt-get 2>/dev/null; then
-    sudo apt-get install -y ack-grep
-  elif hash yum 2>/dev/null; then
-    sudo yum install -y ack
-  else
-    echo "Unknown distribution"
-    exit 1
-  fi
+  $DIR/setup-linux.sh
 elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
   #-------------------------------------------------------------
   # Cygwin
