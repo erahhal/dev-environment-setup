@@ -18,7 +18,7 @@ else
 fi
 
 if hash apt-get 2>/dev/null; then
-  sudo apt-get install -y ack-grep
+  sudo apt-get install -y ack-grep vim
 elif hash yum 2>/dev/null; then
   sudo yum install -y ack
 else

@@ -23,21 +23,6 @@ if [ "$DIR/bash/bash_profile" != "$(ls -l ~/.bash_profile | awk '{print $11}')" 
 fi
 
 #-------------------------------------------------------------
-# VIM
-#-------------------------------------------------------------
-
-if [ "$DIR/vim/vimrc" != "$(ls -l ~/.vimrc | awk '{print $11}')" ]; then
-  mv ~/.vimrc ~/.vimrc.orig
-  ln -s $DIR/vim/vimrc ~/.vimrc     
-fi
-mkdir -p ~/.vim                
-if [ ! -e ~/.vim/bundle/vundle ]; then
-  git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-fi
-vim -c "execute 'BundleInstall' | qa"
-cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
-
-#-------------------------------------------------------------
 # Platform specific
 #-------------------------------------------------------------
 
@@ -54,3 +39,18 @@ else
   # Unknown platform
   echo "Unknown platform"
 fi
+
+#-------------------------------------------------------------
+# VIM
+#-------------------------------------------------------------
+
+if [ "$DIR/vim/vimrc" != "$(ls -l ~/.vimrc | awk '{print $11}')" ]; then
+  mv ~/.vimrc ~/.vimrc.orig
+  ln -s $DIR/vim/vimrc ~/.vimrc     
+fi
+mkdir -p ~/.vim                
+if [ ! -e ~/.vim/bundle/vundle ]; then
+  git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+fi
+vim -c "execute 'BundleInstall' | qa"
+cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
