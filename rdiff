@@ -1,3 +1,0 @@
-#!/bin/sh
-
-/Applications/Diffmerge.app/Contents/MacOS/DiffMerge $1 $2

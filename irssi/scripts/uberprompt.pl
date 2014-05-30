@@ -1,0 +1,1 @@
+/Users/erahhal/Code-vendor/irssi-scripts/prompt_info/uberprompt.pl

@@ -6,6 +6,9 @@ DIR="$( cd "$( dirname "$0" )" && pwd )"
 # Mac
 #-------------------------------------------------------------
 
+# Disable two-finger swipe navigation in browsers
+defaults write "Apple Global Domain" AppleEnableSwipeNavigateWithScrolls -int 0
+
 # Install homebrew
 if hash brew 2>/dev/null; then
   echo "Homebrew already installed"
@@ -42,3 +45,6 @@ brew cask install mixxx
 brew cask install intellij-idea-ce
 brew cask install atom
 brew cask install logitech-control-center
+brew cask install twitterrific
+brew cask install iterm2
+brew cask install anki
