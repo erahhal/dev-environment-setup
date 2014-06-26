@@ -19,8 +19,9 @@ fi
 
 if hash apt-get 2>/dev/null; then
   sudo apt-get update
-  sudo apt-get install -y python-software-properties vim postgresql nginx
+  sudo apt-get install -y python-software-properties vim postgresql nginx cmake python-dev
   sudo add-apt-repository -y ppa:chris-lea/node.js
+  sudo add-apt-repository -y ppa:fcwu-tw/ppa
   sudo apt-get update            
   sudo apt-get install -y nodejs
   sudo apt-get install -y ack-grep vim
