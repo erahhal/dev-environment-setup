@@ -135,6 +135,23 @@ let g:CommandTNeverShowDotFiles = 1
 let g:CommandTScanDotDirectories = 0
 
 " -----------------------------------------------------
+" YouCompleteMe
+" -----------------------------------------------------
+
+" These are the tweaks I apply to YCM's config, you don't need them but they might help.
+" YCM gives you popups and splits by default that some people might not like, so these should tidy it up a bit for you.
+" let g:ycm_add_preview_to_completeopt=0
+" let g:ycm_confirm_extra_conf=0
+" set completeopt-=preview
+
+" -----------------------------------------------------
+" clang_complete
+" -----------------------------------------------------
+
+let g:clang_complete_copen=1
+let g:clang_hl_errors=0
+
+" -----------------------------------------------------
 " gitgutter
 " -----------------------------------------------------
 
@@ -282,6 +299,20 @@ Bundle 'plasticboy/vim-markdown'
 Bundle 'christoomey/vim-tmux-navigator'
 " stylus syntax highlighting
 Bundle 'wavded/vim-stylus'
+" JavaScript syntax highlighting
+Bundle 'jelera/vim-javascript-syntax'
+" Additional JavaScript syntax highlighting
+Bundle 'pangloss/vim-javascript'
+" Highlighting for javascript indentation
+Bundle 'nathanaelkane/vim-indent-guides'
+" Automatic closing quotes, brackets, etc
+Bundle 'Raimondi/delimitMate'
+" Tab completion
+" Bundle 'ervandew/supertab'
+" Tab completion
+Bundle 'Valloric/YouCompleteMe'
+" Better completion with YouCompleteMe
+Bundle 'marijnh/tern_for_vim'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'

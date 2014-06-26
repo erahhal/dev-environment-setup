@@ -17,7 +17,14 @@ else
 fi
 brew tap caskroom/cask
 brew update
+brew install coreutils
+brew install gnu-sed
 brew install brew-cask
+brew install nodejs
+brew install vim
+brew install macvim
+sudo rm /usr/bin/vi
+sudo ln -s /usr/local/bin/vim /usr/bin/vi
 brew cask install google-chrome
 brew cask install thunderbird
 brew cask install firefox

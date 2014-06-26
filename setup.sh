@@ -41,6 +41,13 @@ else
 fi
 
 #-------------------------------------------------------------
+# Node
+#-------------------------------------------------------------
+
+sudo npm install -g bower
+sudo npm install -g grunt-cli
+
+#-------------------------------------------------------------
 # VIM
 #-------------------------------------------------------------
 
@@ -54,3 +61,16 @@ if [ ! -e ~/.vim/bundle/vundle ]; then
 fi
 vim -c "execute 'BundleInstall' | qa"
 cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
+cd ~/.vim/bundle/YouCompleteMe
+./install.sh --clang-completer
+cd ~/.vim/bundle/tern_for_vim
+npm install
+
+#-------------------------------------------------------------
+# IRSSI
+#-------------------------------------------------------------
+
+if [ "$DIR/irssi" != "$(ls -l ~/.irssi | awk '{print $11}')" ]; then
+  mv ~/.irssi ~/.irssi.orig
+  ln -s $DIR/irssi ~/.irssi     
+fi
