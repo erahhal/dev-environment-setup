@@ -13,6 +13,5 @@ fi
 # Aliases
 #-------------------------------------------------------------
 
-alias vi='/usr/local/bin/vim'
 alias ge='geeknote edit --note'
 
