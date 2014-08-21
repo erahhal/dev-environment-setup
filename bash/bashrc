@@ -19,10 +19,8 @@ if [ "$(uname)" == "Darwin" ]; then
   #-------------------------------------------------------------
 
   alias vi='/usr/local/bin/vim'
-
-elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-
 fi
+# elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 
 alias ge='geeknote edit --note'
 

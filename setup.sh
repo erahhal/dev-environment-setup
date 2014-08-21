@@ -71,3 +71,9 @@ if [ "$DIR/irssi" != "$(ls -l ~/.irssi | awk '{print $11}')" ]; then
   mv ~/.irssi ~/.irssi.orig
   ln -s $DIR/irssi ~/.irssi     
 fi
+
+#-------------------------------------------------------------
+# 3rd party code
+#-------------------------------------------------------------
+
+mkdir -p ~/Code-vendor

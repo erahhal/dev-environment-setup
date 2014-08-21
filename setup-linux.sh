@@ -19,7 +19,7 @@ fi
 
 if hash apt-get 2>/dev/null; then
   sudo apt-get update
-  sudo apt-get install -y python-software-properties vim postgresql nginx cmake python-dev
+  sudo apt-get install -y python-software-properties vim postgresql nginx cmake python-dev dconf
   sudo add-apt-repository -y ppa:chris-lea/node.js
   sudo add-apt-repository -y ppa:fcwu-tw/ppa
   sudo apt-get update            
@@ -31,3 +31,8 @@ else
   echo "Unknown distribution"
   exit 1
 fi
+
+cd ~/Code-vendor
+git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git
+cd gnome-terminal-colors-solarized
+./set_dark.sh
