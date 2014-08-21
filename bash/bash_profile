@@ -49,3 +49,10 @@ source ~/Scripts/git-completion.sh
 if [ "$(ls ~/Scripts/local)" ]; then
   source ~/Scripts/local/*
 fi
+
+#-------------------------------------------------------------
+# Platform specific
+#-------------------------------------------------------------
+if [ "$(uname)" == "Darwin" ]; then
+  export JAVA_HOME=$(/usr/libexec/java_home)
+fi

@@ -1,0 +1,3 @@
+SCRIPT LOAD vim_mode
+SCRIPT LOAD uberprompt
+SCRIPT LOAD fnotify-growl

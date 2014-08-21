@@ -20,6 +20,31 @@ if [ "$DIR/bash/bash_profile" != "$(ls -l ~/.bash_profile | awk '{print $11}')" 
 fi
 
 #-------------------------------------------------------------
+# Platform specific
+#-------------------------------------------------------------
+
+if [ "$(uname)" == "Darwin" ]; then
+  $DIR/setup-osx.sh
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+  $DIR/setup-linux.sh
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+  #-------------------------------------------------------------
+  # Cygwin
+  #-------------------------------------------------------------
+  echo "Cygwin"
+else
+  # Unknown platform
+  echo "Unknown platform"
+fi
+
+#-------------------------------------------------------------
+# Node
+#-------------------------------------------------------------
+
+sudo npm install -g bower
+sudo npm install -g grunt-cli
+
+#-------------------------------------------------------------
 # VIM
 #-------------------------------------------------------------
 
@@ -33,53 +58,16 @@ if [ ! -e ~/.vim/bundle/vundle ]; then
 fi
 vim -c "execute 'BundleInstall' | qa"
 cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
+cd ~/.vim/bundle/YouCompleteMe
+./install.sh --clang-completer
+cd ~/.vim/bundle/tern_for_vim
+npm install
 
 #-------------------------------------------------------------
-# Platform specific
+# IRSSI
 #-------------------------------------------------------------
 
-if [ "$(uname)" == "Darwin" ]; then
-  #-------------------------------------------------------------
-  # Mac
-  #-------------------------------------------------------------
-
-  # Install homebrew
-  if hash brew 2>/dev/null; then
-    echo "Homebrew already installed"
-  else 
-    ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
-  fi
-
-elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-  #-------------------------------------------------------------
-  # Linux
-  #-------------------------------------------------------------
-
-  arch=`uname -m`
-  if [[ "$arch" == "i686" ]]; then
-    echo "Linux i686"
-  elif [[ "$arch" == "x86_64" ]]; then
-    echo "Linux x86_64"
-  else
-    # Unknown architecture
-    echo "Unknown architecture"
-    exit 1
-  fi
-
-  if hash apt-get 2>/dev/null; then
-    sudo apt-get install -y ack-grep
-  elif hash yum 2>/dev/null; then
-    sudo yum install -y ack
-  else
-    echo "Unknown distribution"
-    exit 1
-  fi
-elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
-  #-------------------------------------------------------------
-  # Cygwin
-  #-------------------------------------------------------------
-  echo "Cygwin"
-else
-  # Unknown platform
-  echo "Unknown platform"
+if [ "$DIR/irssi" != "$(ls -l ~/.irssi | awk '{print $11}')" ]; then
+  mv ~/.irssi ~/.irssi.orig
+  ln -s $DIR/irssi ~/.irssi     
 fi

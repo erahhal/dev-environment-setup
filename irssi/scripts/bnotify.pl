@@ -1,0 +1,1 @@
+/Users/erahhal/Code-vendor/irssi-scripts/bnotify/bnotify.pl

@@ -1,0 +1,1 @@
+/Users/erahhal/Code-vendor/irssi-scripts/vim-mode/vim_mode.pl
