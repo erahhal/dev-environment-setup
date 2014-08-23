@@ -1,3 +1,16 @@
-SCRIPT LOAD vim_mode
-SCRIPT LOAD uberprompt
-SCRIPT LOAD fnotify-growl
+SCRIPT LOAD vim_mode.pl
+SCRIPT LOAD uberprompt.pl
+SCRIPT LOAD fnotify-growl.pl
+
+STATUSBAR window add vim_mode
+STATUSBAR window add vim_windows
+
+SET use_status_window OFF
+
+SET nick erahhal
+
+CONNECT ircx.spacex.corp 6667
+
+JOIN -ircx.spacex.corp #fsw
+JOIN -ircx.spacex.corp #automation
+
