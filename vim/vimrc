@@ -56,6 +56,9 @@ au BufRead *.md setlocal spell
 " Solarized color scheme
 " -----------------------------------------------------
 " let g:solarized_termcolors=256   " only needed if terminal is not solarized
+if s:uname == "Linux"
+  set t_Co=16
+endif
 try
   colorscheme solarized
 catch /^Vim\%((\a\+)\)\=:E185/

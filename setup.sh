@@ -6,9 +6,6 @@ DIR="$( cd "$( dirname "$0" )" && pwd )"
 # Bash
 #-------------------------------------------------------------
 
-echo $DIR/Scripts
-echo $(ls -l ~/Scripts | awk '{print $11}') 
-exit 1
 if [ "$DIR/Scripts" != "$(ls -l ~/Scripts | awk '{print $11}')" ]; then
   mv ~/Scripts ~/Scripts.orig
   ln -s $DIR/Scripts ~/Scripts
@@ -81,3 +78,9 @@ if [ "$DIR/irssi" != "$(ls -l ~/.irssi | awk '{print $11}')" ]; then
   mv ~/.irssi ~/.irssi.orig
   ln -s $DIR/irssi ~/.irssi     
 fi
+
+#-------------------------------------------------------------
+# 3rd party code
+#-------------------------------------------------------------
+
+mkdir -p ~/Code-vendor

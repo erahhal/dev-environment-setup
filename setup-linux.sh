@@ -18,15 +18,21 @@ else
 fi
 
 if hash apt-get 2>/dev/null; then
-  sudo apt-get update
-  sudo apt-get install -y python-software-properties vim postgresql nginx
+  . /etc/lsb-release
   sudo add-apt-repository -y ppa:chris-lea/node.js
-  sudo apt-get update            
-  sudo apt-get install -y nodejs
-  sudo apt-get install -y ack-grep vim
+  sudo add-apt-repository -y ppa:fcwu-tw/ppa
+  sudo add-apt-repository -y ppa:webupd8team/java
+  sudo apt-get update
+  sudo apt-get install -y python-software-properties vim postgresql nginx cmake python-dev dconf cmake nodejs ack-grep vim
+  sudo apt-get install -y oracle-java7-installer
 elif hash yum 2>/dev/null; then
   sudo yum install -y ack
 else
   echo "Unknown distribution"
   exit 1
 fi
+
+cd ~/Code-vendor
+git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git
+cd gnome-terminal-colors-solarized
+./set_dark.sh

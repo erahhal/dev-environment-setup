@@ -13,6 +13,14 @@ fi
 # Aliases
 #-------------------------------------------------------------
 
-alias vi='/usr/local/bin/vim'
+if [ "$(uname)" == "Darwin" ]; then
+  #-------------------------------------------------------------
+  # Mac
+  #-------------------------------------------------------------
+
+  alias vi='/usr/local/bin/vim'
+fi
+# elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+
 alias ge='geeknote edit --note'
 
