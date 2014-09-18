@@ -32,6 +32,9 @@ if s:uname == "Darwin"
   nnoremap <Leader>o :exe ':silent !open %'<CR>
 endif
 
+" FormatJSON to pretty print JSON
+com! FormatJSON %!python -m json.tool
+
 " -----------------------------------------------------
 " Look and feel
 " -----------------------------------------------------
