@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd ~/Documents
+tar -cz Synced | gpg2 -r "ellis.rahhal@gmail.com" -e > Synced.tgz.gpg

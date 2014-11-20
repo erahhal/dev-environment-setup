@@ -69,6 +69,9 @@ cd ~/.vim/bundle/YouCompleteMe
 ./install.sh --clang-completer
 cd ~/.vim/bundle/tern_for_vim
 npm install
+cd ~/.vim/bundle/Command-T/ruby/command-t/
+ruby extconf.rb
+make
 
 #-------------------------------------------------------------
 # IRSSI

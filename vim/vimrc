@@ -44,6 +44,8 @@ set bg=dark     " set colors for dark background
 set nonumber    " don't display row numbers
 set ruler       " display ruler
 set vb t_vb=    " visual bell
+set visualbell
+set noerrorbells
 
 " -----------------------------------------------------
 " Spell checking
@@ -319,6 +321,20 @@ Bundle 'Raimondi/delimitMate'
 Bundle 'Valloric/YouCompleteMe'
 " Better completion with YouCompleteMe
 Bundle 'marijnh/tern_for_vim'
+" GLSL syntax highlighting
+Bundle 'tikhomirov/vim-glsl'
+" Universal Text Linking
+Bundle 'vim-scripts/utl.vim'
+" Repeat
+Bundle 'tpope/vim-repeat'
+" Speeddating
+Bundle 'tpope/vim-speeddating'
+" Calendar
+Bundle 'mattn/calendar-vim'
+" SyntaxRange
+Bundle 'vim-scripts/SyntaxRange'
+" Org Mode
+Bundle 'jceb/vim-orgmode'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'
