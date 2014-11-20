@@ -68,7 +68,7 @@ cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
 cd ~/.vim/bundle/YouCompleteMe
 ./install.sh --clang-completer
 cd ~/.vim/bundle/tern_for_vim
-npm install
+sudo npm install -g
 cd ~/.vim/bundle/Command-T/ruby/command-t/
 ruby extconf.rb
 make

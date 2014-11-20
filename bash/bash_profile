@@ -51,17 +51,13 @@ if [ "$(ls ~/Scripts/local)" ]; then
 fi
 
 #-------------------------------------------------------------
-# Node
-#-------------------------------------------------------------
-
-# Load Node version manager
-source $(brew --prefix nvm)/nvm.sh
-
-#-------------------------------------------------------------
 # Platform specific
 #-------------------------------------------------------------
 if [ "$(uname)" == "Darwin" ]; then
   export JAVA_HOME=$(/usr/libexec/java_home)
   export ANDROID_SDK="/Applications/Android Studio.app/sdk"
   export ANDROID_HOME="/Applications/Android Studio.app/sdk"
+
+  # Load Node version manager
+  source $(brew --prefix nvm)/nvm.sh
 fi
