@@ -1,0 +1,121 @@
+#!/bin/sh
+
+# Usage info
+show_help() {
+cat << EOF
+Usage: ${0##*/} <service name> <start/stop/restart>
+EOF
+}
+
+if [ $# -lt 2 ]; then
+  show_help
+  exit 1
+fi
+
+service_name=$1
+action=$2
+
+if [ "$action" != "start" ] && [ "$action" != "stop" ] && [ "$action" != "restart" ]; then
+  show_help
+  exit 1
+fi
+
+case "$service_name" in
+  ## Nginx
+  # Docroot is: /usr/local/var/www
+
+  # The default port has been set in /usr/local/etc/nginx/nginx.conf to 8080 so that
+  # nginx can run without sudo.
+
+  # To have launchd start nginx at login:
+  #   ln -sfv /usr/local/opt/nginx/*.plist ~/Library/LaunchAgents
+  # Then to load nginx now:
+  #   launchctl load ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist
+  # Or, if you don't want/need launchctl, you can just run:
+  #   nginx
+  nginx)
+    case "$action" in
+      start)
+	launchctl load -w /usr/local/opt/nginx/homebrew.mxcl.nginx.plist
+      ;;
+      stop)
+	launchctl unload /usr/local/opt/nginx/homebrew.mxcl.nginx.plist
+      ;;
+      restart)
+	launchctl unload /usr/local/opt/nginx/homebrew.mxcl.nginx.plist
+	launchctl load -w /usr/local/opt/nginx/homebrew.mxcl.nginx.plist
+      ;;
+    esac
+  ;;
+
+  ## Postgres:
+  # To have launchd start postgresql at login:
+  #   ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
+  # Then to load postgresql now:
+  #   launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+  # Or, if you don't want/need launchctl, you can just run:
+  #   postgres -D /usr/local/var/postgres
+  postgres)
+    case "$action" in
+      start)
+	launchctl load -w /usr/local/opt/postgresql/homebrew.mxcl.postgresql.plist
+      ;;
+      stop)
+	launchctl unload /usr/local/opt/postgresql/homebrew.mxcl.postgresql.plist
+      ;;
+      restart)
+	launchctl unload /usr/local/opt/postgresql/homebrew.mxcl.postgresql.plist
+	launchctl load -w /usr/local/opt/postgresql/homebrew.mxcl.postgresql.plist
+      ;;
+    esac
+  ;;
+
+  ## Mongodb:
+  # To have launchd start mongodb at login:
+  #   ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents
+  # Then to load mongodb now:
+  #   launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
+  # Or, if you don't want/need launchctl, you can just run:
+  #   mongod --config /usr/local/etc/mongod.conf
+  mongodb)
+    case "$action" in
+      start)
+	launchctl load -w /usr/local/opt/mongodb/homebrew.mxcl.mongodb.plist
+      ;;
+      stop)
+	launchctl unload /usr/local/opt/mongodb/homebrew.mxcl.mongodb.plist
+      ;;
+      restart)
+	launchctl unload /usr/local/opt/mongodb/homebrew.mxcl.mongodb.plist
+	launchctl load -w /usr/local/opt/mongodb/homebrew.mxcl.mongodb.plist
+      ;;
+    esac
+  ;;
+
+  ## Redis: 
+  # To have launchd start redis at login:
+  #   ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents
+  # Then to load redis now:
+  #   launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+  # Or, if you don't want/need launchctl, you can just run:
+  #   redis-server /usr/local/etc/redis.conf
+  redis)
+    case "$action" in
+      start)
+	launchctl load -w /usr/local/opt/redis/homebrew.mxcl.redis.plist
+      ;;
+      stop)
+	launchctl unload /usr/local/opt/redis/homebrew.mxcl.redis.plist
+      ;;
+      restart)
+	launchctl unload /usr/local/opt/redis/homebrew.mxcl.redis.plist
+	launchctl load -w /usr/local/opt/redis/homebrew.mxcl.redis.plist
+      ;;
+    esac
+  ;;
+  *)
+    echo "Unknown service"
+    exit 1
+  ;;
+esac
+

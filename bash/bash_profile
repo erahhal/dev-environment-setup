@@ -1,0 +1,88 @@
+#-------------------------------------------------------------
+# pseudo-code for how bash scripts are executed
+#-------------------------------------------------------------
+
+# execute /etc/profile
+# IF ~/.bash_profile exists THEN
+#     execute ~/.bash_profile
+# ELSE
+#     IF ~/.bash_login exist THEN
+#         execute ~/.bash_login
+#     ELSE
+#         IF ~/.profile exist THEN
+#             execute ~/.profile
+#         END IF
+#     END IF
+# END IF
+
+# IF ~/.bash_logout exists THEN
+#     execute ~/.bash_logout
+# END IF
+
+#-------------------------------------------------------------
+# General setup
+#-------------------------------------------------------------
+
+# override /usr/bin with /usr/local/bin="~/.cabal/bin:/usr/local/bin:$PATH:~/Scripts"
+export PATH="~/.cabal/bin:/usr/local/bin:$PATH:~/Scripts"
+
+# turn on vi mode for bash
+set -o vi
+
+#-------------------------------------------------------------
+# Git customizations
+#-------------------------------------------------------------
+
+# Put Git branch name in shell prompt
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+gitbranch="\$(parse_git_branch)"
+PS1="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] $gitbranch\$ "
+export CLICOLOR=1
+export LSCOLORS=gxfxaxdxcxegedabagacad
+
+# enable git autocomplete
+source ~/Scripts/git-completion.sh
+
+# load any custom scripts
+if [ "$(ls ~/Scripts/local)" ]; then
+  source ~/Scripts/local/*
+fi
+
+#-------------------------------------------------------------
+# Node
+#-------------------------------------------------------------
+
+# Load Node version manager
+source $(brew --prefix nvm)/nvm.sh
+
+#-------------------------------------------------------------
+# Java
+#-------------------------------------------------------------
+export ATLAS_OPTS="-Xms768m -Xmx6144m -XX:MaxPermSize=128M"
+export MAVEN_OPTS="-Xms768m -Xmx6144m -XX:MaxPermSize=128M"
+
+#-------------------------------------------------------------
+# Platform specific
+#-------------------------------------------------------------
+if [ "$(uname)" == "Darwin" ]; then
+  export JAVA_HOME=$(/usr/libexec/java_home)
+  export ANDROID_SDK="/Applications/Android Studio.app/sdk"
+  export ANDROID_HOME="/Applications/Android Studio.app/sdk"
+
+  # Load Node version manager
+  source $(brew --prefix nvm)/nvm.sh
+
+  # Docker.  Fix conflict with Cisco Anyconnect
+  # https://github.com/boot2docker/boot2docker/issues/628#issuecomment-68909772
+  $(boot2docker shellinit)
+  export DOCKER_HOST=tcp://127.0.0.1:2376
+  # Also see here for configuring boot2docker server:
+  # http://stackoverflow.com/questions/26424338/docker-daemon-config-file-on-boot2docker
+
+  # Bash completion
+  if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+  fi
+fi

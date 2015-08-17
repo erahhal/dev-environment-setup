@@ -1,0 +1,9 @@
+SCRIPT LOAD vim_mode.pl
+SCRIPT LOAD uberprompt.pl
+SCRIPT LOAD fnotify-growl.pl
+
+STATUSBAR window add vim_mode
+STATUSBAR window add vim_windows
+
+SET use_status_window OFF
+

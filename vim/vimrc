@@ -1,0 +1,360 @@
+" -----------------------------------------------------
+" Setup
+" -----------------------------------------------------
+
+if has("unix")
+  let s:uname = substitute(system("uname -s"), '\n', '', '')
+elseif 
+else
+  let s:uname = 'unknown'
+endif
+
+" -----------------------------------------------------
+" Use UTF-8
+" -----------------------------------------------------
+set fencs=ucs-bom
+set enc=utf-8
+
+" -----------------------------------------------------
+" General settings
+" -----------------------------------------------------
+
+set nocompatible     " Be iMproved
+set exrc             " enable per-directory .vimrc files
+set secure           " disable unsafe commands in local .vimrc files
+set pastetoggle=<F10> " use F10 to disable and enable all indentation options
+
+" -----------------------------------------------------
+" External commands
+" -----------------------------------------------------
+
+if s:uname == "Darwin"
+  nnoremap <Leader>o :exe ':silent !open %'<CR>
+endif
+
+" FormatJSON to pretty print JSON
+com! FormatJSON %!python -m json.tool
+
+" -----------------------------------------------------
+" Look and feel
+" -----------------------------------------------------
+
+syn on          " syntax highlighting
+set bg=dark     " set colors for dark background
+set nonumber    " don't display row numbers
+set ruler       " display ruler
+set vb t_vb=    " visual bell
+set visualbell
+set noerrorbells
+
+" -----------------------------------------------------
+" Spell checking
+" -----------------------------------------------------
+
+au BufRead *.txt setlocal spell
+au BufRead *.md setlocal spell
+
+" -----------------------------------------------------
+" Solarized color scheme
+" -----------------------------------------------------
+" let g:solarized_termcolors=256   " only needed if terminal is not solarized
+if s:uname == "Linux"
+  set t_Co=16
+endif
+try
+  colorscheme solarized
+catch /^Vim\%((\a\+)\)\=:E185/
+  " deal with it
+endtry
+
+" -----------------------------------------------------
+" Backspace settings
+"   indent  allow backspacing over autoindent
+"   eol     allow backspacing over line breaks (join lines)
+"   start   allow backspacing over the start of insert; CTRL-W and CTRL-U
+"   0     same as ":set backspace=" (Vi compatible)
+"   1     same as ":set backspace=indent,eol"
+"   2     same as ":set backspace=indent,eol,start"
+" -----------------------------------------------------
+
+set bs=2
+
+" -----------------------------------------------------
+" Indentation  settings
+" -----------------------------------------------------
+
+set tabstop=2       " number of spaces a tab counts for
+set shiftwidth=2    " control how many columns text is indented with the reindent operations (<< and >>) and automatic C-style indentation.
+set expandtab       " Insert spaces when entering <Tab>
+set softtabstop=2   " Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>.  It "feels" like a tab though
+set ai              " auto indent
+
+" -----------------------------------------------------
+" Fold settings
+"
+"   fdm:
+"     manual	    Folds are created manually.
+"     indent	    Lines with equal indent form a fold.
+"     expr	    'foldexpr' gives the fold level of a line.
+"     marker	    Markers are used to specify folds.
+"     syntax	    Syntax highlighting items specify folds.
+"     diff	    Fold text that is not changed.
+" -----------------------------------------------------
+
+set fdm=marker
+hi Folded ctermfg=255 ctermbg=23
+"set foldmethod=indent
+"set foldlevelstart=0
+" javascript folding doesn't work very well with several levels of nested anonymous functions
+"let javaScript_fold=1         " JavaScript
+"let php_folding=1             " PHP
+
+" -----------------------------------------------------
+" Remove trailing whitespace from certain file types
+" -----------------------------------------------------
+
+autocmd BufWritePre *.js :%s/\s\+$//e
+autocmd BufWritePre *.html :%s/\s\+$//e
+autocmd BufWritePre *.jade :%s/\s\+$//e
+autocmd BufWritePre *.css :%s/\s\+$//e
+autocmd BufWritePre *.less :%s/\s\+$//e
+autocmd BufWritePre *.php :%s/\s\+$//e
+autocmd BufWritePre *.phtml :%s/\s\+$//e
+
+" -----------------------------------------------------
+" Vimdiff settings
+" -----------------------------------------------------
+
+" ignore whitespace
+set diffopt+=iwhite
+
+" -----------------------------------------------------
+" JSHint
+" -----------------------------------------------------
+
+" Run JSHint on save
+" au BufWritePost *.js :JSHint
+
+" -----------------------------------------------------
+" command-t
+" -----------------------------------------------------
+
+let g:CommandTNeverShowDotFiles = 1
+let g:CommandTScanDotDirectories = 0
+
+" -----------------------------------------------------
+" YouCompleteMe
+" -----------------------------------------------------
+
+" These are the tweaks I apply to YCM's config, you don't need them but they might help.
+" YCM gives you popups and splits by default that some people might not like, so these should tidy it up a bit for you.
+" let g:ycm_add_preview_to_completeopt=0
+" let g:ycm_confirm_extra_conf=0
+" set completeopt-=preview
+
+" -----------------------------------------------------
+" clang_complete
+" -----------------------------------------------------
+
+let g:clang_complete_copen=1
+let g:clang_hl_errors=0
+
+" -----------------------------------------------------
+" gitgutter
+" -----------------------------------------------------
+
+if exists(":GitGutterLineHighlightsEnable")
+  autocmd VimEnter * GitGutterLineHighlightsEnable
+endif
+
+
+" compare against last ancestor commit before branch
+let g:gitgutter_diff_args = "`git merge-base HEAD master`"
+
+highlight GitGutterAddLine ctermbg=17
+highlight GitGutterChangeLine ctermbg=237
+" GitGutterDeleteLine       " default: links to DiffDelete
+" GitGutterChangeDeleteLine " default: links to GitGutterChangeLineDefault, i.e. DiffChange
+
+" " gitgutter solarized adjustments
+" highlight clear SignColumn
+" highlight link SignColumn CursorColumn
+
+" -----------------------------------------------------
+" tagbar config
+" -----------------------------------------------------
+
+" open Tagbar for supported files
+" autocmd BufEnter * nested :call tagbar#autoopen(0)
+
+let g:tagbar_width = 31
+nnoremap <leader>c :TagbarToggle<CR> 
+
+" configure tags for javascript
+" let g:tagbar_ctags_bin = '~/node_modules/.bin/jsctags'
+" let g:tagbar_type_javascript = { 'ctagsbin' : '~/node_modules/.bin/jsctags' }
+" let g:tagbar_type_javascript = { 'ctagsbin' : '/Users/erahhal/node_modules/jsctags/bin/jsctags.js' }
+
+" -----------------------------------------------------
+" NERDTree config
+" -----------------------------------------------------
+
+" Start NERDTreeTabs on launch
+let g:nerdtree_tabs_open_on_console_startup = 1
+" Show hidden files
+let NERDTreeShowHidden=1
+
+" -----------------------------------------------------
+" Ack config
+" -----------------------------------------------------
+
+if s:uname == "Linux"
+  let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+elseif s:uname == "Darwin"
+  let g:ackprg="ack -H -s --nocolor --nogroup --column"
+endif
+
+" -----------------------------------------------------
+" mustache config
+" -----------------------------------------------------
+
+let g:mustache_abbreviations = 1
+
+" -----------------------------------------------------
+" Remember the last cursor location across sessions
+" -----------------------------------------------------
+
+function! ResCur()
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
+endfunction
+
+augroup resCur
+  autocmd!
+  autocmd BufWinEnter * call ResCur()
+augroup END
+
+" -----------------------------------------------------
+" Vundle
+" -----------------------------------------------------
+"
+filetype on
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required! 
+Bundle 'gmarik/vundle'
+
+" My bundles here:
+"
+" original repos on GitHub
+
+" Git wrapper
+Bundle 'tpope/vim-fugitive'
+" Quickly navigate around a file
+Bundle 'Lokaltog/vim-easymotion'
+" faster creation of HTML and CSS, handles expansion
+Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Quickly find a file in a project
+Bundle 'wincent/Command-T' 
+" Mustache template support
+Bundle 'mustache/vim-mode'
+" less CSS preprocessor syntax highlightin
+Bundle 'groenewege/vim-less' 
+" mustache syntax highlighting and completion
+Bundle 'juvenn/mustache.vim' 
+" jshint support for vim
+Bundle 'Shutnik/jshint2.vim' 
+" hierarchical file tree for Vim
+Bundle 'scrooloose/nerdtree' 
+" tab support for NERDTree
+Bundle 'jistr/vim-nerdtree-tabs' 
+" Run a command or shell in a Vim window
+Bundle 'pthrasher/conqueterm-vim' 
+" do inline diffs and other operations
+Bundle 'airblade/vim-gitgutter' 
+" nice looking status bar
+Bundle 'bling/vim-airline' 
+" set shiftwidth and expandtab automatically based on file or other files in the working directory
+Bundle 'tpope/vim-sleuth' 
+" Bundle 'xolox/vim-misc'
+" Bundle 'xolox/vim-session'
+" Bundle 'bling/vim-bufferline'
+" syntax checking in vim
+Bundle 'scrooloose/syntastic' 
+" allows browsing of ctags
+" Bundle 'majutsushi/tagbar' 
+" a tree of undos
+Bundle 'mbbill/undotree' 
+" solarized color scheme
+Bundle 'altercation/vim-colors-solarized' 
+" allows editing multiple lines simultaneous like Sublime
+Bundle 'hlissner/vim-multiedit' 
+" See code tags in side bar
+Bundle 'majutsushi/tagbar'
+" grep-style functionality through ack
+Bundle 'mileszs/ack.vim'
+" NERDTree integration with ack
+Bundle 'tyok/nerdtree-ack'
+" recursive multiple file diff
+Bundle 'vim-scripts/DirDiff.vim'
+" markdown syntax highlighting
+Bundle 'plasticboy/vim-markdown'
+" vim tmux integration
+Bundle 'christoomey/vim-tmux-navigator'
+" stylus syntax highlighting
+Bundle 'wavded/vim-stylus'
+" JavaScript syntax highlighting
+Bundle 'jelera/vim-javascript-syntax'
+" Additional JavaScript syntax highlighting
+Bundle 'pangloss/vim-javascript'
+" Highlighting for javascript indentation
+Bundle 'nathanaelkane/vim-indent-guides'
+" Automatic closing quotes, brackets, etc
+Bundle 'Raimondi/delimitMate'
+" Tab completion
+" Bundle 'ervandew/supertab'
+" Tab completion
+Bundle 'Valloric/YouCompleteMe'
+" Better completion with YouCompleteMe
+Bundle 'marijnh/tern_for_vim'
+" GLSL syntax highlighting
+Bundle 'tikhomirov/vim-glsl'
+" Universal Text Linking
+Bundle 'vim-scripts/utl.vim'
+" Repeat
+Bundle 'tpope/vim-repeat'
+" Speeddating
+Bundle 'tpope/vim-speeddating'
+" Calendar
+Bundle 'mattn/calendar-vim'
+" SyntaxRange
+Bundle 'vim-scripts/SyntaxRange'
+" Org Mode
+Bundle 'jceb/vim-orgmode'
+" Huge Files
+Bundle 'mhinz/vim-hugefile'
+" Hacker News
+Bundle 'ryanss/vim-hackernews'
+" vim-scripts repos
+Bundle 'L9'
+Bundle 'FuzzyFinder'
+" Git repos on your local machine (i.e. when working on your own plugin)
+" Bundle 'file:///Users/gmarik/path/to/plugin'
+" ...
+
+" filetype plugin indent on     " required! this uses plugin indentation.
+filetype indent on     " required! this does NOT use plugin indentation
+"
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install (update) bundles
+" :BundleSearch(!) foo - search (or refresh cache first) for foo
+" :BundleClean(!)      - confirm (or auto-approve) removal of unused bundles
+"
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle commands are not allowed.

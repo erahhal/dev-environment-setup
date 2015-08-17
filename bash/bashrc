@@ -1,0 +1,26 @@
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+#-------------------------------------------------------------
+# Source global definitions (if any)
+#-------------------------------------------------------------
+
+if [ -f /etc/bashrc ]; then
+  . /etc/bashrc   # --> Read /etc/bashrc, if present.
+fi
+
+#-------------------------------------------------------------
+# Aliases
+#-------------------------------------------------------------
+
+if [ "$(uname)" == "Darwin" ]; then
+  #-------------------------------------------------------------
+  # Mac
+  #-------------------------------------------------------------
+
+  alias vi='/usr/local/bin/vim'
+fi
+# elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+
+alias ge='geeknote edit --note'
+
