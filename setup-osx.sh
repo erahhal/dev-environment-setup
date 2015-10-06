@@ -25,6 +25,8 @@ brew install nodejs
 brew install vim
 brew install macvim
 brew install bash-completion
+brew install eslint
+brew install tidy-html5
 sudo rm /usr/bin/vi
 sudo ln -s /usr/local/bin/vim /usr/bin/vi
 brew cask install google-chrome

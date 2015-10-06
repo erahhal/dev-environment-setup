@@ -48,6 +48,23 @@ set visualbell
 set noerrorbells
 
 " -----------------------------------------------------
+" Syntax Checking
+" -----------------------------------------------------
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_html_tidy_exec = 'tidy5 config ~/tidy-config.txt'
+let g:syntastic_html_tidy_ignore_errors = ['discarding unexpected <', '> is not recognized']
+let g:syntastic_html_checkers = ['tidy', 'eslint']
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" -----------------------------------------------------
 " Spell checking
 " -----------------------------------------------------
 
@@ -260,7 +277,11 @@ Bundle 'Lokaltog/vim-easymotion'
 " faster creation of HTML and CSS, handles expansion
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Quickly find a file in a project
-Bundle 'wincent/Command-T' 
+" Command-T doesn't seem to prioritize exact string matches, which makes it
+" seemingly useless.  Will figure whether I'm using it wrong in the future
+" Bundle 'wincent/Command-T' 
+" Quickly find a file in a project
+Bundle 'kien/ctrlp.vim'
 " Mustache template support
 Bundle 'mustache/vim-mode'
 " less CSS preprocessor syntax highlightin

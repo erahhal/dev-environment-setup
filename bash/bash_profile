@@ -76,8 +76,9 @@ if [ "$(uname)" == "Darwin" ]; then
 
   # Docker.  Fix conflict with Cisco Anyconnect
   # https://github.com/boot2docker/boot2docker/issues/628#issuecomment-68909772
-  $(boot2docker shellinit)
-  export DOCKER_HOST=tcp://127.0.0.1:2376
+  cd ~/Code-vendor/boot2docker-xhyve
+  export DOCKER_HOST=tcp://$(make ip):2375
+  cd ~/
   # Also see here for configuring boot2docker server:
   # http://stackoverflow.com/questions/26424338/docker-daemon-config-file-on-boot2docker
 
