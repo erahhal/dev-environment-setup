@@ -23,6 +23,7 @@ set nocompatible     " Be iMproved
 set exrc             " enable per-directory .vimrc files
 set secure           " disable unsafe commands in local .vimrc files
 set pastetoggle=<F10> " use F10 to disable and enable all indentation options
+set viminfo='20,<1000,s1000 " increase copy and paste buffer size
 
 " -----------------------------------------------------
 " External commands
