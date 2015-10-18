@@ -19,11 +19,15 @@ brew tap caskroom/cask
 brew update
 brew install coreutils
 brew install gnu-sed
+brew install aspell
 brew install brew-cask
 brew install nodejs
 brew install vim
 brew install macvim
 brew install cmake
+brew install bash-completion
+brew install eslint
+brew install tidy-html5
 sudo rm /usr/bin/vi
 sudo ln -s /usr/local/bin/vim /usr/bin/vi
 brew cask install google-chrome
@@ -56,3 +60,10 @@ brew cask install logitech-control-center
 brew cask install twitterrific
 brew cask install iterm2
 brew cask install anki
+brew cask install emacs
+
+pip install PIL
+pip install Pillow
+
+# for python libs that need freetype headers
+ln -s /usr/local/include/freetype2 /usr/local/include/freetype

@@ -23,6 +23,7 @@ set nocompatible     " Be iMproved
 set exrc             " enable per-directory .vimrc files
 set secure           " disable unsafe commands in local .vimrc files
 set pastetoggle=<F10> " use F10 to disable and enable all indentation options
+set viminfo='20,<1000,s1000 " increase copy and paste buffer size
 
 " -----------------------------------------------------
 " External commands
@@ -46,6 +47,23 @@ set ruler       " display ruler
 set vb t_vb=    " visual bell
 set visualbell
 set noerrorbells
+
+" -----------------------------------------------------
+" Syntax Checking
+" -----------------------------------------------------
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_html_tidy_exec = 'tidy5 config ~/tidy-config.txt'
+let g:syntastic_html_tidy_ignore_errors = ['discarding unexpected <', '> is not recognized']
+let g:syntastic_html_checkers = ['tidy', 'eslint']
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 " -----------------------------------------------------
 " Spell checking
@@ -240,7 +258,7 @@ augroup END
 " Vundle
 " -----------------------------------------------------
 "
-filetype off
+filetype on
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
@@ -260,7 +278,12 @@ Bundle 'Lokaltog/vim-easymotion'
 " faster creation of HTML and CSS, handles expansion
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Quickly find a file in a project
-Bundle 'wincent/Command-T' 
+" Command-T doesn't seem to prioritize exact string matches, which makes it
+" seemingly useless.  Will figure whether I'm using it wrong in the future
+" Bundle 'wincent/Command-T' 
+" Quickly find a file in a project
+Bundle 'kien/ctrlp.vim'
+" Mustache template support
 Bundle 'mustache/vim-mode'
 " less CSS preprocessor syntax highlightin
 Bundle 'groenewege/vim-less' 
@@ -335,6 +358,8 @@ Bundle 'mattn/calendar-vim'
 Bundle 'vim-scripts/SyntaxRange'
 " Org Mode
 Bundle 'jceb/vim-orgmode'
+" Huge Files
+Bundle 'mhinz/vim-hugefile'
 " Hacker News
 Bundle 'ryanss/vim-hackernews'
 " vim-scripts repos

@@ -22,8 +22,3 @@ if [ "$(uname)" == "Darwin" ]; then
 fi
 # elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 
-alias ge='geeknote edit --note'
-
-
-
-. /Users/erahhal/torch/install/bin/torch-activate

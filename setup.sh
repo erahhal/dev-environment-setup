@@ -1,5 +1,4 @@
 #!/bin/bash
-                               
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 #-------------------------------------------------------------
@@ -17,6 +16,10 @@ fi
 if [ "$DIR/bash/bash_profile" != "$(ls -l ~/.bash_profile | awk '{print $11}')" ]; then
   mv ~/.bash_profile ~/.bash_profile.orig
   ln -s $DIR/bash/bash_profile ~/.bash_profile
+fi
+if [ "$DIR/bash/screenrc" != "$(ls -l ~/.screenrc | awk '{print $11}')" ]; then
+  mv ~/.screenrc ~/.screenrc.orig
+  ln -s $DIR/bash/screenrc ~/.screenrc
 fi
 
 #-------------------------------------------------------------
@@ -57,9 +60,9 @@ pip install simplejson
 
 if [ "$DIR/vim/vimrc" != "$(ls -l ~/.vimrc | awk '{print $11}')" ]; then
   mv ~/.vimrc ~/.vimrc.orig
-  ln -s $DIR/vim/vimrc ~/.vimrc     
+  ln -s $DIR/vim/vimrc ~/.vimrc
 fi
-mkdir -p ~/.vim                
+mkdir -p ~/.vim
 if [ ! -e ~/.vim/bundle/vundle ]; then
   git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 fi
@@ -73,6 +76,19 @@ sudo npm install -g
 cd ~/.vim/bundle/Command-T/ruby/command-t/
 ruby extconf.rb
 make
+
+#-------------------------------------------------------------
+=======
+# Emacs
+#-------------------------------------------------------------
+
+cd ~/
+if [ ! -e .spacemacs ]; then
+  if [ -e .emacs.d ]; then
+    mv .emacs.d .emacs.d.orig
+  fi
+  git clone --recursive http://github.com/syl20bnr/spacemacs ~/.emacs.d
+fi
 
 #-------------------------------------------------------------
 # IRSSI

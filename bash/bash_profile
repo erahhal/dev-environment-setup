@@ -51,10 +51,29 @@ if [ "$(ls ~/Scripts/local)" ]; then
 fi
 
 #-------------------------------------------------------------
+# Java
+#-------------------------------------------------------------
+export ATLAS_OPTS="-Xms768m -Xmx6144m -XX:MaxPermSize=128M"
+export MAVEN_OPTS="-Xms768m -Xmx6144m -XX:MaxPermSize=128M"
+
+#-------------------------------------------------------------
 # Platform specific
 #-------------------------------------------------------------
 if [ "$(uname)" == "Darwin" ]; then
   export JAVA_HOME=$(/usr/libexec/java_home)
   export ANDROID_SDK="/Applications/Android Studio.app/sdk"
   export ANDROID_HOME="/Applications/Android Studio.app/sdk"
+
+  # Docker.  Fix conflict with Cisco Anyconnect
+  # https://github.com/boot2docker/boot2docker/issues/628#issuecomment-68909772
+  cd ~/Code-vendor/boot2docker-xhyve
+  export DOCKER_HOST=tcp://$(make ip):2375
+  cd ~/
+  # Also see here for configuring boot2docker server:
+  # http://stackoverflow.com/questions/26424338/docker-daemon-config-file-on-boot2docker
+
+  # Bash completion
+  if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+  fi
 fi
