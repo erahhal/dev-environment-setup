@@ -66,6 +66,7 @@ fi
 vim -c "execute 'BundleInstall' | qa"
 cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
 cd ~/.vim/bundle/YouCompleteMe
+git submodule update --init --recursive
 ./install.sh --clang-completer
 cd ~/.vim/bundle/tern_for_vim
 sudo npm install -g

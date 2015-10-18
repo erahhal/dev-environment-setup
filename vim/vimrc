@@ -335,6 +335,8 @@ Bundle 'mattn/calendar-vim'
 Bundle 'vim-scripts/SyntaxRange'
 " Org Mode
 Bundle 'jceb/vim-orgmode'
+" Hacker News
+Bundle 'ryanss/vim-hackernews'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'

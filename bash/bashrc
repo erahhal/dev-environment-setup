@@ -24,3 +24,6 @@ fi
 
 alias ge='geeknote edit --note'
 
+
+
+. /Users/erahhal/torch/install/bin/torch-activate

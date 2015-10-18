@@ -23,6 +23,7 @@ brew install brew-cask
 brew install nodejs
 brew install vim
 brew install macvim
+brew install cmake
 sudo rm /usr/bin/vi
 sudo ln -s /usr/local/bin/vim /usr/bin/vi
 brew cask install google-chrome
