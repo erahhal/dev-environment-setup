@@ -22,14 +22,13 @@ brew install gnu-sed
 brew install aspell
 brew install brew-cask
 brew install nodejs
-brew install vim
-brew install macvim
+brew install vim --with-python --override-system-vim
+brew install macvim --with-python --override-system-vim
 brew install cmake
 brew install bash-completion
 brew install eslint
 brew install tidy-html5
-sudo rm /usr/bin/vi
-sudo ln -s /usr/local/bin/vim /usr/bin/vi
+sudo ln -s /usr/local/bin/vim /usr/local/bin/vi
 brew cask install google-chrome
 brew cask install thunderbird
 brew cask install firefox

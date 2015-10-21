@@ -68,9 +68,17 @@ if [ ! -e ~/.vim/bundle/vundle ]; then
 fi
 vim -c "execute 'BundleInstall' | qa"
 cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
+
 cd ~/.vim/bundle/YouCompleteMe
 git submodule update --init --recursive
-./install.sh --clang-completer
+if [ "$(uname)" == "Darwin" ]; then
+  cd third_party/ycmd
+  cmake -G "Unix Makefiles" -DPATH_TO_LLVM_ROOT=/usr/bin -DPYTHON_INCLUDE_DIR=/usr/local/Frameworks/Python.framework/Headers -DPYTHON_LIBRARY=/usr/local/Frameworks/Python.framework/Python . ./cpp
+  /usr/local/bin/python ./build.py --clang-completer --omnisharp-completer --gocode-completer
+else
+  ./install.py --clang-completer --omnisharp-completer --gocode-completer
+fi
+
 cd ~/.vim/bundle/tern_for_vim
 sudo npm install -g
 cd ~/.vim/bundle/Command-T/ruby/command-t/
