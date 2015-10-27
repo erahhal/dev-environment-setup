@@ -26,12 +26,21 @@
 # override /usr/bin with /usr/local/bin
 export PATH="~/.cabal/bin:/usr/local/bin:/usr/local/sbin:$PATH:~/Scripts"
 
+#-------------------------------------------------------------
+# Default editor
+#-------------------------------------------------------------
+
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
 # turn on vi mode for bash
 set -o vi
 
 #-------------------------------------------------------------
 # Git customizations
 #-------------------------------------------------------------
+
+export GIT_EDITOR="$VISUAL"
 
 # Put Git branch name in shell prompt
 parse_git_branch() {
@@ -76,4 +85,10 @@ if [ "$(uname)" == "Darwin" ]; then
   if [ -f $(brew --prefix)/etc/bash_completion ]; then
     . $(brew --prefix)/etc/bash_completion
   fi
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+  # keyboard rate
+  xset r rate 250 30
+
+  # git bash completion
+  source /etc/bash_completion.d/git
 fi
