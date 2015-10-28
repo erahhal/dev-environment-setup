@@ -13,6 +13,10 @@ if [ "$DIR/bash/bashrc" != "$(ls -l ~/.bashrc | awk '{print $11}')" ]; then
   mv ~/.bashrc ~/.bashrc.orig
   ln -s $DIR/bash/bashrc ~/.bashrc
 fi
+if [ "$DIR/bash/xsessionrc" != "$(ls -l ~/.xsessionrc | awk '{print $11}')" ]; then
+  mv ~/.xsessionrc ~/.xsessionrc.orig
+  ln -s $DIR/bash/xsessionrc ~/.xsessionrc
+fi
 if [ "$DIR/bash/bash_profile" != "$(ls -l ~/.bash_profile | awk '{print $11}')" ]; then
   mv ~/.bash_profile ~/.bash_profile.orig
   ln -s $DIR/bash/bash_profile ~/.bash_profile
@@ -44,8 +48,16 @@ fi
 # Node
 #-------------------------------------------------------------
 
-sudo npm install -g bower
-sudo npm install -g grunt-cli
+if [ "$(uname)" == "Darwin" ]; then
+  NODE_SUDO=""
+else
+  NODE_SUDO="sudo"
+fi
+
+$NODE_SUDO npm install -g bower
+$NODE_SUDO npm install -g grunt-cli
+$NODE_SUDO npm install -g eslint
+$NODE_SUDO npm install -g eslint-plugin-html
 
 #-------------------------------------------------------------
 # Python

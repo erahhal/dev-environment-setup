@@ -14,11 +14,17 @@ myManagementHooks = [
   , className =? "Vncviewer"   --> doFloat
   ]
 
+myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
+
 myWorkspaces = withScreens 2 ["1","2","3","4","5","6","7","8","9"]
 
 myKeys xmproc = [ ((mod4Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
          , ((0, xK_F3), spawn "sleep 0.2; scrot -s")
-         , ((0, xK_F4), spawn "scrot")] ++
+         , ((0, xK_F4), spawn "scrot")
+         -- Spawn the launcher using command specified by myLauncher.
+         -- Use this to launch programs without a key binding.
+         , ((mod1Mask, xK_p), spawn myLauncher)
+         ] ++
          [
          -- workspaces are distinct by screen
           ((m .|. mod1Mask, k), windows $ onCurrentScreen f i)

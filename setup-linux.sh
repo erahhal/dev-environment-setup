@@ -27,6 +27,8 @@ if hash apt-get 2>/dev/null; then
   sudo apt-get install -y python-software-properties vim postgresql nginx cmake python-dev dconf cmake nodejs ack-grep vim
   sudo apt-get install -y oracle-java7-installer
   sudo apt-get install -y xmonad*
+  sudo apt-get install -y suckless-tools xscreensaver xmobar scrot xfce4-power-manager
+  sudo cabal install --global yeganesh
 elif hash yum 2>/dev/null; then
   sudo yum install -y ack
 else
