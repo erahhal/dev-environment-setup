@@ -23,6 +23,10 @@
 # General setup
 #-------------------------------------------------------------
 
+if [ -f ~/.bashrc ]; then
+  . ~/.bashrc 
+fi
+
 # override /usr/bin with /usr/local/bin
 export PATH="~/.cabal/bin:/usr/local/bin:/usr/local/sbin:$PATH:~/Scripts"
 
