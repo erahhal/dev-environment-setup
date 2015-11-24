@@ -59,6 +59,10 @@ if [ "$(ls ~/Scripts/local)" ]; then
   source ~/Scripts/local/*
 fi
 
+# git tree shortcut
+
+alias gt='git log --graph --pretty=oneline --all --abbrev-commit'
+
 #-------------------------------------------------------------
 # Java
 #-------------------------------------------------------------
@@ -88,7 +92,4 @@ if [ "$(uname)" == "Darwin" ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   # keyboard rate
   xset r rate 250 30
-
-  # git bash completion
-  source /etc/bash_completion.d/git
 fi

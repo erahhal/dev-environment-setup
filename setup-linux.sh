@@ -29,6 +29,7 @@ if hash apt-get 2>/dev/null; then
   sudo apt-get install -y xmonad*
   sudo apt-get install -y suckless-tools xscreensaver xmobar scrot xfce4-power-manager
   sudo cabal install --global yeganesh
+  sudo apt-get install -y xscreensaver xscreensaver-gl-extra xscreensaver-data-extra xfishtank xdaliclock fortune
 elif hash yum 2>/dev/null; then
   sudo yum install -y ack
 else
