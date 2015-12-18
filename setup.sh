@@ -75,6 +75,15 @@ if [ "$DIR/vim/vimrc" != "$(ls -l ~/.vimrc | awk '{print $11}')" ]; then
   ln -s $DIR/vim/vimrc ~/.vimrc
 fi
 mkdir -p ~/.vim
+mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}
+if [ "~/.vim" != "$(ls -l ~/.config/nvim | awk '{print $11}')" ]; then
+  mv ~/.config/nvim ~/.config/nvim.orig
+  ln -s ~/.vim ~/.config/nvim
+fi
+if [ "$DIR/vim/vimrc" != "$(ls -l ~/.config/nvim/init.vim | awk '{print $11}')" ]; then
+  mv ~/.config/nvim/init.vim ~/.config/nvim/init.vim.orig
+  ln -s $DIR/vim/vimrc ~/.config/nvim/init.vim
+fi
 if [ ! -e ~/.vim/bundle/vundle ]; then
   git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 fi

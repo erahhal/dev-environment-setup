@@ -28,7 +28,8 @@ brew install cmake
 brew install bash-completion
 brew install eslint
 brew install tidy-html5
-sudo ln -s /usr/local/bin/vim /usr/local/bin/vi
+brew install neovim/neovim/neovim
+sudo ln -s /usr/local/bin/nvim /usr/local/bin/vi
 brew cask install google-chrome
 brew cask install thunderbird
 brew cask install firefox
@@ -63,6 +64,7 @@ brew cask install emacs
 
 pip install PIL
 pip install Pillow
+pip install neovim
 
 # for python libs that need freetype headers
 ln -s /usr/local/include/freetype2 /usr/local/include/freetype

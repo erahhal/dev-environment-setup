@@ -54,11 +54,11 @@ conf xmproc = defaultConfig {
     , startupHook = do
         spawn "stalonetray"
         spawn "nm-applet"
-        spawn "bluetooth-applet"
+        spawn "blueman-applet"
         spawn "quicksynergy"
         spawn "caffeine"
-        spawn "davmail"
         spawn "pidgin"
+        -- spawn "davmail"
         -- spawn "google-chrome"
         -- spawn "gnome-terminal"
         -- spawn "skype"
@@ -72,5 +72,7 @@ conf xmproc = defaultConfig {
     } `additionalKeys` (myKeys xmproc)
 
 main = do
+  -- the x argument tells xmobar which screen to run on
+  -- xmproc <- spawnPipe "/usr/bin/xmobar -x ~/.xmonad/xmobarrc"
   xmproc <- spawnPipe "/usr/bin/xmobar ~/.xmonad/xmobarrc"
   xmonad $ conf xmproc

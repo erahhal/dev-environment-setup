@@ -26,10 +26,14 @@ if [ "$(uname)" == "Darwin" ]; then
   # Mac
   #-------------------------------------------------------------
 
-  alias vi='/usr/local/bin/vim'
+  alias vi='/usr/local/bin/nvim'
+  alias vim='/usr/local/bin/nvim'
+  alias ls='ls -GFh'
+  export PS1="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ "
+  export LSCOLORS=ExFxBxDxCxegedabagacad
+  export CLICOLOR=1
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   . "/etc/bash_completion"
   . "$DIR/../git/git-prompt.sh"
   export PS1='\[$(tput bold)\]\[$(tput setaf 6)\]\t \[$(tput setaf 2)\][\[$(tput setaf 3)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 3)\]\h \[$(tput setaf 6)\]\W\[$(tput setaf 2)\]]\[$(tput setaf 4)\]$(__git_ps1 " (%s)")\\$ \[$(tput sgr0)\]'
 fi
-

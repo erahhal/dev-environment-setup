@@ -24,7 +24,7 @@ if hash apt-get 2>/dev/null; then
   sudo add-apt-repository -y ppa:webupd8team/java
   sudo add-apt-repository -y ppa:gekkio/xmonad
   sudo apt-get update
-  sudo apt-get install -y python-software-properties vim postgresql nginx cmake python-dev dconf cmake nodejs ack-grep vim
+  sudo apt-get install -y python-software-properties vim postgresql nginx cmake python-dev dconf cmake nodejs ack-grep vim xclip
   sudo apt-get install -y oracle-java7-installer
   sudo apt-get install -y xmonad*
   sudo apt-get install -y suckless-tools xscreensaver xmobar scrot xfce4-power-manager
