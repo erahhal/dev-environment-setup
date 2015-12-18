@@ -27,7 +27,8 @@ if hash apt-get 2>/dev/null; then
   sudo apt-get install -y python-software-properties vim postgresql nginx cmake python-dev dconf cmake nodejs ack-grep vim xclip
   sudo apt-get install -y oracle-java7-installer
   sudo apt-get install -y xmonad*
-  sudo apt-get install -y suckless-tools xscreensaver xmobar scrot xfce4-power-manager
+  sudo apt-get install -y suckless-tools xscreensaver xmobar scrot xfce4-power-manager stalonetray dmenu cabal-install
+  sudo cabal update
   sudo cabal install --global yeganesh
   sudo apt-get install -y xscreensaver xscreensaver-gl-extra xscreensaver-data-extra xfishtank xdaliclock fortune
 elif hash yum 2>/dev/null; then
@@ -47,4 +48,9 @@ if [ "$(readlink ~/.xmonad)" != "$DIR/xmonad" ]; then
     mv ~/.xmonad ~/.xmonad.orig
   fi
   ln -s $DIR/xmonad ~/.xmonad
+fi
+
+if [ "$(readlink ~/.stalonetrayrc)" != "$DIR/xmonad/stalonetrayrc" ]; then
+  mv ~/.stalonetrayrc ~/.stalonetrayrc.orig
+  ln -s $DIR/xmonad/stalonetrayrc ~/.stalonetrayrc
 fi
