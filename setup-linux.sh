@@ -43,6 +43,14 @@ git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git
 cd gnome-terminal-colors-solarized
 ./set_dark.sh
 
+cd ~/Code-vendor
+git clone https://github.com/sgerrand/xfce4-terminal-colors-solarized.git
+cd xfce4-terminal-colors-solarized
+mkdir -p ~/.config/Terminal
+cp dark/terminalrc ~/.config/Terminal
+mkdir -p ~/.config/xfce4/terminal
+cp dark/terminalrc ~/.config/xfce4/terminal
+
 if [ "$(readlink ~/.xmonad)" != "$DIR/xmonad" ]; then
   if [ -d "~/.xmonad" ]; then
     mv ~/.xmonad ~/.xmonad.orig
