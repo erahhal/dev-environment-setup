@@ -35,6 +35,12 @@ if hash apt-get 2>/dev/null; then
   sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev dconf cmake nodejs ack-grep vim xclip
   sudo apt-get install -y choqok
   sudo apt-get install -y neovim
+  sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
+  sudo update-alternatives --set vi /usr/bin/nvim
+  sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
+  sudo update-alternatives --set vim /usr/bin/nvim
+  sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
+  sudo update-alternatives --set editor /usr/bin/nvim
   sudo apt-get install -y oracle-java7-installer
   sudo apt-get install -y xmonad*
   sudo apt-get install -y suckless-tools xscreensaver xmobar scrot xfce4-power-manager stalonetray dmenu cabal-install
