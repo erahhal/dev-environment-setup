@@ -41,6 +41,8 @@ if hash apt-get 2>/dev/null; then
   sudo update-alternatives --set vim /usr/bin/nvim
   sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
   sudo update-alternatives --set editor /usr/bin/nvim
+  sudo pip2 install neovim
+  sudo pip2 install simplejson
   sudo apt-get install -y oracle-java7-installer
   sudo apt-get install -y xmonad*
   sudo apt-get install -y suckless-tools xscreensaver xmobar scrot xfce4-power-manager stalonetray dmenu cabal-install
