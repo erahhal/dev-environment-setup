@@ -47,7 +47,8 @@ floatManageHooks = composeAll [isFloat --> doFloat] where
         isVMDdialog = title =? "Graphical Representations"
 
 conf xmproc = defaultConfig { 
-    modMask = mod1Mask     -- default mod key is left alt
+      modMask = mod1Mask     -- default mod key is left alt
+    , terminal = "gnome-terminal"
     , workspaces = myWorkspaces
     , manageHook = floatManageHooks <+> manageDocks <+> manageHook defaultConfig <+> composeAll myManagementHooks
     , layoutHook = avoidStruts $ layoutHook defaultConfig
