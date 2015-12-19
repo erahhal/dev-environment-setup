@@ -19,12 +19,19 @@ fi
 
 if hash apt-get 2>/dev/null; then
   . /etc/lsb-release
+  # NodeJS
   sudo add-apt-repository -y ppa:chris-lea/node.js
+  # What is this?
   sudo add-apt-repository -y ppa:fcwu-tw/ppa
+  # java
   sudo add-apt-repository -y ppa:webupd8team/java
+  # xmonad
   sudo add-apt-repository -y ppa:gekkio/xmonad
+  # Choqok
+  sudo add-apt-repository -y ppa:adilson/experimental
   sudo apt-get update
   sudo apt-get install -y python-software-properties vim postgresql nginx cmake python-dev dconf cmake nodejs ack-grep vim xclip
+  sudo apt-get install -y choqok
   sudo apt-get install -y oracle-java7-installer
   sudo apt-get install -y xmonad*
   sudo apt-get install -y suckless-tools xscreensaver xmobar scrot xfce4-power-manager stalonetray dmenu cabal-install
