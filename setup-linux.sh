@@ -80,3 +80,8 @@ if [ "$(readlink ~/.stalonetrayrc)" != "$DIR/xmonad/stalonetrayrc" ]; then
   mv ~/.stalonetrayrc ~/.stalonetrayrc.orig
   ln -s $DIR/xmonad/stalonetrayrc ~/.stalonetrayrc
 fi
+
+if [ "$(readlink ~/.xscreensaver)" != "$DIR/xscreensaver/xscreensaver" ]; then
+  mv ~/.xscreensaver ~/.xscreensaver.orig
+  ln -s $DIR/xscreensaver/xscreensaver ~/.xscreensaver
+fi
