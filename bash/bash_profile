@@ -88,6 +88,7 @@ if [ "$(uname)" == "Darwin" ]; then
   # cd ~/
   # # Also see here for configuring boot2docker server:
   # # http://stackoverflow.com/questions/26424338/docker-daemon-config-file-on-boot2docker
+  eval "$(docker-machine env docker-local)"
 
   # Bash completion
   if [ -f $(brew --prefix)/etc/bash_completion ]; then

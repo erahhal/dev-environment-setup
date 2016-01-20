@@ -70,3 +70,6 @@ pip install simplejson
 
 # for python libs that need freetype headers
 ln -s /usr/local/include/freetype2 /usr/local/include/freetype
+
+# Add emacs daemon as service
+launchctl load -w ${DIR}/emacs/gnu.emacs.daemon.plist

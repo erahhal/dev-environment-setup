@@ -35,9 +35,10 @@ myKeys xmproc = [ ((mod4Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -
          ]
 
 floatManageHooks = composeAll [isFloat --> doFloat] where
-    isFloat = foldr1 (<||>) [isDo, isGimp, isVncviewer, isFirefoxDialog, isPidginDialog, isVMDdialog] where
+    isFloat = foldr1 (<||>) [isDo, isGimp, isEdge, isVncviewer, isFirefoxDialog, isPidginDialog, isVMDdialog] where
         isDo   = className =? "Do"
         isGimp = className =? "Gimp"
+        isEdge = className =? "Toplevel"
         isVncviewer = className =? "Vncviewer"
         isFirefoxDialog = className =? "FireFox" <&&> (resource =? "Browser" <||> resource =? "Toplevel")
         isPidginDialog  = className =? "Pidgin" <&&> foldr1 (<||>) [
