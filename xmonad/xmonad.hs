@@ -16,7 +16,7 @@ myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso88
 
 myWorkspaces = withScreens 2 ["1","2","3","4","5","6","7","8","9"]
  
-myKeys xmproc = [ ((mod4Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
+myKeys xmproc = [ ((mod1Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
          , ((0, xK_F3), spawn "sleep 0.2; scrot -s")
          , ((0, xK_F4), spawn "scrot")
          -- Media Keys
