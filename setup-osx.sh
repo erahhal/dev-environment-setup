@@ -19,6 +19,7 @@ brew tap caskroom/cask
 brew update
 brew install coreutils
 brew install gnu-sed
+brew install ack
 brew install aspell
 brew install brew-cask
 brew install nodejs

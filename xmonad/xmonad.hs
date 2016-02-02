@@ -60,6 +60,7 @@ conf xmproc = defaultConfig {
         spawn "quicksynergy"
         spawn "caffeine"
         spawn "pidgin"
+        spawn "ibus-daemon --xim --daemonize --desktop=xmonad --replace"
         -- spawn "davmail"
         -- spawn "google-chrome"
         -- spawn "gnome-terminal"
