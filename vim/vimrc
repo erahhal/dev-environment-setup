@@ -71,9 +71,18 @@ let g:syntastic_check_on_wq = 0
 " -----------------------------------------------------
 " Line length highlight
 " -----------------------------------------------------
+
+fun! ShowLineLengthBoundary()
+  " Don't highlight on these filetypes
+  if &ft =~ 'markdown\|text'
+    return
+  endif
+  highlight OverLength ctermbg=red guibg=#592929
+  match OverLength /\%>120v.\+/
+endfun
+
 augroup vimrc_autocmds
-  autocmd BufEnter * highlight OverLength ctermbg=red guibg=#592929
-  autocmd BufEnter * match OverLength /\%>120v.\+/
+  autocmd BufEnter * call ShowLineLengthBoundary()
 augroup END
 
 " -----------------------------------------------------
@@ -137,6 +146,7 @@ hi Folded ctermfg=255 ctermbg=23
 " javascript folding doesn't work very well with several levels of nested anonymous functions
 "let javaScript_fold=1         " JavaScript
 "let php_folding=1             " PHP
+let g:vim_markdown_folding_disabled=1
 
 " -----------------------------------------------------
 " Remove trailing whitespace from certain file types
