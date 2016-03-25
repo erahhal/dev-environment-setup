@@ -67,6 +67,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_python_pylint_post_args="--max-line-length=120"
 
 " -----------------------------------------------------
 " Line length highlight
@@ -74,7 +75,7 @@ let g:syntastic_check_on_wq = 0
 
 fun! ShowLineLengthBoundary()
   " Don't highlight on these filetypes
-  if &ft =~ 'markdown\|text'
+  if &ft =~ 'markdown\|text\|bash\|sh'
     return
   endif
   highlight OverLength ctermbg=red guibg=#592929
@@ -159,6 +160,7 @@ autocmd BufWritePre *.css :%s/\s\+$//e
 autocmd BufWritePre *.less :%s/\s\+$//e
 autocmd BufWritePre *.php :%s/\s\+$//e
 autocmd BufWritePre *.phtml :%s/\s\+$//e
+autocmd BufWritePre *.py :%s/\s\+$//e
 
 " -----------------------------------------------------
 " Vimdiff settings
@@ -316,6 +318,8 @@ Bundle 'Shutnik/jshint2.vim'
 Bundle 'scrooloose/nerdtree' 
 " tab support for NERDTree
 Bundle 'jistr/vim-nerdtree-tabs' 
+" NERD commenter
+Bundle 'scrooloose/nerdcommenter'
 " Run a command or shell in a Vim window
 Bundle 'pthrasher/conqueterm-vim' 
 " do inline diffs and other operations
@@ -385,6 +389,8 @@ Bundle 'mhinz/vim-hugefile'
 Bundle 'ryanss/vim-hackernews'
 " Man page viewer
 Bundle 'vim-utils/vim-man'
+" delete surrounding tags (dst)
+Bundle 'tpope/vim-surround'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'

@@ -95,6 +95,8 @@ if [ "$(uname)" == "Darwin" ]; then
     . $(brew --prefix)/etc/bash_completion
   fi
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-  # keyboard rate
-  xset r rate 250 30
+  if [ ! -z $DISPLAY ]; then
+    # keyboard rate
+    xset r rate 250 30
+  fi
 fi
