@@ -74,6 +74,19 @@ export ATLAS_OPTS="-Xms768m -Xmx6144m -XX:MaxPermSize=128M"
 export MAVEN_OPTS="-Xms768m -Xmx6144m -XX:MaxPermSize=128M"
 
 #-------------------------------------------------------------
+# Homebrew
+#-------------------------------------------------------------
+
+export HOMEBREW_GITHUB_API_TOKEN="<insert token here>"
+
+#-------------------------------------------------------------
+# Google Cloud SDK
+#-------------------------------------------------------------
+
+source '/opt/homebrew-cask/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc'
+source '/opt/homebrew-cask/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc'
+
+#-------------------------------------------------------------
 # Platform specific
 #-------------------------------------------------------------
 if [ "$(uname)" == "Darwin" ]; then
@@ -88,7 +101,9 @@ if [ "$(uname)" == "Darwin" ]; then
   # cd ~/
   # # Also see here for configuring boot2docker server:
   # # http://stackoverflow.com/questions/26424338/docker-daemon-config-file-on-boot2docker
-  eval "$(docker-machine env docker-local)"
+  if [ "$(docker-machine status docker-local)" != "Stopped" ]; then
+    eval "$(docker-machine env docker-local)"
+  fi
 
   # Bash completion
   if [ -f $(brew --prefix)/etc/bash_completion ]; then
