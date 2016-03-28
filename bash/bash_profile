@@ -77,7 +77,7 @@ export MAVEN_OPTS="-Xms768m -Xmx6144m -XX:MaxPermSize=128M"
 # Homebrew
 #-------------------------------------------------------------
 
-export HOMEBREW_GITHUB_API_TOKEN="<insert token here>"
+export HOMEBREW_GITHUB_API_TOKEN=$(cat ~/Scripts/config/homebrew_github_api_token)
 
 #-------------------------------------------------------------
 # Google Cloud SDK
