@@ -25,6 +25,10 @@ if [ "$DIR/bash/screenrc" != "$(ls -l ~/.screenrc | awk '{print $11}')" ]; then
   mv ~/.screenrc ~/.screenrc.orig
   ln -s $DIR/bash/screenrc ~/.screenrc
 fi
+if [ "$DIR/bash/tmux.conf" != "$(ls -l ~/.tmux.conf | awk '{print $11}')" ]; then
+  mv ~/.tmux.conf ~/.tmux.conf.orig
+  ln -s $DIR/bash/tmux.conf ~/.tmux.conf
+fi
 
 #-------------------------------------------------------------
 # Platform specific
@@ -122,7 +126,7 @@ fi
 
 if [ "$DIR/irssi" != "$(ls -l ~/.irssi | awk '{print $11}')" ]; then
   mv ~/.irssi ~/.irssi.orig
-  ln -s $DIR/irssi ~/.irssi     
+  ln -s $DIR/irssi ~/.irssi
 fi
 
 #-------------------------------------------------------------

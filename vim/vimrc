@@ -85,9 +85,12 @@ fun! ShowLineLengthBoundary()
   if &ft =~ 'markdown\|text\|bash\|sh'
     return
   endif
-    if expand('%:t') =~ 'Dockerfile'
-      return
-    endif
+  if expand('%:t') =~ 'Dockerfile'
+    return
+  endif
+  if expand('%:t') =~ '.vimrc'
+    return
+  endif
   highlight OverLength ctermbg=red guibg=#592929
   match OverLength /\%>120v.\+/
 endfun

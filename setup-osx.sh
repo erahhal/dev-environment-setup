@@ -1,5 +1,5 @@
 #!/bin/bash
-                               
+
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 #-------------------------------------------------------------
@@ -12,7 +12,7 @@ defaults write "Apple Global Domain" AppleEnableSwipeNavigateWithScrolls -int 0
 # Install homebrew
 if hash brew 2>/dev/null; then
   echo "Homebrew already installed"
-else 
+else
   ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
 fi
 brew tap caskroom/cask
@@ -27,6 +27,7 @@ brew install vim --with-python --override-system-vim
 brew install macvim --with-python --override-system-vim
 brew install cmake
 brew install bash-completion
+brew install tmux
 brew install eslint
 brew install tidy-html5
 brew install neovim/neovim/neovim
