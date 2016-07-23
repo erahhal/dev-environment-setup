@@ -50,6 +50,13 @@ set visualbell
 set noerrorbells
 
 " -----------------------------------------------------
+" Huge file handling
+" -----------------------------------------------------
+
+" in MiB
+let g:hugefile_trigger_size = 1
+
+" -----------------------------------------------------
 " Syntax Checking
 " -----------------------------------------------------
 
@@ -78,6 +85,9 @@ fun! ShowLineLengthBoundary()
   if &ft =~ 'markdown\|text\|bash\|sh'
     return
   endif
+    if expand('%:t') =~ 'Dockerfile'
+      return
+    endif
   highlight OverLength ctermbg=red guibg=#592929
   match OverLength /\%>120v.\+/
 endfun
@@ -280,134 +290,147 @@ augroup resCur
 augroup END
 
 " -----------------------------------------------------
+"  Org Mode
+" -----------------------------------------------------
+
+let g:org_heading_highlight_colors = ['Title', 'Constant', 'Identifier', 'Statement', 'PreProc', 'Type', 'Special']
+" Enabling reverting back to solarized causes a load flicker for every file that is loaded
+" autocmd BufEnter * colorscheme solarized
+autocmd BufEnter *.org colorscheme gruvbox
+autocmd BufEnter *.org highlight Folded cterm=bold gui=bold
+
+" -----------------------------------------------------
 " Vundle
 " -----------------------------------------------------
 "
-filetype on
+filetype off
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-" let Vundle manage Vundle
-" required! 
-Bundle 'gmarik/vundle'
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
 
 " My bundles here:
 "
 " original repos on GitHub
 
 " Git wrapper
-Bundle 'tpope/vim-fugitive'
+Plugin 'tpope/vim-fugitive'
 " Quickly navigate around a file
-Bundle 'Lokaltog/vim-easymotion'
+Plugin 'Lokaltog/vim-easymotion'
 " faster creation of HTML and CSS, handles expansion
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Quickly find a file in a project
 " Command-T doesn't seem to prioritize exact string matches, which makes it
 " seemingly useless.  Will figure whether I'm using it wrong in the future
-" Bundle 'wincent/Command-T' 
+" Plugin 'wincent/Command-T' 
 " Quickly find a file in a project
-Bundle 'kien/ctrlp.vim'
+Plugin 'kien/ctrlp.vim'
 " Mustache template support
-Bundle 'mustache/vim-mode'
+Plugin 'mustache/vim-mode'
 " less CSS preprocessor syntax highlightin
-Bundle 'groenewege/vim-less' 
+Plugin 'groenewege/vim-less' 
 " mustache syntax highlighting and completion
-Bundle 'juvenn/mustache.vim' 
+Plugin 'juvenn/mustache.vim' 
 " jshint support for vim
-Bundle 'Shutnik/jshint2.vim' 
+Plugin 'Shutnik/jshint2.vim' 
 " hierarchical file tree for Vim
-Bundle 'scrooloose/nerdtree' 
+Plugin 'scrooloose/nerdtree' 
 " tab support for NERDTree
-Bundle 'jistr/vim-nerdtree-tabs' 
+Plugin 'jistr/vim-nerdtree-tabs' 
 " NERD commenter
-Bundle 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdcommenter' 
 " Run a command or shell in a Vim window
-Bundle 'pthrasher/conqueterm-vim' 
+Plugin 'pthrasher/conqueterm-vim' 
 " do inline diffs and other operations
-Bundle 'airblade/vim-gitgutter' 
+Plugin 'airblade/vim-gitgutter' 
 " nice looking status bar
-Bundle 'bling/vim-airline' 
+Plugin 'bling/vim-airline' 
 " set shiftwidth and expandtab automatically based on file or other files in the working directory
-Bundle 'tpope/vim-sleuth' 
-" Bundle 'xolox/vim-misc'
-" Bundle 'xolox/vim-session'
-" Bundle 'bling/vim-bufferline'
+Plugin 'tpope/vim-sleuth' 
+" Plugin 'xolox/vim-misc'
+" Plugin 'xolox/vim-session'
+" Plugin 'bling/vim-bufferline'
 " syntax checking in vim
-Bundle 'scrooloose/syntastic' 
+Plugin 'scrooloose/syntastic' 
 " allows browsing of ctags
-" Bundle 'majutsushi/tagbar' 
+" Plugin 'majutsushi/tagbar' 
 " a tree of undos
-Bundle 'mbbill/undotree' 
+Plugin 'mbbill/undotree' 
 " solarized color scheme
-Bundle 'altercation/vim-colors-solarized' 
+Plugin 'altercation/vim-colors-solarized' 
 " allows editing multiple lines simultaneous like Sublime
-Bundle 'hlissner/vim-multiedit' 
+Plugin 'hlissner/vim-multiedit' 
 " See code tags in side bar
-Bundle 'majutsushi/tagbar'
+Plugin 'majutsushi/tagbar'
 " grep-style functionality through ack
-Bundle 'mileszs/ack.vim'
+Plugin 'mileszs/ack.vim'
 " NERDTree integration with ack
-Bundle 'tyok/nerdtree-ack'
+Plugin 'tyok/nerdtree-ack'
 " recursive multiple file diff
-Bundle 'vim-scripts/DirDiff.vim'
+Plugin 'vim-scripts/DirDiff.vim'
 " markdown syntax highlighting
-Bundle 'plasticboy/vim-markdown'
+Plugin 'plasticboy/vim-markdown'
 " vim tmux integration
-Bundle 'christoomey/vim-tmux-navigator'
+Plugin 'christoomey/vim-tmux-navigator'
 " stylus syntax highlighting
-Bundle 'wavded/vim-stylus'
+Plugin 'wavded/vim-stylus'
 " JavaScript syntax highlighting
-Bundle 'jelera/vim-javascript-syntax'
+Plugin 'jelera/vim-javascript-syntax'
 " Additional JavaScript syntax highlighting
-Bundle 'pangloss/vim-javascript'
+Plugin 'pangloss/vim-javascript'
 " Highlighting for javascript indentation
-Bundle 'nathanaelkane/vim-indent-guides'
+Plugin 'nathanaelkane/vim-indent-guides'
 " Automatic closing quotes, brackets, etc
-Bundle 'Raimondi/delimitMate'
+Plugin 'Raimondi/delimitMate'
 " Tab completion
-" Bundle 'ervandew/supertab'
+" Plugin 'ervandew/supertab'
 " Tab completion
-Bundle 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 " Better completion with YouCompleteMe
-Bundle 'marijnh/tern_for_vim'
+Plugin 'marijnh/tern_for_vim'
 " GLSL syntax highlighting
-Bundle 'tikhomirov/vim-glsl'
+Plugin 'tikhomirov/vim-glsl'
 " Universal Text Linking
-Bundle 'vim-scripts/utl.vim'
+Plugin 'vim-scripts/utl.vim'
 " Repeat
-Bundle 'tpope/vim-repeat'
+Plugin 'tpope/vim-repeat'
 " Speeddating
-Bundle 'tpope/vim-speeddating'
+Plugin 'tpope/vim-speeddating'
 " Calendar
-Bundle 'mattn/calendar-vim'
+Plugin 'mattn/calendar-vim'
 " SyntaxRange
-Bundle 'vim-scripts/SyntaxRange'
+Plugin 'vim-scripts/SyntaxRange'
 " Org Mode
-Bundle 'jceb/vim-orgmode'
+Plugin 'jceb/vim-orgmode'
+" GruvBox colorscheme for orgmode
+Plugin 'morhetz/gruvbox'
 " Huge Files
-Bundle 'mhinz/vim-hugefile'
+Plugin 'mhinz/vim-hugefile'
 " Hacker News
-Bundle 'ryanss/vim-hackernews'
+Plugin 'ryanss/vim-hackernews'
 " Man page viewer
-Bundle 'vim-utils/vim-man'
+Plugin 'vim-utils/vim-man'
 " delete surrounding tags (dst)
-Bundle 'tpope/vim-surround'
+Plugin 'tpope/vim-surround'
 " vim-scripts repos
-Bundle 'L9'
-Bundle 'FuzzyFinder'
+Plugin 'L9'
+Plugin 'FuzzyFinder'
 " Git repos on your local machine (i.e. when working on your own plugin)
-" Bundle 'file:///Users/gmarik/path/to/plugin'
+" Plugin 'file:///Users/gmarik/path/to/plugin'
 " ...
 
-" filetype plugin indent on     " required! this uses plugin indentation.
-filetype indent on     " required! this does NOT use plugin indentation
+call vundle#end()
+
+filetype plugin indent on     " required! this uses plugin indentation.
+" filetype indent on     " required! this does NOT use plugin indentation
 "
 " Brief help
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install (update) bundles
-" :BundleSearch(!) foo - search (or refresh cache first) for foo
-" :BundleClean(!)      - confirm (or auto-approve) removal of unused bundles
+" :PluginList          - list configured bundles
+" :PluginInstall(!)    - install (update) bundles
+" :PluginSearch(!) foo - search (or refresh cache first) for foo
+" :PluginClean(!)      - confirm (or auto-approve) removal of unused bundles
 "
 " see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Bundle commands are not allowed.
+" NOTE: comments after Plugin commands are not allowed.
