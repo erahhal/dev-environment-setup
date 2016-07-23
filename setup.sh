@@ -82,6 +82,10 @@ if [ ! -e ~/.vim/bundle/vundle ]; then
 fi
 vim -c "execute 'BundleInstall' | qa"
 cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
+if [ "$DIR/vim/ycm_extra_conf.py" != "$(ls -l ~/.ycm_extra_conf.py | awk '{print $11}')" ]; then
+  mv ~/.ycm_extra_conf.py ~/.ycm_extra_conf.py.orig
+  ln -s $DIR/vim/ycm_extr_conf.py ~/.ycm_extra_conf.py
+fi
 
 cd ~/.vim/bundle/YouCompleteMe
 git submodule update --init --recursive
@@ -90,7 +94,7 @@ if [ "$(uname)" == "Darwin" ]; then
   cmake -G "Unix Makefiles" -DPATH_TO_LLVM_ROOT=/usr/bin -DPYTHON_INCLUDE_DIR=/usr/local/Frameworks/Python.framework/Headers -DPYTHON_LIBRARY=/usr/local/Frameworks/Python.framework/Python . ./cpp
   /usr/local/bin/python ./build.py --clang-completer --omnisharp-completer --gocode-completer
 else
-  ./install.py --clang-completer --omnisharp-completer --gocode-completer
+  ./install.py --clang-completer --gocode-completer
 fi
 
 cd ~/.vim/bundle/tern_for_vim

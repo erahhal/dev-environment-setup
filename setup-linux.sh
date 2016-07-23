@@ -34,7 +34,7 @@ if hash apt-get 2>/dev/null; then
   # Neovim
   sudo add-apt-repository -y ppa:neovim-ppa/unstable
   sudo apt-get update
-  sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev dconf cmake nodejs ack-grep vim xclip x11-xserver-utils python-dev python-pip cmake xclip ack-grep emacs-snapshot ibus-sunpinyin language-pack-zh-hans `check-language-support -l zh-hans`
+  sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev dconf cmake nodejs gocode gccgo-go ack-grep vim xclip x11-xserver-utils python-dev python-pip cmake xclip ack-grep emacs-snapshot ibus-sunpinyin language-pack-zh-hans `check-language-support -l zh-hans`
   sudo apt-get install -y choqok
   sudo apt-get install -y neovim
   sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
