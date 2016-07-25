@@ -25,6 +25,8 @@ set secure           " disable unsafe commands in local .vimrc files
 set pastetoggle=<F10> " use F10 to disable and enable all indentation options
 set clipboard=unnamedplus " Set system clipboard as default"
 set viminfo='20,<1000,s1000 " increase copy and paste buffer size
+let mapleader=" "
+let maplocalleader=" "
 
 " -----------------------------------------------------
 " External commands
@@ -140,6 +142,12 @@ set shiftwidth=2    " control how many columns text is indented with the reinden
 set expandtab       " Insert spaces when entering <Tab>
 set softtabstop=2   " Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>.  It "feels" like a tab though
 set ai              " auto indent
+
+" Indentation per file type
+au FileType javascript setl ts=4 sw=4 sts=4
+au FileType python setl ts=4 sw=4 sts=4
+au FileType cpp setl ts=4 sw=4 sts=4
+au FileType hpp setl ts=4 sw=4 sts=4
 
 " -----------------------------------------------------
 " Fold settings
@@ -298,6 +306,12 @@ augroup resCur
 augroup END
 
 " -----------------------------------------------------
+"  Vebugger
+" -----------------------------------------------------
+
+let g:vebugger_leader=' v'
+
+" -----------------------------------------------------
 "  Org Mode
 " -----------------------------------------------------
 
@@ -306,6 +320,7 @@ let g:org_heading_highlight_colors = ['Title', 'Constant', 'Identifier', 'Statem
 " autocmd BufEnter * colorscheme solarized
 autocmd BufEnter *.org colorscheme gruvbox
 autocmd BufEnter *.org highlight Folded cterm=bold gui=bold
+let g:org_agenda_files=["~/ownCloud/Ellis' Stuff/Documents/agenda.org"]
 
 " -----------------------------------------------------
 " Vundle
@@ -350,7 +365,7 @@ Plugin 'jistr/vim-nerdtree-tabs'
 " NERD commenter
 Plugin 'scrooloose/nerdcommenter' 
 " Run a command or shell in a Vim window
-Plugin 'pthrasher/conqueterm-vim' 
+" Plugin 'pthrasher/conqueterm-vim' 
 " do inline diffs and other operations
 Plugin 'airblade/vim-gitgutter' 
 " nice looking status bar
@@ -422,6 +437,10 @@ Plugin 'ryanss/vim-hackernews'
 Plugin 'vim-utils/vim-man'
 " delete surrounding tags (dst)
 Plugin 'tpope/vim-surround'
+" interactive command execution (vim-debugger dependency)
+Plugin 'Shougo/vimproc.vim'
+" interactive debugger
+Plugin 'idanarye/vim-vebugger'
 " vim-scripts repos
 Plugin 'L9'
 Plugin 'FuzzyFinder'
