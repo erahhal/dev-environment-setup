@@ -20,9 +20,9 @@ myKeys xmproc = [ ((mod1Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -
          , ((0, xK_F3), spawn "sleep 0.2; scrot -s")
          , ((0, xK_F4), spawn "scrot")
          -- Media Keys
-         , ((0, 0x1008ff12  ), spawn "vol mute") -- XF86AudioMute
-         , ((0, 0x1008ff11  ), spawn "vol down") -- XF86AudioLowerVolume
-         , ((0, 0x1008ff13  ), spawn "vol up") -- XF86AudioRaiseVolume
+         , ((0, xK_F8  ), spawn "amixer set Master toggle; amixer set Headphone toggle") -- XF86AudioMute
+         , ((0, xK_F9  ), spawn "amixer set Master 5%-") -- XF86AudioLowerVolume
+         , ((0, xK_F10 ), spawn "amixer set Master 5%+") -- XF86AudioRaiseVolume
          -- Spawn the launcher using command specified by myLauncher.
          -- Use this to launch programs without a key binding.
          , ((mod1Mask, xK_p), spawn myLauncher)
@@ -58,6 +58,10 @@ conf xmproc = defaultConfig {
         spawn "nm-applet"
         spawn "blueman-applet"
         spawn "quicksynergy"
+        -- For two screen desktop with right screen as main, running server
+        -- spawn "/usr/bin/synergys -f --config ~/synergy.conf"
+        -- For one screen desktop, running client
+        -- spawn "/usr/bin/synergyc -f --name erahhal-u620 crew-glue"
         spawn "caffeine"
         spawn "pidgin"
         spawn "ibus-daemon --xim --daemonize --desktop=xmonad --replace"
