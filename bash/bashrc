@@ -33,6 +33,8 @@ if [ "$(uname)" == "Darwin" ]; then
   export LSCOLORS=ExFxBxDxCxegedabagacad
   export CLICOLOR=1
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+  TERM=xterm-256color
+  export TERM
   alias emacs='/usr/bin/emacs-snapshot'
   . "/etc/bash_completion"
   . "$DIR/../git/git-prompt.sh"

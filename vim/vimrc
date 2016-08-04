@@ -243,6 +243,9 @@ fun! ShowLineLengthBoundary()
   if expand('%:t') =~ '.vimrc'
     return
   endif
+  if expand('%:t') =~ '.org'
+    return
+  endif
   highlight OverLength ctermbg=red guibg=#592929
   match OverLength /\%>120v.\+/
 endfun
@@ -262,11 +265,14 @@ au BufRead *.md setlocal spell
 " Solarized color scheme
 " -----------------------------------------------------
 " let g:solarized_termcolors=256   " only needed if terminal is not solarized
-if s:uname == "Linux"
-  set t_Co=16
+if $COLORTERM == 'gnome-terminal'
+  set t_Co=256
+elseif s:uname == 'Linux'
+  set t_Co=256
 endif
 try
-  colorscheme solarized
+  " colorscheme solarized
+  colorscheme gruvbox
 catch /^Vim\%((\a\+)\)\=:E185/
   " deal with it
 endtry
@@ -346,6 +352,12 @@ autocmd BufWritePre *.hpp :%s/\s\+$//e
 set diffopt+=iwhite
 
 " -----------------------------------------------------
+" DelimitMate settings
+" -----------------------------------------------------
+
+let delimitMate_expand_cr = 2
+
+" -----------------------------------------------------
 " JSHint
 " -----------------------------------------------------
 
@@ -403,10 +415,10 @@ highlight GitGutterChangeLine ctermbg=237
 " -----------------------------------------------------
 
 let g:signify_vcs_cmds = {
-  \ 'git': 'git diff --no-color --no-ext-diff -U0 -- %f master'
+  \ 'git': 'git diff --no-color --no-ext-diff -U0 master -- %f'
   \ }
 
-highlight SignColumn guibg=#131313
+highlight SignColumn ctermbg=237
 
 " -----------------------------------------------------
 " tagbar config
@@ -485,8 +497,8 @@ let g:vebugger_leader=' v'
 "  Org Mode (VimOrganizer)
 " -----------------------------------------------------
 
-autocmd BufEnter *.org colorscheme cyberpunk
-autocmd BufEnter *.org highlight Folded cterm=bold gui=bold
+" autocmd BufEnter *.org colorscheme cyberpunk
+" autocmd BufEnter *.org highlight Folded cterm=bold gui=bold
 let g:agenda_files=["~/ownCloud/Ellis' Stuff/Documents/agenda.org"]
 au! BufRead,BufWrite,BufWritePost,BufNewFile *.org 
 au BufEnter *.org            call org#SetOrgFileType()

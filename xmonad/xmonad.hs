@@ -81,5 +81,6 @@ conf xmproc = defaultConfig {
 main = do
   -- the x argument tells xmobar which screen to run on
   -- xmproc <- spawnPipe "/usr/bin/xmobar -x ~/.xmonad/xmobarrc"
+  -- xmproc <- spawnPipe "/usr/bin/xmobar -x 1 ~/.xmonad/xmobarrc" -- two screen, main screen on right
   xmproc <- spawnPipe "/usr/bin/xmobar ~/.xmonad/xmobarrc"
   xmonad $ conf xmproc
