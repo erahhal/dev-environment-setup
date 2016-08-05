@@ -84,6 +84,7 @@ export HOMEBREW_GITHUB_API_TOKEN=$(cat ~/Scripts/config/homebrew_github_api_toke
 # Platform specific
 #-------------------------------------------------------------
 if [ "$(uname)" == "Darwin" ]; then
+  export PATH="$PATH:~/Library/Android/sdk/platform-tools"
   export JAVA_HOME=$(/usr/libexec/java_home)
   export ANDROID_SDK="/Applications/Android Studio.app/sdk"
   export ANDROID_HOME="/Applications/Android Studio.app/sdk"

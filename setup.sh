@@ -81,8 +81,8 @@ if [ "$DIR/vim/vimrc" != "$(ls -l ~/.config/nvim/init.vim | awk '{print $11}')" 
   mv ~/.config/nvim/init.vim ~/.config/nvim/init.vim.orig
   ln -s $DIR/vim/vimrc ~/.config/nvim/init.vim
 fi
-if [ ! -e ~/.vim/bundle/vundle ]; then
-  git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+if [ ! -e ~/.vim/bundle/Vundle.vim ]; then
+  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 vim -c "execute 'BundleInstall' | qa"
 cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
