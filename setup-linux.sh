@@ -21,6 +21,7 @@ if hash apt-get 2>/dev/null; then
   . /etc/lsb-release
   # getdeb
   URL='http://archive.getdeb.net/install_deb/getdeb-repository_0.1-1~getdeb1_all.deb'; FILE=`mktemp`; wget "$URL" -qO $FILE && sudo dpkg -i $FILE; rm $FILE
+  sudo rm /etc/apt/sources.list.d/getdeb.list.bck
   # Emacs
   sudo add-apt-repository -y ppa:ubuntu-elisp/ppa
   # What is this?
