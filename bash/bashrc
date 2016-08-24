@@ -35,6 +35,7 @@ if [ "$(uname)" == "Darwin" ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   TERM=xterm-256color
   export TERM
+  alias irssi='TERM=screen-256color irssi'
   alias emacs='/usr/bin/emacs-snapshot'
   . "/etc/bash_completion"
   . "$DIR/../git/git-prompt.sh"

@@ -19,8 +19,8 @@ fi
 
 if hash apt-get 2>/dev/null; then
   . /etc/lsb-release
-  # NodeJS
-  sudo add-apt-repository -y ppa:chris-lea/node.js
+  # getdeb
+  URL='http://archive.getdeb.net/install_deb/getdeb-repository_0.1-1~getdeb1_all.deb'; FILE=`mktemp`; wget "$URL" -qO $FILE && sudo dpkg -i $FILE; rm $FILE
   # Emacs
   sudo add-apt-repository -y ppa:ubuntu-elisp/ppa
   # What is this?
@@ -29,12 +29,10 @@ if hash apt-get 2>/dev/null; then
   sudo add-apt-repository -y ppa:webupd8team/java
   # xmonad
   sudo add-apt-repository -y ppa:gekkio/xmonad
-  # Choqok
-  sudo add-apt-repository -y ppa:adilson/experimental
   # Neovim
   sudo add-apt-repository -y ppa:neovim-ppa/unstable
   sudo apt-get update
-  sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev dconf cmake nodejs gocode gccgo-go ack-grep vim xclip x11-xserver-utils python-dev python-pip cmake xclip ack-grep emacs-snapshot tmux ibus-sunpinyin language-pack-zh-hans `check-language-support -l zh-hans`
+  sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs gocode golang-go gccgo ack-grep vim xclip x11-xserver-utils python-dev python-pip python-pkg-resources python-setuptools cmake xclip ack-grep emacs-snapshot mosh tmux ibus-sunpinyin chromium-browser language-pack-zh-hans `check-language-support -l zh-hans`
   sudo apt-get install -y choqok
   sudo apt-get install -y neovim
   sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
