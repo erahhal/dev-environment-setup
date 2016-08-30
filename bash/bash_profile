@@ -78,7 +78,10 @@ export MAVEN_OPTS="-Xms768m -Xmx6144m -XX:MaxPermSize=128M"
 #-------------------------------------------------------------
 
 export HOMEBREW_NO_ANALYTICS=1
-export HOMEBREW_GITHUB_API_TOKEN=$(cat ~/Scripts/config/homebrew_github_api_token)
+HOMEBREW_API_TOKEN_FILE=~/Scripts/config/homebrew_github_api_token
+if [ -e "$HOMEBREW_API_TOKEN_FILE" ]; then
+  export HOMEBREW_GITHUB_API_TOKEN=$(cat ${HOMEBREW_API_TOKEN_FILE})
+fi
 
 #-------------------------------------------------------------
 # Platform specific
