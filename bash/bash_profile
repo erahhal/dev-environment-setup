@@ -28,7 +28,7 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # override /usr/bin with /usr/local/bin
-export PATH="~/.cabal/bin:/usr/local/bin:/usr/local/sbin:$PATH:~/Scripts"
+export PATH="~/.cabal/bin:/usr/local/bin:/usr/local/sbin:$PATH:~/Scripts:~/Scripts/local"
 
 #-------------------------------------------------------------
 # Default editor
@@ -59,8 +59,8 @@ export LSCOLORS=gxfxaxdxcxegedabagacad
 source ~/Scripts/git-completion.sh
 
 # load any custom scripts
-if [ "$(ls ~/Scripts/local)" ]; then
-  source ~/Scripts/local/*
+if [ "$(ls ~/Scripts/bash_profile_includes)" ]; then
+  source ~/Scripts/bash_profile_includes/*
 fi
 
 # git tree shortcut

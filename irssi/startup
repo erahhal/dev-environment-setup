@@ -1,9 +1,18 @@
-SCRIPT LOAD vim_mode.pl
-SCRIPT LOAD uberprompt.pl
-SCRIPT LOAD fnotify-growl.pl
-
-STATUSBAR window add vim_mode
-STATUSBAR window add vim_windows
+SCRIPT LOAD awaybar.pl
+SCRIPT LOAD awl.pl
+SCRIPT LOAD nickcolor.pl
+SCRIPT LOAD nickcolor_expando.pl
+SCRIPT LOAD tmux-nicklist-portable.pl
+SCRIPT LOAD trackbar22.pl
+SCRIPT LOAD usercount.pl
 
 SET use_status_window OFF
-
+SET scroll_page_count /1
+FORMAT timestamp {timestamp %%H:%%M:%%S}
+# SBAR awl_0 add -before awl_0 -alignment left usercount
+ALIAS usercount /sbar awl_0 add -before awl_0 -alignment left usercount
+SET nicklist_pane_width 20
+SET trackbar_string _
+SET trackbar_style %r 
+# SBAR statusbar add -after erotin -alignment right awaybar
+SET timestamps on

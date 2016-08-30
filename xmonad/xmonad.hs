@@ -1,4 +1,5 @@
 import XMonad
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.Run(spawnPipe)
@@ -47,10 +48,11 @@ floatManageHooks = composeAll [isFloat --> doFloat] where
             title =? "File Transfers", title =? "Buddy Information"]
         isVMDdialog = title =? "Graphical Representations"
 
-conf xmproc = defaultConfig { 
+conf xmproc = ewmh defaultConfig { 
       modMask = mod1Mask     -- default mod key is left alt
     , terminal = "gnome-terminal"
     , workspaces = myWorkspaces
+    -- , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
     , manageHook = floatManageHooks <+> manageDocks <+> manageHook defaultConfig <+> composeAll myManagementHooks
     , layoutHook = avoidStruts $ layoutHook defaultConfig
     , startupHook = do
