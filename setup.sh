@@ -70,6 +70,14 @@ $NODE_SUDO npm install -g eslint
 $NODE_SUDO npm install -g eslint-plugin-html
 
 #-------------------------------------------------------------
+# git
+#-------------------------------------------------------------
+
+git config --global merge.tool vimdiff
+git config --global merge.conflictstyle diff3
+git config --global mergetool.prompt false
+
+#-------------------------------------------------------------
 # VIM
 #-------------------------------------------------------------
 

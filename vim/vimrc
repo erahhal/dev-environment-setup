@@ -87,8 +87,12 @@ Plugin 'Raimondi/delimitMate'
 " Plugin 'ervandew/supertab'
 " Tab completion
 Plugin 'Valloric/YouCompleteMe'
-" Better completion with YouCompleteMe
-Plugin 'marijnh/tern_for_vim'
+"" Better completion with YouCompleteMe
+" Plugin 'marijnh/tern_for_vim'
+" asynchronous completion
+Plugin 'Shougo/deoplete.nvim'
+" tern js plugin for deoplete
+Plugin 'carlitux/deoplete-ternjs'
 " GLSL syntax highlighting
 Plugin 'tikhomirov/vim-glsl'
 " Universal Text Linking
