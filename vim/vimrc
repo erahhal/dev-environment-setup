@@ -73,6 +73,10 @@ Plugin 'vim-scripts/DirDiff.vim'
 Plugin 'plasticboy/vim-markdown'
 " vim tmux integration
 Plugin 'christoomey/vim-tmux-navigator'
+" vim-tmux focus events
+Plugin 'tmux-plugins/vim-tmux-focus-events'
+" integration with tmux clipboard
+Plugin 'roxma/vim-tmux-clipboard'
 " stylus syntax highlighting
 Plugin 'wavded/vim-stylus'
 " JavaScript syntax highlighting
@@ -179,6 +183,8 @@ set secure           " disable unsafe commands in local .vimrc files
 set pastetoggle=<F10> " use F10 to disable and enable all indentation options
 set clipboard=unnamedplus " Set system clipboard as default"
 set viminfo='20,<1000,s1000 " increase copy and paste buffer size
+" Enable scrolloff to always keep the cursor vertically centered
+" set scrolloff=999
 let mapleader=" "
 let maplocalleader=" "
 
@@ -245,6 +251,9 @@ fun! ShowLineLengthBoundary()
     return
   endif
   if expand('%:t') =~ '.vimrc'
+    return
+  endif
+  if expand('%:t') =~ 'fstab'
     return
   endif
   if expand('%:t') =~ '.org'

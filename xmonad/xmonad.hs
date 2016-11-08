@@ -59,18 +59,10 @@ conf xmproc = ewmh defaultConfig {
         spawn "stalonetray"
         spawn "nm-applet"
         spawn "blueman-applet"
-        spawn "quicksynergy"
-        -- For two screen desktop with right screen as main, running server
-        -- spawn "/usr/bin/synergys -f --config ~/synergy.conf"
-        -- For one screen desktop, running client
-        -- spawn "/usr/bin/synergyc -f --name erahhal-u620 crew-glue"
+        spawn "/usr/bin/synergys -f --config ~/synergy.conf"
         spawn "caffeine"
         spawn "pidgin"
         spawn "ibus-daemon --xim --daemonize --desktop=xmonad --replace"
-        -- spawn "davmail"
-        -- spawn "google-chrome"
-        -- spawn "gnome-terminal"
-        -- spawn "skype"
     , logHook = dynamicLogWithPP xmobarPP
                             { ppOutput = hPutStrLn xmproc
                             , ppTitle = xmobarColor "green" "" . shorten 50
@@ -82,7 +74,5 @@ conf xmproc = ewmh defaultConfig {
 
 main = do
   -- the x argument tells xmobar which screen to run on
-  -- xmproc <- spawnPipe "/usr/bin/xmobar -x ~/.xmonad/xmobarrc"
-  -- xmproc <- spawnPipe "/usr/bin/xmobar -x 1 ~/.xmonad/xmobarrc" -- two screen, main screen on right
-  xmproc <- spawnPipe "/usr/bin/xmobar ~/.xmonad/xmobarrc"
+  xmproc <- spawnPipe "/usr/bin/xmobar -x 1 ~/.xmonad/xmobarrc"
   xmonad $ conf xmproc

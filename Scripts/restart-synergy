@@ -1,0 +1,10 @@
+#!/bin/bash
+
+PID=$(ps aux | grep -i "/usr/bin/[s]ynergys" | awk '{ print $2 }')
+
+if [[ $PID ]]; then
+	echo $PID
+	kill $PID
+fi
+
+nohup-nolog /usr/bin/synergys -f --config ~/synergy.conf
