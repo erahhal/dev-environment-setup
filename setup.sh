@@ -29,6 +29,12 @@ if [ "$DIR/bash/tmux.conf" != "$(ls -l ~/.tmux.conf | awk '{print $11}')" ]; the
   mv ~/.tmux.conf ~/.tmux.conf.orig
   ln -s $DIR/bash/tmux.conf ~/.tmux.conf
 fi
+if [ ! -e ~/.tmux-plugins ]; then
+  mkdir ~/.tmux-plugins
+fi
+
+cd ~/.tmux-plugins
+git clone https://github.com/tmux-plugins/tmux-open
 
 #-------------------------------------------------------------
 # 3rd party code
