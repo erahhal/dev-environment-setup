@@ -1,0 +1,3 @@
+#!/bin/bash
+
+vim -c "DirDiff $1 $2"

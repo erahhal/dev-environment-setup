@@ -32,10 +32,13 @@ if hash apt-get 2>/dev/null; then
   sudo add-apt-repository -y ppa:gekkio/xmonad
   # Neovim
   sudo add-apt-repository -y ppa:neovim-ppa/unstable
+  # Keepass
+  sudo add-apt-repository -y ppa:jtaylor/keepass
   sudo apt-get update
-  sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs gocode golang-go gccgo ack-grep vim xclip x11-xserver-utils python-dev python-pip python-pkg-resources python-setuptools cmake xclip ack-grep emacs-snapshot mosh tmux ibus-sunpinyin chromium-browser language-pack-zh-hans `check-language-support -l zh-hans`
+  sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs gocode golang-go gccgo ack-grep vim xclip x11-xserver-utils python-dev python-pip python-pkg-resources python-setuptools cmake xclip ack-grep emacs-snapshot mosh tmux ibus-sunpinyin chromium-browser keepass2 language-pack-zh-hans `check-language-support -l zh-hans`
   sudo apt-get install -y choqok
   sudo apt-get install -y neovim
+  sudo apt-get install -y cscope
   sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
   sudo update-alternatives --set vi /usr/bin/nvim
   sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60

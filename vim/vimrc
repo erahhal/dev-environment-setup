@@ -61,8 +61,8 @@ Plugin 'scrooloose/syntastic'
 Plugin 'mbbill/undotree' 
 " allows editing multiple lines simultaneous like Sublime
 Plugin 'hlissner/vim-multiedit' 
-" See code tags in side bar
-Plugin 'majutsushi/tagbar'
+" See code tags in side bar - seems to be crashing
+" Plugin 'majutsushi/tagbar'
 " grep-style functionality through ack
 Plugin 'mileszs/ack.vim'
 " NERDTree integration with ack
@@ -88,10 +88,14 @@ Plugin 'nathanaelkane/vim-indent-guides'
 " Automatic closing quotes, brackets, etc
 Plugin 'Raimondi/delimitMate'
 " Tab completion
-" Plugin 'ervandew/supertab'
-" Tab completion
+Plugin 'ervandew/supertab'
+" Tab completion - Currently leaves around ycmd processes because
+" vim-nerdtree-tabs is breaking VimLeave in NeoVim
+" See: https://github.com/Valloric/YouCompleteMe/issues/2403
 Plugin 'Valloric/YouCompleteMe'
-"" Better completion with YouCompleteMe
+" Code snippets
+Plugin 'SirVer/ultisnips'
+" Better completion with YouCompleteMe
 " Plugin 'marijnh/tern_for_vim'
 " asynchronous completion
 Plugin 'Shougo/deoplete.nvim'
@@ -112,6 +116,8 @@ Plugin 'vim-scripts/SyntaxRange'
 " Org Mode
 " Plugin 'jceb/vim-orgmode'
 Plugin 'hsitz/VimOrganizer'
+" Vimwiki
+Plugin 'vimwiki/vimwiki'
 " Huge Files
 Plugin 'mhinz/vim-hugefile'
 " Hacker News
@@ -127,13 +133,14 @@ Plugin 'idanarye/vim-vebugger'
 " vim-scripts repos
 Plugin 'L9'
 Plugin 'FuzzyFinder'
+" todo.txt
+Plugin 'freitass/todo.txt-vim'
 " Color Schemes
 Plugin 'altercation/vim-colors-solarized' 
 Plugin 'morhetz/gruvbox'
 Plugin 'snowcrshd/cyberpunk.vim'
 Plugin 'aliou/moriarty.vim'
 Plugin 'roosta/srcery'
-Plugin 'TheNicholsOfCharroth/VIM_Themes'
 Plugin 'shaond/vim-guru'
 Plugin 'sjl/badwolf'
 Plugin '29decibel/codeschool-vim-theme'
@@ -205,6 +212,7 @@ com! FormatJSON %!python -m json.tool
 
 syn on          " syntax highlighting
 set bg=dark     " set colors for dark background
+" set termguicolors " true color
 set nonumber    " don't display row numbers
 set ruler       " display ruler
 set vb t_vb=    " visual bell
@@ -275,7 +283,7 @@ au BufRead *.txt setlocal spell
 au BufRead *.md setlocal spell
 
 " -----------------------------------------------------
-" Solarized color scheme
+" Color scheme
 " -----------------------------------------------------
 " let g:solarized_termcolors=256   " only needed if terminal is not solarized
 if $COLORTERM == 'gnome-terminal'
@@ -358,17 +366,57 @@ autocmd BufWritePre *.h :%s/\s\+$//e
 autocmd BufWritePre *.hpp :%s/\s\+$//e
 
 " -----------------------------------------------------
+" tags settings
+" -----------------------------------------------------
+
+set tags=./tags;,tags;./TAGS;,TAGS;
+
+" -----------------------------------------------------
+" cscope settings
+" -----------------------------------------------------
+
+if has("cscope")
+    set csprg=cscope
+    set csto=0
+    set cst
+    set nocsverb
+    " add any database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+        " else add database pointed to by environment
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+endif
+
+" -----------------------------------------------------
 " Vimdiff settings
 " -----------------------------------------------------
 
 " ignore whitespace
 set diffopt+=iwhite
 
+" set colors
+" cterm - style, cterfg - text color, ctermbg - highlighting
+" DiffAdd - added line
+" highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffAdd    cterm=bold ctermfg=15 ctermbg=22 gui=none guifg=bg guibg=Red
+" DiffDelete - removed line
+" highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffDelete cterm=bold ctermfg=15 ctermbg=52 gui=none guifg=bg guibg=Red
+" DiffChange - changed line
+" highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffChange cterm=bold ctermfg=223 ctermbg=239 gui=none guifg=bg guibg=Red
+" DiffText - part of line that changed
+" highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
+highlight DiffText   cterm=bold ctermfg=15 ctermbg=124 gui=none guifg=bg guibg=Red
+
 " -----------------------------------------------------
 " DelimitMate settings
 " -----------------------------------------------------
 
-let delimitMate_expand_cr = 2
+" " This expands a carriage return into two, but doesn't always behave as expected 
+" let delimitMate_expand_cr = 2
 
 " -----------------------------------------------------
 " JSHint
@@ -394,7 +442,11 @@ let g:CommandTScanDotDirectories = 0
 " set completeopt-=preview
 
 " Don't prompt to load ycm conf
-let g:ycm_confirm_extra_conf=0
+let g:ycm_confirm_extra_conf = 0
+" Default conf
+" let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+" let g:ycm_global_ycm_extra_conf = '~/Code/rocket/.ycm_extra_conf.py'
+let g:ycm_collect_identifiers_from_tags_files = 1
 
 " -----------------------------------------------------
 " clang_complete
@@ -515,3 +567,9 @@ let g:vebugger_leader=' v'
 let g:agenda_files=["~/ownCloud/Ellis' Stuff/Documents/agenda.org"]
 au! BufRead,BufWrite,BufWritePost,BufNewFile *.org 
 au BufEnter *.org            call org#SetOrgFileType()
+
+" -----------------------------------------------------
+"  Vimwiki
+" -----------------------------------------------------
+
+let g:vimwiki_list = [{'path': '~/Documents/ellis/wiki/', 'index': 'index'}]

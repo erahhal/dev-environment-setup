@@ -2,6 +2,7 @@ import XMonad
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.SetWMName
 import XMonad.Util.Run(spawnPipe)
 import qualified XMonad.StackSet as W
 import XMonad.Util.EZConfig
@@ -56,6 +57,7 @@ conf xmproc = ewmh defaultConfig {
     , manageHook = floatManageHooks <+> manageDocks <+> manageHook defaultConfig <+> composeAll myManagementHooks
     , layoutHook = avoidStruts $ layoutHook defaultConfig
     , startupHook = do
+        setWMName "LG3D"
         spawn "stalonetray"
         spawn "nm-applet"
         spawn "blueman-applet"

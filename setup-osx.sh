@@ -31,6 +31,8 @@ brew install tmux
 brew install eslint
 brew install tidy-html5
 brew install neovim/neovim/neovim
+# Needed for tmux copy and paste
+brew install reattach-to-user-namespace
 sudo ln -s /usr/local/bin/nvim /usr/local/bin/vi
 brew cask install google-chrome
 brew cask install thunderbird
