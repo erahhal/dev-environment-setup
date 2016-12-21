@@ -79,6 +79,9 @@ if [ "$(readlink ~/.xmonad)" != "$DIR/xmonad" ]; then
     mv ~/.xmonad ~/.xmonad.orig
   fi
   ln -s $DIR/xmonad ~/.xmonad
+  if [ -e ~/.xmonad/xmonad.hs.$HOSTNAME ]; then
+    ln -s ~/.xmonad/xmonad.hs.$HOSTNAME ~/.xmonad/xmonad.hs
+  fi
 fi
 
 if [ "$(readlink ~/.stalonetrayrc)" != "$DIR/xmonad/stalonetrayrc" ]; then
