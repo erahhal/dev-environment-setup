@@ -55,8 +55,6 @@ Plugin 'tpope/vim-sleuth'
 " Plugin 'bling/vim-bufferline'
 " syntax checking in vim
 Plugin 'scrooloose/syntastic' 
-" allows browsing of ctags
-" Plugin 'majutsushi/tagbar' 
 " a tree of undos
 Plugin 'mbbill/undotree' 
 " allows editing multiple lines simultaneous like Sublime
@@ -96,7 +94,7 @@ Plugin 'Valloric/YouCompleteMe'
 " Code snippets
 Plugin 'SirVer/ultisnips'
 " Better completion with YouCompleteMe
-" Plugin 'marijnh/tern_for_vim'
+Plugin 'marijnh/tern_for_vim'
 " asynchronous completion
 Plugin 'Shougo/deoplete.nvim'
 " tern js plugin for deoplete
@@ -210,12 +208,12 @@ com! FormatJSON %!python -m json.tool
 " Look and feel
 " -----------------------------------------------------
 
-syn on          " syntax highlighting
-set bg=dark     " set colors for dark background
+syn on            " syntax highlighting
+set bg=dark       " set colors for dark background
 " set termguicolors " true color
-set nonumber    " don't display row numbers
-set ruler       " display ruler
-set vb t_vb=    " visual bell
+set nonumber      " don't display row numbers
+set ruler         " display ruler
+set vb t_vb=      " visual bell
 set visualbell
 set noerrorbells
 
@@ -445,7 +443,6 @@ let g:CommandTScanDotDirectories = 0
 let g:ycm_confirm_extra_conf = 0
 " Default conf
 " let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-" let g:ycm_global_ycm_extra_conf = '~/Code/rocket/.ycm_extra_conf.py'
 let g:ycm_collect_identifiers_from_tags_files = 1
 
 " -----------------------------------------------------

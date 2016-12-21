@@ -39,6 +39,7 @@ if hash apt-get 2>/dev/null; then
   sudo apt-get install -y choqok
   sudo apt-get install -y neovim
   sudo apt-get install -y cscope
+  sudo apt-get install -y ccache
   sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
   sudo update-alternatives --set vi /usr/bin/nvim
   sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
