@@ -25,7 +25,7 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 " seemingly useless.  Will figure whether I'm using it wrong in the future
 " Plugin 'wincent/Command-T' 
 " Quickly find a file in a project
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 " Mustache template support
 Plugin 'mustache/vim-mode'
 " less CSS preprocessor syntax highlightin
