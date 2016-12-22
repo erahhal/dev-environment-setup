@@ -91,6 +91,8 @@ Plugin 'ervandew/supertab'
 " vim-nerdtree-tabs is breaking VimLeave in NeoVim
 " See: https://github.com/Valloric/YouCompleteMe/issues/2403
 Plugin 'Valloric/YouCompleteMe'
+" C++ Completion
+Plugin 'Rip-Rip/clang_complete'
 " Code snippets
 Plugin 'SirVer/ultisnips'
 " Better completion with YouCompleteMe
@@ -443,14 +445,20 @@ let g:CommandTScanDotDirectories = 0
 let g:ycm_confirm_extra_conf = 0
 " Default conf
 " let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-let g:ycm_collect_identifiers_from_tags_files = 1
+" let g:ycm_collect_identifiers_from_tags_files = 1
+
+" Disable for C++ so that clang_completer can kick in
+" TODO: figure out how to get syntastic working again once this is enabled
+" let g:ycm_filetype_blacklist = { 'cpp': 1 }
 
 " -----------------------------------------------------
 " clang_complete
 " -----------------------------------------------------
 
-let g:clang_complete_copen=1
-let g:clang_hl_errors=0
+if s:uname == "Linux"
+  let g:clang_library_path='/usr/lib/llvm-3.8/lib'
+endif
+
 
 " -----------------------------------------------------
 " gitgutter
