@@ -86,7 +86,7 @@ Plugin 'nathanaelkane/vim-indent-guides'
 " Automatic closing quotes, brackets, etc
 Plugin 'Raimondi/delimitMate'
 " Tab completion
-Plugin 'ervandew/supertab'
+" Plugin 'ervandew/supertab'
 " Tab completion - Currently leaves around ycmd processes because
 " vim-nerdtree-tabs is breaking VimLeave in NeoVim
 " See: https://github.com/Valloric/YouCompleteMe/issues/2403
@@ -439,7 +439,6 @@ let g:CommandTScanDotDirectories = 0
 " These are the tweaks I apply to YCM's config, you don't need them but they might help.
 " YCM gives you popups and splits by default that some people might not like, so these should tidy it up a bit for you.
 " let g:ycm_add_preview_to_completeopt=0
-" set completeopt-=preview
 
 " Don't prompt to load ycm conf
 let g:ycm_confirm_extra_conf = 0
@@ -447,9 +446,11 @@ let g:ycm_confirm_extra_conf = 0
 " let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 " let g:ycm_collect_identifiers_from_tags_files = 1
 
-" Disable for C++ so that clang_completer can kick in
+" Disable for C++ so that clang_completer can kick in.
+" YCM seems slow for clang completion, and also includes a lot more cruft in
+" autocomplete popup
 let g:ycm_filetype_blacklist = { 'cpp': 1 }
-" Let syntastic handle errors rather than YCM
+" Let syntastic handle c/c++ errors rather than YCM
 let g:ycm_show_diagnostics_ui = 0
 
 " -----------------------------------------------------
@@ -459,7 +460,34 @@ let g:ycm_show_diagnostics_ui = 0
 if s:uname == "Linux"
   let g:clang_library_path='/usr/lib/llvm-3.8/lib'
 endif
+let g:clang_auto_select = 1
+" Complete macros
+let g:clang_complete_macros = 1
+" Complete code constructs like loops
+let g:clang_complete_patterns = 1
+let g:clang_snippets = 1
+let g:clang_conceal_snippets=1
+let g:clang_snippets_engine = 'ultisnips'
 
+" -----------------------------------------------------
+" general completion settings
+" -----------------------------------------------------
+"
+" The following two settings properly select argument completion
+set conceallevel=2
+set concealcursor=vin
+" Don't open preview window
+set completeopt-=preview
+" Popup menu height
+set pumheight=20
+
+" -----------------------------------------------------
+" UltiSnips
+" -----------------------------------------------------
+
+let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsJumpForwardTrigger="<tab>"
+" let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 " -----------------------------------------------------
 " gitgutter
@@ -511,9 +539,12 @@ nnoremap <leader>c :TagbarToggle<CR>
 " -----------------------------------------------------
 
 " Start NERDTreeTabs on launch
+autocmd vimenter * NERDTree
 let g:nerdtree_tabs_open_on_console_startup = 1
 " Show hidden files
 let NERDTreeShowHidden=1
+" Make sure focus is on buffer
+autocmd VimEnter * wincmd p
 
 " -----------------------------------------------------
 " Ack config
