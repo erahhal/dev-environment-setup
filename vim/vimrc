@@ -93,6 +93,8 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'Valloric/YouCompleteMe'
 " C++ Completion
 Plugin 'Rip-Rip/clang_complete'
+" Auto complete popup for local vars
+Plugin 'vim-scripts/AutoComplPop'
 " Code snippets
 Plugin 'SirVer/ultisnips'
 " Better completion with YouCompleteMe
