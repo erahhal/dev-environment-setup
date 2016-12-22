@@ -448,8 +448,9 @@ let g:ycm_confirm_extra_conf = 0
 " let g:ycm_collect_identifiers_from_tags_files = 1
 
 " Disable for C++ so that clang_completer can kick in
-" TODO: figure out how to get syntastic working again once this is enabled
-" let g:ycm_filetype_blacklist = { 'cpp': 1 }
+let g:ycm_filetype_blacklist = { 'cpp': 1 }
+" Let syntastic handle errors rather than YCM
+let g:ycm_show_diagnostics_ui = 0
 
 " -----------------------------------------------------
 " clang_complete
