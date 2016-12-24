@@ -450,7 +450,7 @@ let g:ycm_confirm_extra_conf = 0
 " Disable for C++ so that clang_completer can kick in.
 " YCM seems slow for clang completion, and also includes a lot more cruft in
 " autocomplete popup
-let g:ycm_filetype_blacklist = { 'cpp': 1 }
+let g:ycm_filetype_blacklist = { 'cpp': 1, 'c': 1 }
 " Let syntastic handle c/c++ errors rather than YCM
 let g:ycm_show_diagnostics_ui = 0
 
