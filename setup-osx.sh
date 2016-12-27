@@ -77,3 +77,7 @@ ln -s /usr/local/include/freetype2 /usr/local/include/freetype
 
 # Add emacs daemon as service
 launchctl load -w ${DIR}/emacs/gnu.emacs.daemon.plist
+
+# Arduino 1.16.13, which is latest version supported by teensy
+brew cask install https://raw.githubusercontent.com/caskroom/homebrew-cask/5ed77c9d0e487f2a2925c2b8c68b846fbd382109/Casks/arduino.rb
+
