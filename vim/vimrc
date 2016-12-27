@@ -413,6 +413,15 @@ highlight DiffChange cterm=bold ctermfg=223 ctermbg=239 gui=none guifg=bg guibg=
 highlight DiffText   cterm=bold ctermfg=15 ctermbg=124 gui=none guifg=bg guibg=Red
 
 " -----------------------------------------------------
+" Tmux Navigator
+" -----------------------------------------------------
+
+if has('nvim') && s:uname == "Darwin"
+  " for some reason nvim doesn't map ctrl-h properly
+  nmap <bs> :<c-u>TmuxNavigateLeft<cr>
+endif
+
+" -----------------------------------------------------
 " DelimitMate settings
 " -----------------------------------------------------
 
