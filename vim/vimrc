@@ -280,8 +280,9 @@ augroup END
 " Spell checking
 " -----------------------------------------------------
 
-au BufRead *.txt setlocal spell
-au BufRead *.md setlocal spell
+setlocal spell spelllang=en_us
+autocmd BufRead,BufNewFile *.txt setlocal spell
+autocmd BufRead,BufNewFile *.md setlocal spell
 
 " -----------------------------------------------------
 " Color scheme
@@ -470,7 +471,8 @@ let g:ycm_show_diagnostics_ui = 0
 if s:uname == "Linux"
   let g:clang_library_path='/usr/lib/llvm-3.8/lib'
 elseif s:uname == "Darwin"
-  let g:clang_library_path='/usr/local/Cellar/llvm/3.9.1/lib'
+  let cmd = "brew list llvm | sed -n 1p | sed 's/^\\(.*\\/llvm\\/[^/]*\\).*$/\\1/'"
+  let g:clang_library_path = substitute(system(cmd), '\n\+$', '', '') . '/lib'
 endif
 let g:clang_auto_select = 1
 " Complete macros
