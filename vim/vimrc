@@ -488,13 +488,13 @@ let g:clang_snippets_engine = 'ultisnips'
 " -----------------------------------------------------
 "
 " The following two settings properly select argument completion
-set conceallevel=2
+set concealcursor=vin
 " Don't open preview window
 set completeopt-=preview
 " Popup menu height
 set pumheight=20
 "" Hides certain bits of text, like quotes in json files and brackets in markdown links
-" set concealcursor=vin
+" set conceallevel=2
 
 " -----------------------------------------------------
 " UltiSnips
