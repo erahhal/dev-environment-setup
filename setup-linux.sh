@@ -35,10 +35,17 @@ if hash apt-get 2>/dev/null; then
   # Keepass
   sudo add-apt-repository -y ppa:jtaylor/keepass
   sudo apt-get update
-  sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs gocode golang-go gccgo ack-grep vim xclip x11-xserver-utils python-dev python-pip python-pkg-resources python-setuptools cmake xclip ack-grep emacs-snapshot mosh tmux ibus-sunpinyin chromium-browser keepass2 language-pack-zh-hans `check-language-support -l zh-hans`
+  sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs gocode golang-go gccgo ack-grep vim vim.nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools ruby ruby-dev cmake xclip ack-grep emacs-snapshot mosh tmux ibus-sunpinyin chromium-browser keepass2 language-pack-zh-hans `check-language-support -l zh-hans`
   sudo apt-get install -y choqok
   sudo apt-get install -y neovim
-  sudo apt-get install -y clang llvm
+  sudo apt-get install -y clang
+  sudo apt-get install -y clang-format
+  sudo apt-get install -y llvm
+  sudo apt-get install -y lldb
+  # Fix lldb symlinks
+  sudo ln -sf /usr/lib/x86_64-linux-gnu/libLLVM-3.8.so.1 /usr/lib/python2.7/dist-packages/lldb/libLLVM-3.8.0.so.1
+  sudo ln -sf /usr/lib/x86_64-linux-gnu/libLLVM-3.8.so.1 /usr/lib/python2.7/dist-packages/lldb/libLLVM-3.8.so.1
+  sudo ln -sf /usr/lib/llvm-3.8/lib/liblldb.so.1 /usr/lib/python2.7/dist-packages/lldb/_lldb.so
   sudo apt-get install -y cscope
   sudo apt-get install -y ccache
   sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
@@ -47,8 +54,12 @@ if hash apt-get 2>/dev/null; then
   sudo update-alternatives --set vim /usr/bin/nvim
   sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
   sudo update-alternatives --set editor /usr/bin/nvim
+  sudo update-alternatives --set vimdiff /usr/bin/vim.nox-py2
+  sudo pip3 install --upgrade pip
   sudo pip2 install neovim
+  sudo pip3 install neovim
   sudo pip2 install simplejson
+  sudo gem install neovim
   sudo apt-get install -y oracle-java7-installer
   sudo apt-get install -y xmonad*
   sudo apt-get install -y suckless-tools xscreensaver xmobar scrot xfce4-power-manager stalonetray dmenu cabal-install

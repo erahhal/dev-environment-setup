@@ -1,3 +1,8 @@
+#-------------------------------------------------------------
+# .bashrc is run for each terminal, whereas .bash_profile is 
+# only run on login
+#-------------------------------------------------------------
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
@@ -21,6 +26,8 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
+alias vimdiff='nvim -d'
+
 if [ "$(uname)" == "Darwin" ]; then
   #-------------------------------------------------------------
   # Mac
@@ -33,10 +40,15 @@ if [ "$(uname)" == "Darwin" ]; then
   export LSCOLORS=ExFxBxDxCxegedabagacad
   export CLICOLOR=1
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-  TERM=xterm-256color
+  if [ ! -z "$TMUX" ]; then
+    TERM=screen-256color
+  else
+    TERM=xterm-256color
+  fi
   export TERM
   alias irssi='TERM=screen-256color irssi'
   . "/etc/bash_completion"
   . "$DIR/../git/git-prompt.sh"
   export PS1='\[$(tput bold)\]\[$(tput setaf 6)\]\t \[$(tput setaf 2)\][\[$(tput setaf 3)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 3)\]\h \[$(tput setaf 6)\]\W\[$(tput setaf 2)\]]\[$(tput setaf 4)\]$(__git_ps1 " (%s)")\\$ \[$(tput sgr0)\]'
 fi
+[ -r /home/erahhal/.byobu/prompt ] && . /home/erahhal/.byobu/prompt   #byobu-prompt#

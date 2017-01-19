@@ -1,169 +1,156 @@
 " -----------------------------------------------------
-" Vundle
+" Plugin Manager
 " -----------------------------------------------------
-"
-filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/bundle')
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" My bundles here:
-"
-" original repos on GitHub
-
+" Re-enable vimball support after plugin manager kills it
+Plug 'vim-scripts/Vimball'
 " Git wrapper
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 " Quickly navigate around a file
-Plugin 'Lokaltog/vim-easymotion'
+Plug 'Lokaltog/vim-easymotion'
 " faster creation of HTML and CSS, handles expansion
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Quickly find a file in a project
 " Command-T doesn't seem to prioritize exact string matches, which makes it
 " seemingly useless.  Will figure whether I'm using it wrong in the future
-" Plugin 'wincent/Command-T' 
+" Plug 'wincent/Command-T'
 " Quickly find a file in a project
-Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 " Mustache template support
-Plugin 'mustache/vim-mode'
-" less CSS preprocessor syntax highlightin
-Plugin 'groenewege/vim-less' 
+Plug 'mustache/vim-mode'
+" less CSS preprocessor syntax highlighting
+Plug 'groenewege/vim-less'
 " mustache syntax highlighting and completion
-Plugin 'juvenn/mustache.vim' 
+Plug 'juvenn/mustache.vim'
 " jshint support for vim
-Plugin 'Shutnik/jshint2.vim' 
+Plug 'Shutnik/jshint2.vim'
 " hierarchical file tree for Vim
-Plugin 'scrooloose/nerdtree' 
+Plug 'scrooloose/nerdtree'
 " tab support for NERDTree
-Plugin 'jistr/vim-nerdtree-tabs' 
+Plug 'jistr/vim-nerdtree-tabs'
 " NERD commenter
-Plugin 'scrooloose/nerdcommenter' 
+Plug 'scrooloose/nerdcommenter'
 " Run a command or shell in a Vim window
-" Plugin 'pthrasher/conqueterm-vim' 
+" Plug 'pthrasher/conqueterm-vim'
 " show git diff marks (disabled - slow and conflicts with VimOrganizer) (using vim-signify instead)
-" Plugin 'airblade/vim-gitgutter' 
+" Plug 'airblade/vim-gitgutter'
 " show VCS diff marks
-Plugin 'mhinz/vim-signify'
+Plug 'mhinz/vim-signify'
 " nice looking status bar
-Plugin 'bling/vim-airline' 
+Plug 'bling/vim-airline'
 " set shiftwidth and expandtab automatically based on file or other files in the working directory
-Plugin 'tpope/vim-sleuth' 
-" Plugin 'xolox/vim-misc'
-" Plugin 'xolox/vim-session'
-" Plugin 'bling/vim-bufferline'
+Plug 'tpope/vim-sleuth'
+" Plug 'xolox/vim-misc'
+" Plug 'xolox/vim-session'
+" Plug 'bling/vim-bufferline'
 " syntax checking in vim
-Plugin 'scrooloose/syntastic' 
+Plug 'scrooloose/syntastic'
 " a tree of undos
-Plugin 'mbbill/undotree' 
+Plug 'mbbill/undotree'
 " allows editing multiple lines simultaneous like Sublime
-Plugin 'hlissner/vim-multiedit' 
-" See code tags in side bar - seems to be crashing
-" Plugin 'majutsushi/tagbar'
+Plug 'hlissner/vim-multiedit'
+" See code tags in side bar
+if !has('nvim')
+  " crashes in neovim
+  " See: https://github.com/majutsushi/tagbar/issues/386
+  " See: https://github.com/neovim/neovim/issues/5817
+  Plug 'majutsushi/tagbar'
+endif
 " grep-style functionality through ack
-Plugin 'mileszs/ack.vim'
+Plug 'mileszs/ack.vim'
 " NERDTree integration with ack
-Plugin 'tyok/nerdtree-ack'
+Plug 'tyok/nerdtree-ack'
 " recursive multiple file diff
-Plugin 'vim-scripts/DirDiff.vim'
+Plug 'vim-scripts/DirDiff.vim'
 " markdown syntax highlighting
-Plugin 'plasticboy/vim-markdown'
+Plug 'plasticboy/vim-markdown'
 " vim tmux integration
-Plugin 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-navigator'
 " vim-tmux focus events
-Plugin 'tmux-plugins/vim-tmux-focus-events'
+Plug 'tmux-plugins/vim-tmux-focus-events'
 " integration with tmux clipboard
-Plugin 'roxma/vim-tmux-clipboard'
+Plug 'roxma/vim-tmux-clipboard'
 " stylus syntax highlighting
-Plugin 'wavded/vim-stylus'
+Plug 'wavded/vim-stylus'
 " JavaScript syntax highlighting
-Plugin 'jelera/vim-javascript-syntax'
+Plug 'jelera/vim-javascript-syntax'
 " Additional JavaScript syntax highlighting
-Plugin 'pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript'
 " Highlighting for javascript indentation
-Plugin 'nathanaelkane/vim-indent-guides'
+Plug 'nathanaelkane/vim-indent-guides'
 " Automatic closing quotes, brackets, etc
-Plugin 'Raimondi/delimitMate'
+Plug 'Raimondi/delimitMate'
 " Tab completion
-" Plugin 'ervandew/supertab'
+" Plug 'ervandew/supertab'
 " Tab completion - Currently leaves around ycmd processes because
 " vim-nerdtree-tabs is breaking VimLeave in NeoVim
 " See: https://github.com/Valloric/YouCompleteMe/issues/2403
-Plugin 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe'
 " C++ Completion
-Plugin 'Rip-Rip/clang_complete'
+Plug 'Rip-Rip/clang_complete'
 " Auto complete popup for local vars
-Plugin 'vim-scripts/AutoComplPop'
+Plug 'vim-scripts/AutoComplPop'
 " Code snippets
-Plugin 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips'
 " Better completion with YouCompleteMe
-Plugin 'marijnh/tern_for_vim'
+Plug 'marijnh/tern_for_vim'
 " asynchronous completion
-Plugin 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim'
 " tern js plugin for deoplete
-Plugin 'carlitux/deoplete-ternjs'
+Plug 'carlitux/deoplete-ternjs'
 " GLSL syntax highlighting
-Plugin 'tikhomirov/vim-glsl'
+Plug 'tikhomirov/vim-glsl'
 " Universal Text Linking
-Plugin 'vim-scripts/utl.vim'
+Plug 'vim-scripts/utl.vim'
 " Repeat
-Plugin 'tpope/vim-repeat'
+Plug 'tpope/vim-repeat'
 " Speeddating
-Plugin 'tpope/vim-speeddating'
+Plug 'tpope/vim-speeddating'
 " Calendar
-Plugin 'mattn/calendar-vim'
+Plug 'mattn/calendar-vim'
 " SyntaxRange
-Plugin 'vim-scripts/SyntaxRange'
+Plug 'vim-scripts/SyntaxRange'
 " Org Mode
-" Plugin 'jceb/vim-orgmode'
-Plugin 'hsitz/VimOrganizer'
+" Plug 'jceb/vim-orgmode'
+Plug 'hsitz/VimOrganizer'
 " Vimwiki
-Plugin 'vimwiki/vimwiki'
+Plug 'vimwiki/vimwiki'
 " Huge Files
-Plugin 'mhinz/vim-hugefile'
+Plug 'mhinz/vim-hugefile'
 " Hacker News
-Plugin 'ryanss/vim-hackernews'
+Plug 'ryanss/vim-hackernews'
 " Man page viewer
-Plugin 'vim-utils/vim-man'
+Plug 'vim-utils/vim-man'
 " delete surrounding tags (dst)
-Plugin 'tpope/vim-surround'
-" interactive command execution (vim-debugger dependency)
-Plugin 'Shougo/vimproc.vim'
-" interactive debugger
-Plugin 'idanarye/vim-vebugger'
+Plug 'tpope/vim-surround'
 " vim-scripts repos
-Plugin 'L9'
-Plugin 'FuzzyFinder'
+Plug 'L9'
+Plug 'FuzzyFinder'
 " todo.txt
-Plugin 'freitass/todo.txt-vim'
+Plug 'freitass/todo.txt-vim'
+"  lldb integration
+" Plug 'gilligan/vim-lldb'        " BROKEN - doesn't set breakpoints properly; Doesn't stop at breakpoints when set manually with just line number and filename
+" Plug 'critiqjo/lldb.nvim'       " BROKEN - doesn't set breakpoints properly; Doesn't stop at breakpoints when set manually with just line number and filename
+" gdb integration
+" Plug 'pyclewn'                  " UI kind of broken - loads things into NERDTree.  May be worth a revisit, for example turning off NERDTree when running
+" Plug 'vim-scripts/Conque-GDB'   " Too simple - doesn't do much beyond a normal debugger
+" interactive debugger and its dependency for interactive command execution
+Plug 'Shougo/vimproc.vim'
+Plug 'idanarye/vim-vebugger'      " Only debugger that seems to work at all, but very shitty
 " Color Schemes
-Plugin 'altercation/vim-colors-solarized' 
-Plugin 'morhetz/gruvbox'
-Plugin 'snowcrshd/cyberpunk.vim'
-Plugin 'aliou/moriarty.vim'
-Plugin 'roosta/srcery'
-Plugin 'shaond/vim-guru'
-Plugin 'sjl/badwolf'
-Plugin '29decibel/codeschool-vim-theme'
-Plugin 'vim-scripts/phd'
-" Git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///Users/gmarik/path/to/plugin'
-" ...
+Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
+Plug 'snowcrshd/cyberpunk.vim'
+Plug 'aliou/moriarty.vim'
+Plug 'roosta/srcery'
+Plug 'shaond/vim-guru'
+Plug 'sjl/badwolf'
+Plug '29decibel/codeschool-vim-theme'
+Plug 'vim-scripts/phd'
 
-call vundle#end()
-
-filetype plugin indent on     " required! this uses plugin indentation.
-" filetype indent on     " required! this does NOT use plugin indentation
-"
-" Brief help
-" :PluginList          - list configured bundles
-" :PluginInstall(!)    - install (update) bundles
-" :PluginSearch(!) foo - search (or refresh cache first) for foo
-" :PluginClean(!)      - confirm (or auto-approve) removal of unused bundles
-"
-" see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Plugin commands are not allowed.
+call plug#end()
 
 " -----------------------------------------------------
 " Setup
@@ -195,6 +182,12 @@ set viminfo='20,<1000,s1000 " increase copy and paste buffer size
 " set scrolloff=999
 let mapleader=" "
 let maplocalleader=" "
+
+" - enables filetype detection,
+" - enables filetype-specific scripts (ftplugins),
+" - enables filetype-specific indent scripts.
+" Things like ctrl-w ctrl-] won't find custom ctag files without this
+filetype plugin indent on
 
 " -----------------------------------------------------
 " External commands
@@ -248,6 +241,18 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_python_pylint_post_args="--max-line-length=120"
 
 " -----------------------------------------------------
+" Special syntax highlighting
+" -----------------------------------------------------
+
+fun! UpdateFileTypes()
+  if expand('%:t') =~ '.clang-format'
+    set ft=yaml
+  endif
+endfun
+
+autocmd BufEnter * call UpdateFileTypes()
+
+" -----------------------------------------------------
 " Line length highlight
 " -----------------------------------------------------
 
@@ -255,21 +260,20 @@ fun! ShowLineLengthBoundary()
   " Don't highlight on these filetypes
   if &ft =~ 'markdown\|text\|bash\|sh'
     return
-  endif
-  if expand('%:t') =~ 'Dockerfile'
+  elseif expand('%:t') !~ '\.'
+    " No file extension
     return
-  endif
-  if expand('%:t') =~ '.vimrc'
+  elseif expand('%:t') =~ '.vimrc'
     return
-  endif
-  if expand('%:t') =~ 'fstab'
+  elseif expand('%:t') =~ '.org'
     return
-  endif
-  if expand('%:t') =~ '.org'
-    return
-  endif
-  highlight OverLength ctermbg=red guibg=#592929
-  match OverLength /\%>120v.\+/
+  elseif expand('%:t') =~ '.cpp' || expand('%:t') =~ '.cc' || expand('%:t') =~ '.hpp' || expand('%:t') =~ '.h'
+    highlight OverLength ctermbg=52 guibg=#592929
+    call matchadd('OverLength', '\%>80v.\+')
+  else
+    highlight OverLength ctermbg=52 guibg=#592929
+    call matchadd('OverLength', '\%>120v.\+')
+endif
 endfun
 
 augroup vimrc_autocmds
@@ -332,12 +336,12 @@ au FileType hpp setl ts=4 sw=4 sts=4
 " Fold settings
 "
 "   fdm:
-"     manual	    Folds are created manually.
-"     indent	    Lines with equal indent form a fold.
-"     expr	    'foldexpr' gives the fold level of a line.
-"     marker	    Markers are used to specify folds.
-"     syntax	    Syntax highlighting items specify folds.
-"     diff	    Fold text that is not changed.
+"     manual     Folds are created manually.
+"     indent     Lines with equal indent form a fold.
+"     expr       'foldexpr' gives the fold level of a line.
+"     marker     Markers are used to specify folds.
+"     syntax     Syntax highlighting items specify folds.
+"     diff       Fold text that is not changed.
 " -----------------------------------------------------
 
 set fdm=marker
@@ -364,8 +368,28 @@ autocmd BufWritePre *.py :%s/\s\+$//e
 autocmd BufWritePre *.sh :%s/\s\+$//e
 autocmd BufWritePre *.c :%s/\s\+$//e
 autocmd BufWritePre *.cpp :%s/\s\+$//e
+autocmd BufWritePre *.cc :%s/\s\+$//e
 autocmd BufWritePre *.h :%s/\s\+$//e
 autocmd BufWritePre *.hpp :%s/\s\+$//e
+autocmd BufWritePre *.md :%s/\s\+$//e
+autocmd BufWritePre *.yaml :%s/\s\+$//e
+autocmd BufWritePre .vimrc :%s/\s\+$//e
+
+" -----------------------------------------------------
+" Highlight unwanted text
+" -----------------------------------------------------
+"
+" can't use "match" keyword directly as each usage overwrites the previous one,
+" so use matchadd function, which can be called as much as needed
+
+" Highlight trailing whitespace
+autocmd BufEnter * highlight ExtraWhitespace ctermbg=red guibg=red
+" TODO: This doesn't seem to highlight spaces after # comments in yaml files...
+autocmd BufEnter * call matchadd('ExtraWhitespace', '\s\+$')
+
+" Highlight tabs
+autocmd BufEnter * highlight ExtraTabs ctermbg=red guibg=red
+autocmd BufEnter * call matchadd('ExtraTabs', '\t\+')
 
 " -----------------------------------------------------
 " tags settings
@@ -395,9 +419,6 @@ endif
 " Vimdiff settings
 " -----------------------------------------------------
 
-" ignore whitespace
-set diffopt+=iwhite
-
 " set colors
 " cterm - style, cterfg - text color, ctermbg - highlighting
 " DiffAdd - added line
@@ -413,6 +434,28 @@ highlight DiffChange cterm=bold ctermfg=223 ctermbg=239 gui=none guifg=bg guibg=
 " highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
 highlight DiffText   cterm=bold ctermfg=15 ctermbg=124 gui=none guifg=bg guibg=Red
 
+set diffexpr=MyDiff()
+function MyDiff()
+  let opt = ""
+  if &diffopt =~ "icase"
+    let opt = opt . "-i "
+  endif
+  if &diffopt =~ "iwhite"
+    let opt = opt . "-b "
+  endif
+  silent execute "!diff -d -a --binary " . opt . v:fname_in . " " . v:fname_new . " > " . v:fname_out
+endfunction
+
+if &diff
+  function! CheckDiff()
+    if &modified
+      diffupdate
+    endif
+  endfunction
+
+  autocmd CursorMoved * call CheckDiff()
+endif
+
 " -----------------------------------------------------
 " Tmux Navigator
 " -----------------------------------------------------
@@ -426,7 +469,7 @@ endif
 " DelimitMate settings
 " -----------------------------------------------------
 
-" " This expands a carriage return into two, but doesn't always behave as expected 
+" " This expands a carriage return into two, but doesn't always behave as expected
 " let delimitMate_expand_cr = 2
 
 " -----------------------------------------------------
@@ -542,7 +585,7 @@ highlight SignColumn ctermbg=237
 " autocmd BufEnter * nested :call tagbar#autoopen(0)
 
 let g:tagbar_width = 31
-nnoremap <leader>c :TagbarToggle<CR> 
+nnoremap <leader>c :TagbarToggle<CR>
 
 " configure tags for javascript
 " let g:tagbar_ctags_bin = '~/node_modules/.bin/jsctags'
@@ -597,7 +640,7 @@ augroup END
 "  Vebugger
 " -----------------------------------------------------
 
-let g:vebugger_leader=' v'
+let g:vebugger_leader='<Leader>'
 
 " -----------------------------------------------------
 "  Org Mode (vim-orgmode)
@@ -617,7 +660,7 @@ let g:vebugger_leader=' v'
 " autocmd BufEnter *.org colorscheme cyberpunk
 " autocmd BufEnter *.org highlight Folded cterm=bold gui=bold
 let g:agenda_files=["~/ownCloud/Ellis' Stuff/Documents/agenda.org"]
-au! BufRead,BufWrite,BufWritePost,BufNewFile *.org 
+au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
 au BufEnter *.org            call org#SetOrgFileType()
 
 " -----------------------------------------------------
@@ -625,3 +668,11 @@ au BufEnter *.org            call org#SetOrgFileType()
 " -----------------------------------------------------
 
 let g:vimwiki_list = [{'path': '~/Documents/ellis/wiki/', 'index': 'index'}]
+
+" -----------------------------------------------------
+"  tagbar
+" -----------------------------------------------------
+
+if !has('nvim') && !&diff
+  autocmd BufEnter * nested :call tagbar#autoopen(1)
+endif

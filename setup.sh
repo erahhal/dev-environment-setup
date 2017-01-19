@@ -102,10 +102,11 @@ if [ "$DIR/vim/vimrc" != "$(ls -l ~/.config/nvim/init.vim | awk '{print $11}')" 
   mv ~/.config/nvim/init.vim ~/.config/nvim/init.vim.orig
   ln -s $DIR/vim/vimrc ~/.config/nvim/init.vim
 fi
-if [ ! -e ~/.vim/bundle/Vundle.vim ]; then
-  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+if [ ! -e ~/.vim/autoload/plug.vim ]; then
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
-vim -c "execute 'BundleInstall' | qa"
+vim -c "execute 'PlugInstall' | qa"
+vim -c "execute 'UpdateRemotePlugins' | qa"
 cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
 if [ "$DIR/vim/ycm_extra_conf.py" != "$(ls -l ~/.ycm_extra_conf.py | awk '{print $11}')" ]; then
   mv ~/.ycm_extra_conf.py ~/.ycm_extra_conf.py.orig
@@ -122,6 +123,10 @@ if [ "$(uname)" == "Darwin" ]; then
 else
   ./install.py --clang-completer --gocode-completer
 fi
+
+# Build Shougo/vimproc.vim
+cd ~/.vim/bundle/vimproc.vim
+make
 
 cd ~/.vim/bundle/tern_for_vim
 npm install
