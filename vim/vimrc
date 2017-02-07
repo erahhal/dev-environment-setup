@@ -38,6 +38,8 @@ Plug 'scrooloose/nerdcommenter'
 " Plug 'airblade/vim-gitgutter'
 " show VCS diff marks
 Plug 'mhinz/vim-signify'
+" Magit
+Plug 'jreybert/vimagit'
 " nice looking status bar
 Plug 'bling/vim-airline'
 " set shiftwidth and expandtab automatically based on file or other files in the working directory
@@ -178,6 +180,7 @@ set secure           " disable unsafe commands in local .vimrc files
 set pastetoggle=<F10> " use F10 to disable and enable all indentation options
 set clipboard=unnamedplus " Set system clipboard as default"
 set viminfo='20,<1000,s1000 " increase copy and paste buffer size
+set mouse=a          " enable mouse support in xterm
 " Enable scrolloff to always keep the cursor vertically centered
 " set scrolloff=999
 let mapleader=" "
@@ -190,15 +193,32 @@ let maplocalleader=" "
 filetype plugin indent on
 
 " -----------------------------------------------------
-" External commands
+" Backspace settings
+"   indent  allow backspacing over autoindent
+"   eol     allow backspacing over line breaks (join lines)
+"   start   allow backspacing over the start of insert; CTRL-W and CTRL-U
+"   0     same as ":set backspace=" (Vi compatible)
+"   1     same as ":set backspace=indent,eol"
+"   2     same as ":set backspace=indent,eol,start"
 " -----------------------------------------------------
 
-if s:uname == "Darwin"
-  nnoremap <Leader>o :exe ':silent !open %'<CR>
-endif
+set bs=2
 
-" FormatJSON to pretty print JSON
-com! FormatJSON %!python -m json.tool
+" -----------------------------------------------------
+" Indentation  settings
+" -----------------------------------------------------
+
+set tabstop=2       " number of spaces a tab counts for
+set shiftwidth=2    " control how many columns text is indented with the reindent operations (<< and >>) and automatic C-style indentation.
+set expandtab       " Insert spaces when entering <Tab>
+set softtabstop=2   " Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>.  It "feels" like a tab though
+set ai              " auto indent
+
+" Indentation per file type
+au FileType javascript setl ts=4 sw=4 sts=4
+au FileType python setl ts=4 sw=4 sts=4
+au FileType cpp setl ts=4 sw=4 sts=4
+au FileType hpp setl ts=4 sw=4 sts=4
 
 " -----------------------------------------------------
 " Look and feel
@@ -212,6 +232,17 @@ set ruler         " display ruler
 set vb t_vb=      " visual bell
 set visualbell
 set noerrorbells
+
+" -----------------------------------------------------
+" External commands
+" -----------------------------------------------------
+
+if s:uname == "Darwin"
+  nnoremap <Leader>o :exe ':silent !open %'<CR>
+endif
+
+" FormatJSON to pretty print JSON
+com! FormatJSON %!python -m json.tool
 
 " -----------------------------------------------------
 " Huge file handling
@@ -303,34 +334,6 @@ try
 catch /^Vim\%((\a\+)\)\=:E185/
   " deal with it
 endtry
-
-" -----------------------------------------------------
-" Backspace settings
-"   indent  allow backspacing over autoindent
-"   eol     allow backspacing over line breaks (join lines)
-"   start   allow backspacing over the start of insert; CTRL-W and CTRL-U
-"   0     same as ":set backspace=" (Vi compatible)
-"   1     same as ":set backspace=indent,eol"
-"   2     same as ":set backspace=indent,eol,start"
-" -----------------------------------------------------
-
-set bs=2
-
-" -----------------------------------------------------
-" Indentation  settings
-" -----------------------------------------------------
-
-set tabstop=2       " number of spaces a tab counts for
-set shiftwidth=2    " control how many columns text is indented with the reindent operations (<< and >>) and automatic C-style indentation.
-set expandtab       " Insert spaces when entering <Tab>
-set softtabstop=2   " Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>.  It "feels" like a tab though
-set ai              " auto indent
-
-" Indentation per file type
-au FileType javascript setl ts=4 sw=4 sts=4
-au FileType python setl ts=4 sw=4 sts=4
-au FileType cpp setl ts=4 sw=4 sts=4
-au FileType hpp setl ts=4 sw=4 sts=4
 
 " -----------------------------------------------------
 " Fold settings
@@ -529,7 +532,7 @@ let g:clang_snippets_engine = 'ultisnips'
 " -----------------------------------------------------
 " general completion settings
 " -----------------------------------------------------
-"
+
 " The following two settings properly select argument completion
 set concealcursor=vin
 " Don't open preview window

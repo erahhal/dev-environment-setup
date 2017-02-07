@@ -74,6 +74,9 @@ else
 fi
 
 cd ~/Code-vendor
+git clone https://github.com/solarized/xresources.git xwindows-solarized
+
+cd ~/Code-vendor
 git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git
 cd gnome-terminal-colors-solarized
 ./set_dark.sh
@@ -104,4 +107,9 @@ fi
 if [ "$(readlink ~/.xscreensaver)" != "$DIR/xscreensaver/xscreensaver" ]; then
   mv ~/.xscreensaver ~/.xscreensaver.orig
   ln -s $DIR/xscreensaver/xscreensaver ~/.xscreensaver
+fi
+
+if [ "$(readlink ~/.Xresources)" != "$DIR/bash/Xresources" ]; then
+  mv ~/.Xresources ~/.Xresources.orig
+  ln -s $DIR/bash/Xresources ~/.Xresources
 fi

@@ -40,6 +40,10 @@ if [ "$(uname)" == "Darwin" ]; then
   export LSCOLORS=ExFxBxDxCxegedabagacad
   export CLICOLOR=1
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+  # get xterm and other settings
+  xrdb -merge ~/.Xresources
+  xrdb -merge ~/Code-vendor/xwindows-solarized/Xresources.dark
+  clear
   if [ ! -z "$TMUX" ]; then
     TERM=screen-256color
   else
