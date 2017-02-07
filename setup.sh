@@ -34,6 +34,9 @@ if [ ! -e ~/.tmux-plugins ]; then
 fi
 
 cd ~/.tmux-plugins
+git clone https://github.com/tmux-plugins/tpm
+git clone https://github.com/tmux-plugins/tmux-sensible
+git clone https://github.com/tmux-plugins/tmux-resurrect
 git clone https://github.com/tmux-plugins/tmux-open
 
 #-------------------------------------------------------------

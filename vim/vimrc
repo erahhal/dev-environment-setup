@@ -7,6 +7,8 @@ call plug#begin('~/.vim/bundle')
 " Re-enable vimball support after plugin manager kills it
 Plug 'vim-scripts/Vimball'
 " Git wrapper
+Plug 'tpope/vim-obsession'
+" Git wrapper
 Plug 'tpope/vim-fugitive'
 " Quickly navigate around a file
 Plug 'Lokaltog/vim-easymotion'
