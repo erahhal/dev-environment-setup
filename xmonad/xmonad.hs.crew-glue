@@ -51,7 +51,7 @@ floatManageHooks = composeAll [isFloat --> doFloat] where
 
 conf xmproc = ewmh defaultConfig { 
       modMask = mod1Mask     -- default mod key is left alt
-    , terminal = "xterm"
+    , terminal = "gnome-terminal"
     , workspaces = myWorkspaces
     -- , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
     , manageHook = floatManageHooks <+> manageDocks <+> manageHook defaultConfig <+> composeAll myManagementHooks
