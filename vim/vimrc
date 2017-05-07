@@ -1,7 +1,6 @@
 " -----------------------------------------------------
 " Plugin Manager
 " -----------------------------------------------------
-
 call plug#begin('~/.vim/bundle')
 
 " Re-enable vimball support after plugin manager kills it
@@ -58,12 +57,15 @@ Plug 'mbbill/undotree'
 " allows editing multiple lines simultaneous like Sublime
 Plug 'hlissner/vim-multiedit'
 " See code tags in side bar
-if !has('nvim')
-  " crashes in neovim
+" if !has('nvim')
   " See: https://github.com/majutsushi/tagbar/issues/386
   " See: https://github.com/neovim/neovim/issues/5817
   Plug 'majutsushi/tagbar'
-endif
+" endif
+" " misc autoload functionality needed for vim-easytags
+" Plug 'xolox/vim-misc'
+" " easy tag generation
+" Plug 'xolox/vim-easytags'
 " grep-style functionality through ack
 Plug 'mileszs/ack.vim'
 " NERDTree integration with ack
@@ -72,6 +74,8 @@ Plug 'tyok/nerdtree-ack'
 Plug 'vim-scripts/DirDiff.vim'
 " markdown syntax highlighting
 Plug 'plasticboy/vim-markdown'
+" typescript syntax highlighting
+" Plug 'leafgarland/typescript-vim'
 " vim tmux integration
 Plug 'christoomey/vim-tmux-navigator'
 " vim-tmux focus events
@@ -88,6 +92,8 @@ Plug 'pangloss/vim-javascript'
 Plug 'nathanaelkane/vim-indent-guides'
 " Automatic closing quotes, brackets, etc
 Plug 'Raimondi/delimitMate'
+" Automatic closing quotes, brackets, etc
+" Plug 'jiangmiao/auto-pairs'
 " Tab completion
 " Plug 'ervandew/supertab'
 " Tab completion - Currently leaves around ycmd processes because
@@ -132,8 +138,8 @@ Plug 'vim-utils/vim-man'
 " delete surrounding tags (dst)
 Plug 'tpope/vim-surround'
 " vim-scripts repos
-Plug 'L9'
-Plug 'FuzzyFinder'
+Plug 'vim-scripts/L9'
+Plug 'vim-scripts/FuzzyFinder'
 " todo.txt
 Plug 'freitass/todo.txt-vim'
 "  lldb integration
@@ -264,6 +270,11 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+" let g:syntastic_debug = 1
+let g:syntastic_cpp_checkers = ['clang_check']
+" let g:syntastic_cpp_checkers = ['cppcheck']
+" let g:syntastic_cpp_checkers = ['gcc']
+" let g:syntastic_cpp_config_file = '.syntastic_cpp_config'
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_javascript_eslint_args = '--quiet'
 let g:syntastic_html_tidy_exec = 'tidy5 config ~/tidy-config.txt'
@@ -620,6 +631,12 @@ nnoremap <leader>c :TagbarToggle<CR>
 " let g:tagbar_type_javascript = { 'ctagsbin' : '~/node_modules/.bin/jsctags' }
 " let g:tagbar_type_javascript = { 'ctagsbin' : '/Users/erahhal/node_modules/jsctags/bin/jsctags.js' }
 
+" if !has('nvim') && !&diff
+  " autocmd BufEnter * nested :call tagbar#autoopen(1)
+  autocmd FileType c,cpp,python,javascript,bash,sh,vim nested :TagbarOpen
+  " let g:tagbar_autoclose = 1
+" endif
+
 " -----------------------------------------------------
 " NERDTree config
 " -----------------------------------------------------
@@ -782,11 +799,3 @@ endfunction
 " -----------------------------------------------------
 
 let g:vimwiki_list = [{'path': '~/Documents/ellis/wiki/', 'index': 'index'}]
-
-" -----------------------------------------------------
-"  tagbar
-" -----------------------------------------------------
-
-if !has('nvim') && !&diff
-  autocmd BufEnter * nested :call tagbar#autoopen(1)
-endif
