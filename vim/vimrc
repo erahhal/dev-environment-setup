@@ -145,6 +145,7 @@ Plug 'freitass/todo.txt-vim'
 " interactive debugger and its dependency for interactive command execution
 Plug 'Shougo/vimproc.vim'
 Plug 'idanarye/vim-vebugger'      " Only debugger that seems to work at all, but very shitty
+Plug 'lambdatoast/elm.vim'
 " Color Schemes
 Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
@@ -303,6 +304,8 @@ fun! ShowLineLengthBoundary()
     return
   elseif expand('%:t') =~ '\.org$'
     return
+  elseif expand('%:t') =~ '\.json$'
+    return
   elseif expand('%:t') =~ '\.cpp$' || expand('%:t') =~ '\.cc$' || expand('%:t') =~ '\.hpp$' || expand('%:t') =~ '\.h$'
     call matchadd('OverLength', '\%>80v.\+')
   else
@@ -364,7 +367,7 @@ let g:vim_markdown_folding_disabled=1
 " -----------------------------------------------------
 
 fun! TrimTrailingWhitespace()
-  if &ft =~ 'javascript\|html\|jade\|css\|less\|php\|python\|sh\|c\|cpp\|markdown\|yaml\|vim'
+  if &ft =~ 'javascript\|html\|jade\|json\|css\|less\|php\|python\|sh\|c\|cpp\|markdown\|yaml\|vim'
     :%s/\s\+$//e
   endif
 endfun
@@ -673,7 +676,7 @@ let g:vebugger_leader='<Leader>'
 
 " let g:org_heading_highlight_colors = ['Title', 'Constant', 'Identifier', 'Statement', 'PreProc', 'Type', 'Special']
 " " Enabling reverting back to solarized causes a load flicker for every file that is loaded
-" " autocmd BufEnter * colorscheme solarized
+" " autocmd BufEnter *.org colorscheme solarized
 " autocmd BufEnter *.org colorscheme srcery
 " autocmd BufEnter *.org highlight Folded cterm=bold gui=bold
 " let g:org_agenda_files=["~/ownCloud/Ellis' Stuff/Documents/agenda.org"]
@@ -681,12 +684,98 @@ let g:vebugger_leader='<Leader>'
 " -----------------------------------------------------
 "  Org Mode (VimOrganizer)
 " -----------------------------------------------------
+" Keybindings
+" https://github.com/hsitz/VimOrganizer/blob/master/doc/vimorg.txt
+" <enter>   new item
+" <tab>     expand/collapse
+" >>        indent
+" <<        unindent
+" ,m        mark/unmark (selection)
+" <,        Move heading tree up
+" >.        Move headng tree down
+" ,dd       enter DEADLINE date for headline
+" ,ds       enter SCHEDULED date for headline
+" ,dc       enter CLOSED date for headline
+" ,dt       enter timestamp date (i.e., no indicator) for headline
+" ,dg       set date at cursor
+" ,r        refile
+" ,le       add link
+" ,ln       next link
+" ,lp       previous link
 
-" autocmd BufEnter *.org colorscheme cyberpunk
-" autocmd BufEnter *.org highlight Folded cterm=bold gui=bold
 let g:agenda_files=["~/ownCloud/Ellis' Stuff/Documents/agenda.org"]
 au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
-au BufEnter *.org            call org#SetOrgFileType()
+au BufEnter *.org call org#SetOrgFileType()
+command! OrgCapture :call org#CaptureBuffer()
+command! OrgCaptureFile :call org#OpenCaptureFile()
+let g:org_todo_setup='TODO WAITING | DONE'
+
+function! OrgCustomColors()
+  "hi Folded ctermfg=255 ctermbg=017
+  hi Folded ctermfg=255 ctermbg=000
+  " various Org syntax item highlighting statements below
+  " are the current defaults.  Uncomment and edit a line if you
+  " want different highlighting for the element.
+
+  " Below are defaults for any TODOS you define.  TODOS that
+  " come before the | in a definition will use  'NOTDONETODO'
+  " and those that come after are DONETODO
+  hi! DONETODO guifg=green ctermfg=green
+  hi! NOTDONETODO guifg=red ctermfg=lightred
+
+  " Heading level highlighting is done in pairs, one for the
+  " heading when unfolded and one for folded.  Default is to make
+  " them the same except for the folded version being bold:
+  " assign OL1 pair for level 1, OL2 pair for level 2, etc.
+  "hi! OL1 guifg=somecolor guibg=somecolor
+  "hi! OL1Folded guifg=somecolor guibg=somecolor gui=bold
+
+
+  " Tags are lines below headings that have :colon:separated:tags:
+  "hi! Org_Tag guifg=lightgreen ctermfg=blue
+
+  "  Lines that begin with '#+' in column 0 are config lines
+  "hi! Org_Config_Line guifg=darkgray ctermfg=magenta
+
+  " Drawers are :PROPERTIES: and :LOGBOOK: lines and their associated
+  " :END: lines
+  "hi! Org_Drawer guifg=pink ctermfg=magenta
+  "hi! Org_Drawer_Folded guifg=pink ctermfg=magenta gui=bold cterm=bold
+
+  " This applies to value names in :PROPERTIES: blocks
+  "hi! Org_Property_Value guifg=pink ctermfg=magenta
+
+  " Three lines below apply to different kinds of blocks
+  "hi! Org_Block guifg=#555555 ctermfg=magenta
+  "hi! Org_Src_Block guifg=#555555 ctermfg=magenta
+  "hi! Org_Table guifg=#888888 guibg=#333333 ctermfg=magenta
+
+  " Dates are date specs between angle brackets (<>) or square brackets ([])
+  "hi! Org_Date guifg=magenta ctermfg=magenta gui=underline cterm=underline
+
+  " Org_Star is used to "hide" initial asterisks in a heading
+  hi! Org_Star guifg=bg ctermfg=bg
+
+  "hi! Props guifg=#ffa0a0 ctermfg=gray
+
+  " Bold, italics, underline, and code are highlights applied
+  " to character formatting
+  "hi! Org_Code guifg=darkgray gui=bold ctermfg=14
+  "hi! Org_Itals gui=italic guifg=#aaaaaa ctermfg=lightgray
+  "hi! Org_Bold gui=bold guifg=#aaaaaa ctermfg=lightgray
+  "hi! Org_Underline gui=underline guifg=#aaaaaa ctermfg=lightgray
+  "hi! Org_Lnumber guifg=#999999 ctermfg=gray
+
+  " These lines apply to links: [[link]], and [[link][link desc]]
+  "if has("conceal")
+  "    hi! default linkends guifg=blue ctermfg=blue
+  "endif
+  "hi! Org_Full_Link guifg=cyan gui=underline ctermfg=lightblue cterm=underline
+  "hi! Org_Half_Link guifg=cyan gui=underline ctermfg=lightblue cterm=underline
+
+  "  Applies to the Heading line that can be displayed in column view
+  "highlight OrgColumnHeadings guibg=#444444 guifg=#aaaaaa gui=underline
+endfunction
 
 " -----------------------------------------------------
 "  Vimwiki
