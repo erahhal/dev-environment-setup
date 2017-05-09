@@ -16,6 +16,6 @@ fi
 vim -c "execute 'PlugUpgrade' | qa"
 vim -c "execute 'PlugUpdate' | qa"
 vim -c "execute 'PlugInstall' | qa"
-vim -c "execute 'PlugClean' | qa"
+vim -c "execute 'PlugClean!' | qa"
 vim -c "execute 'UpdateRemotePlugins' | qa"
 
