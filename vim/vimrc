@@ -263,6 +263,13 @@ com! FormatJSON %!python -m json.tool
 let g:hugefile_trigger_size = 1
 
 " -----------------------------------------------------
+" ctrl-p settings
+" -----------------------------------------------------
+
+" For projects with a ton of files
+let g:ctrlp_max_files=0
+
+" -----------------------------------------------------
 " Syntax Checking
 " -----------------------------------------------------
 
