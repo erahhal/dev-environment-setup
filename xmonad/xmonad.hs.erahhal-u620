@@ -63,6 +63,7 @@ conf xmproc = ewmh defaultConfig {
         spawn "/usr/bin/synergyc -f --name erahhal-u620 crew-glue"
         spawn "caffeine"
         spawn "ibus-daemon --xim --daemonize --desktop=xmonad --replace"
+        spawn "gnome-panel"
     , logHook = dynamicLogWithPP xmobarPP
                             { ppOutput = hPutStrLn xmproc
                             , ppTitle = xmobarColor "green" "" . shorten 50

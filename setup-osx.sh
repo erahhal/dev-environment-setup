@@ -76,6 +76,8 @@ pip install Pillow
 pip install neovim
 # for FormatJSON command in VIM
 pip install simplejson
+pip install pep8
+pip install pylint
 
 # for python libs that need freetype headers
 ln -s /usr/local/include/freetype2 /usr/local/include/freetype

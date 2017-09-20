@@ -11,7 +11,7 @@ SET scroll_page_count /1
 FORMAT timestamp {timestamp %%H:%%M:%%S}
 # SBAR awl_0 add -before awl_0 -alignment left usercount
 ALIAS usercount /sbar awl_0 add -before awl_0 -alignment left usercount
-SET nicklist_pane_width 20
+SET nicklist_pane_width 25
 SET trackbar_string _
 SET trackbar_style %r 
 # SBAR statusbar add -after erotin -alignment right awaybar

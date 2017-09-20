@@ -99,7 +99,8 @@ Plug 'Raimondi/delimitMate'
 " Tab completion - Currently leaves around ycmd processes because
 " vim-nerdtree-tabs is breaking VimLeave in NeoVim
 " See: https://github.com/Valloric/YouCompleteMe/issues/2403
-Plug 'Valloric/YouCompleteMe'
+" ALSO: YouCompleteMe is auto-selecting text and deleting whole lines for some reason
+" Plug 'Valloric/YouCompleteMe'
 " C++ Completion
 Plug 'Rip-Rip/clang_complete'
 " Auto complete popup for local vars
@@ -283,10 +284,14 @@ let g:syntastic_cpp_checkers = ['clang_check']
 " let g:syntastic_cpp_checkers = ['gcc']
 " let g:syntastic_cpp_config_file = '.syntastic_cpp_config'
 let g:syntastic_javascript_checkers = ['eslint']
+"" Must specify full path, since vim's 'executable' doesn't work in hidden paths
+" let g:syntastic_javascript_eslint_exec = '~/.config/yarn/global/node_modules/.bin/eslint'
 let g:syntastic_javascript_eslint_args = '--quiet'
 let g:syntastic_html_tidy_exec = 'tidy5 config ~/tidy-config.txt'
 let g:syntastic_html_tidy_ignore_errors = ['discarding unexpected <', '> is not recognized']
 let g:syntastic_html_checkers = ['tidy', 'eslint']
+"" Must specify full path, since vim's 'executable' doesn't work in hidden paths
+"let g:syntastic_html_eslint_exec = '~/.config/yarn/global/node_modules/.bin/eslint'
 let g:syntastic_html_eslint_args = '--quiet'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1

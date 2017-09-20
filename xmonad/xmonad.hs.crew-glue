@@ -65,6 +65,7 @@ conf xmproc = ewmh defaultConfig {
         spawn "caffeine"
         spawn "pidgin"
         spawn "ibus-daemon --xim --daemonize --desktop=xmonad --replace"
+        spawn "gnome-panel"
     , logHook = dynamicLogWithPP xmobarPP
                             { ppOutput = hPutStrLn xmproc
                             , ppTitle = xmobarColor "green" "" . shorten 50
