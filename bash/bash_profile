@@ -29,7 +29,7 @@
 #-------------------------------------------------------------
 
 if [ -f ~/.bashrc ]; then
-  . ~/.bashrc 
+  . ~/.bashrc
 fi
 
 # override /usr/bin with /usr/local/bin

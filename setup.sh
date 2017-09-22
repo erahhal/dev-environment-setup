@@ -21,6 +21,10 @@ if [ "$DIR/bash/bash_profile" != "$(ls -l ~/.bash_profile | awk '{print $11}')" 
   mv ~/.bash_profile ~/.bash_profile.orig
   ln -s $DIR/bash/bash_profile ~/.bash_profile
 fi
+if [ "$DIR/bash/bash_profile" != "$(ls -l ~/.profile | awk '{print $11}')" ]; then
+  mv ~/.profile ~/.profile.orig
+  ln -s $DIR/bash/bash_profile ~/.profile
+fi
 if [ "$DIR/bash/screenrc" != "$(ls -l ~/.screenrc | awk '{print $11}')" ]; then
   mv ~/.screenrc ~/.screenrc.orig
   ln -s $DIR/bash/screenrc ~/.screenrc
