@@ -94,6 +94,11 @@ cp dark/terminalrc ~/.config/Terminal
 mkdir -p ~/.config/xfce4/terminal
 cp dark/terminalrc ~/.config/xfce4/terminal
 
+cd ~/Code-vendor
+git clone https://github.com/jedireza/gimp-hidpi.git
+mkdir -p ~/.gimp-2.8/themes
+cp -R gimp-hidpi ~/.gimp-2.8/themes/
+
 if [ "$(readlink ~/.xmonad)" != "$DIR/xmonad" ]; then
   if [ -d "~/.xmonad" ]; then
     mv ~/.xmonad ~/.xmonad.orig

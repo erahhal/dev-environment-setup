@@ -65,9 +65,8 @@ myKeys  = [ ((mod1Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
          ]
 
 floatManageHooks = composeAll [isFloat --> doFloat] where
-    isFloat = foldr1 (<||>) [isDo, isGimp, isEdge, isVncviewer, isFirefoxDialog, isPidginDialog, isVMDdialog] where
+    isFloat = foldr1 (<||>) [isDo, isEdge, isVncviewer, isFirefoxDialog, isPidginDialog, isVMDdialog] where
         isDo   = className =? "Do"
-        isGimp = className =? "Gimp"
         isEdge = className =? "Toplevel"
         isVncviewer = className =? "Vncviewer"
         isFirefoxDialog = className =? "FireFox" <&&> (resource =? "Browser" <||> resource =? "Toplevel")
@@ -83,7 +82,7 @@ conf = ewmh defaultConfig {
     , workspaces = myWorkspaces
     -- , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
     , manageHook = floatManageHooks <+> manageDocks <+> manageHook defaultConfig <+> composeAll myManagementHooks
-    , layoutHook = gaps [(U, 24)] $ noBorders $ avoidStruts $ layoutHook defaultConfig
+    , layoutHook = gaps [(U, 24)] $ avoidStruts $ layoutHook defaultConfig
     , startupHook = startupHook gnomeConfig >> myStartupHook
     , focusFollowsMouse = False
     , clickJustFocuses = False
