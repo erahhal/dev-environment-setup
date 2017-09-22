@@ -82,7 +82,7 @@ conf = ewmh defaultConfig {
     , workspaces = myWorkspaces
     -- , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
     , manageHook = floatManageHooks <+> manageDocks <+> manageHook defaultConfig <+> composeAll myManagementHooks
-    , layoutHook = gaps [(U, 24)] $ avoidStruts $ layoutHook defaultConfig
+    , layoutHook = gaps [(U, 48)] $ avoidStruts $ layoutHook defaultConfig
     , startupHook = startupHook gnomeConfig >> myStartupHook
     , focusFollowsMouse = False
     , clickJustFocuses = False
@@ -90,5 +90,4 @@ conf = ewmh defaultConfig {
     } `additionalKeys` (myKeys)
 
 main = do
-  -- the x argument tells xmobar which screen to run on
   xmonad $ conf
