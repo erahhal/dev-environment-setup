@@ -33,7 +33,7 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # override /usr/bin with /usr/local/bin
-export PATH="~/.cabal/bin:/usr/local/bin:/usr/local/sbin:$PATH:~/Scripts:~/Scripts/local"
+export PATH="~/.cabal/bin:/usr/local/bin:/usr/local/sbin:~/Scripts:~/Scripts/local:$PATH"
 
 #-------------------------------------------------------------
 # Default editor

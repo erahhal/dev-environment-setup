@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ -f $HOME/.Xresources]; then
+  xrdb -merge ~/.Xresources
+fi
+
 xfce4-power-manager &
-feh --bg-scale /usr/share/backgrounds/The_Forbidden_City_by_Daniel_Mathis.jpg &
+# feh --bg-scale /usr/share/backgrounds/The_Forbidden_City_by_Daniel_Mathis.jpg &
 xscreensaver -no-splash &

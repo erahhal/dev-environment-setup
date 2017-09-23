@@ -35,14 +35,9 @@ myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso88
 
 myStartupHook = do
         setWMName "LG3D"
-        -- spawn "stalonetray"
-        -- spawn "nm-applet"
-        -- spawn "blueman-applet"
-        -- spawn "/usr/bin/synergys -f --config ~/synergy.conf"
-        -- spawn "caffeine"
-        -- spawn "pidgin"
+        spawn "caffeine-indicator"
+        spawn "~/pia.sh"
         -- spawn "ibus-daemon --xim --daemonize --desktop=xmonad --replace"
-        -- spawn "gnome-panel"
 
 myWorkspaces = withScreens 2 ["1","2","3","4","5","6","7","8","9"]
 
