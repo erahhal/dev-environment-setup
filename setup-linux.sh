@@ -80,7 +80,6 @@ fi
 
 cd ~/Code-vendor
 git clone https://github.com/solarized/xresources.git xwindows-solarized
-
 cd ~/Code-vendor
 git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git
 cd gnome-terminal-colors-solarized
@@ -123,3 +122,6 @@ if [ "$(readlink ~/.Xresources)" != "$DIR/bash/Xresources" ]; then
   mv ~/.Xresources ~/.Xresources.orig
   ln -s $DIR/bash/Xresources ~/.Xresources
 fi
+
+# Add teensy board udev rules
+sudo cp $DIR/udev/* /etc/udev/rules.d/
