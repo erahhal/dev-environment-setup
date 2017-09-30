@@ -35,11 +35,13 @@ if hash apt-get 2>/dev/null; then
   sudo add-apt-repository -y ppa:neovim-ppa/unstable
   # Keepass
   sudo add-apt-repository -y ppa:jtaylor/keepass
+  # Gnome Xmonad session
+  sudo add-apt-repository -y ppa:gekkio/xmonad
   # Bazel
   echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
   curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
   sudo apt-get update
-  sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs gocode golang-go gccgo ack-grep vim vim.nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xclip ack-grep emacs-snapshot mosh tmux ibus-sunpinyin chromium-browser keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
+  sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs gocode golang-go gccgo ack-grep vim vim.nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xclip ack-grep emacs-snapshot mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
   sudo apt-get install -y choqok
   sudo apt-get install -y neovim
   sudo apt-get install -y clang
@@ -47,6 +49,11 @@ if hash apt-get 2>/dev/null; then
   sudo apt-get install -y llvm
   sudo apt-get install -y lldb
   sudo apt-get install -y bazel
+  # Remove bottom bar from gnome xmonad session
+  dconf write /org/gnome/gnome-panel/layout/toplevel-id-list "['top-panel']"
+  # To re-display bottom bar, use:
+  # dconf write /org/gnome/gnome-panel/layout/toplevel-id-list "['top-panel','bottom-panel']"
+
   # Fix lldb symlinks
   sudo ln -sf /usr/lib/x86_64-linux-gnu/libLLVM-3.8.so.1 /usr/lib/python2.7/dist-packages/lldb/libLLVM-3.8.0.so.1
   sudo ln -sf /usr/lib/x86_64-linux-gnu/libLLVM-3.8.so.1 /usr/lib/python2.7/dist-packages/lldb/libLLVM-3.8.so.1
