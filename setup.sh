@@ -80,6 +80,7 @@ fi
 
 $NODE_SUDO npm install -g bower
 $NODE_SUDO npm install -g grunt-cli
+$NODE_SUDO npm install -g tern
 $NODE_SUDO npm install -g eslint
 $NODE_SUDO npm install -g eslint-plugin-html
 # Needed for tagbar in vim

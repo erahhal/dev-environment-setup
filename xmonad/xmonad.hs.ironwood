@@ -35,8 +35,9 @@ myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso88
 
 myStartupHook = do
         setWMName "LG3D"
-        spawn "caffeine-indicator"
         spawn "~/pia.sh"
+        spawn "caffeine-indicator"
+        spawn "redshift-gtk"
         -- spawn "ibus-daemon --xim --daemonize --desktop=xmonad --replace"
 
 myWorkspaces = withScreens 2 ["1","2","3","4","5","6","7","8","9"]
