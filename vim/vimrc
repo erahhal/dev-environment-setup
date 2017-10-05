@@ -643,11 +643,7 @@ nnoremap <leader>c :TagbarToggle<CR>
 " let g:tagbar_type_javascript = { 'ctagsbin' : '~/node_modules/.bin/jsctags' }
 " let g:tagbar_type_javascript = { 'ctagsbin' : '/Users/erahhal/node_modules/jsctags/bin/jsctags.js' }
 
-" if !has('nvim') && !&diff
-  " autocmd BufEnter * nested :call tagbar#autoopen(1)
-  autocmd FileType c,cpp,python,javascript,bash,sh,vim nested :TagbarOpen
-  " let g:tagbar_autoclose = 1
-" endif
+" autocmd FileType c,cpp,python,javascript,bash,sh,vim nested :TagbarOpen
 
 " -----------------------------------------------------
 " NERDTree config

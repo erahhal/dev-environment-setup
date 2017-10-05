@@ -2,34 +2,79 @@
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 #-------------------------------------------------------------
+# Scripts to get real path of a file
+#-------------------------------------------------------------
+
+realpath() {
+    canonicalize_path "$(resolve_symlinks "$1")"
+}
+
+resolve_symlinks() {
+    local dir_context path
+    path=$(readlink -- "$1")
+    if [ $? -eq 0 ]; then
+        dir_context=$(dirname -- "$1")
+        resolve_symlinks "$(_prepend_path_if_relative "$dir_context" "$path")"
+    else
+        printf '%s\n' "$1"
+    fi
+}
+
+_prepend_path_if_relative() {
+    case "$2" in
+        /* ) printf '%s\n' "$2" ;;
+         * ) printf '%s\n' "$1/$2" ;;
+    esac
+}
+
+canonicalize_path() {
+    if [ -d "$1" ]; then
+        _canonicalize_dir_path "$1"
+    else
+        _canonicalize_file_path "$1"
+    fi
+}
+
+_canonicalize_dir_path() {
+    (cd "$1" 2>/dev/null && pwd -P)
+}
+
+_canonicalize_file_path() {
+    local dir file
+    dir=$(dirname -- "$1")
+    file=$(basename -- "$1")
+    (cd "$dir" 2>/dev/null && printf '%s/%s\n' "$(pwd -P)" "$file")
+}
+
+#-------------------------------------------------------------
 # Bash
 #-------------------------------------------------------------
 
-if [ "$DIR/Scripts" != "$(ls -l ~/Scripts | awk '{print $11}')" ]; then
+if [ $(realpath "$DIR/Scripts") != $(realpath ~/Scripts) ]; then
   mv ~/Scripts ~/Scripts.orig
   ln -s $DIR/Scripts ~/Scripts
 fi
-if [ "$DIR/bash/bashrc" != "$(ls -l ~/.bashrc | awk '{print $11}')" ]; then
+if [ $(realpath "$DIR/bash/bashrc") != $(realpath ~/.bashrc) ]; then
   mv ~/.bashrc ~/.bashrc.orig
   ln -s $DIR/bash/bashrc ~/.bashrc
 fi
-if [ "$DIR/bash/xsessionrc" != "$(ls -l ~/.xsessionrc | awk '{print $11}')" ]; then
+if [ $(realpath "$DIR/bash/xsessionrc") != $(realpath ~/.xsessionrc) ]; then
   mv ~/.xsessionrc ~/.xsessionrc.orig
   ln -s $DIR/bash/xsessionrc ~/.xsessionrc
 fi
-if [ "$DIR/bash/bash_profile" != "$(ls -l ~/.bash_profile | awk '{print $11}')" ]; then
+if [ $(realpath "$DIR/bash/bash_profile") != $(realpath ~/.bash_profile) ]; then
   mv ~/.bash_profile ~/.bash_profile.orig
   ln -s $DIR/bash/bash_profile ~/.bash_profile
 fi
-if [ "$DIR/bash/bash_profile" != "$(ls -l ~/.profile | awk '{print $11}')" ]; then
+if [ $(realpath "$DIR/bash/bash_profile") != $(realpath ~/.profile) ]; then
   mv ~/.profile ~/.profile.orig
   ln -s $DIR/bash/bash_profile ~/.profile
 fi
-if [ "$DIR/bash/screenrc" != "$(ls -l ~/.screenrc | awk '{print $11}')" ]; then
+if [ $(realpath "$DIR/bash/screenrc") != $(realpath ~/.screenrc) ]; then
   mv ~/.screenrc ~/.screenrc.orig
   ln -s $DIR/bash/screenrc ~/.screenrc
 fi
-if [ "$DIR/bash/tmux.conf" != "$(ls -l ~/.tmux.conf | awk '{print $11}')" ]; then
+if [ $(realpath "$DIR/bash/tmux.conf") != $(realpath ~/.tmux.conf) ]; then
   mv ~/.tmux.conf ~/.tmux.conf.orig
   ln -s $DIR/bash/tmux.conf ~/.tmux.conf
 fi
@@ -98,17 +143,17 @@ git config --global mergetool.prompt false
 # VIM
 #-------------------------------------------------------------
 
-if [ "$DIR/vim/vimrc" != "$(ls -l ~/.vimrc | awk '{print $11}')" ]; then
+if [ $(realpath "$DIR/vim/vimrc") != $(realpath ~/.vimrc) ]; then
   mv ~/.vimrc ~/.vimrc.orig
   ln -s $DIR/vim/vimrc ~/.vimrc
 fi
 mkdir -p ~/.vim
 mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}
-if [ "~/.vim" != "$(ls -l ~/.config/nvim | awk '{print $11}')" ]; then
+if [ $(realpath ~/.vim) != $(realpath ~/.config/nvim) ]; then
   mv ~/.config/nvim ~/.config/nvim.orig
   ln -s ~/.vim ~/.config/nvim
 fi
-if [ "$DIR/vim/vimrc" != "$(ls -l ~/.config/nvim/init.vim | awk '{print $11}')" ]; then
+if [ $(realpath "$DIR/vim/vimrc") != $(realpath ~/.config/nvim/init.vim) ]; then
   mv ~/.config/nvim/init.vim ~/.config/nvim/init.vim.orig
   ln -s $DIR/vim/vimrc ~/.config/nvim/init.vim
 fi
@@ -118,7 +163,7 @@ fi
 vim -c "execute 'PlugInstall' | qa"
 vim -c "execute 'UpdateRemotePlugins' | qa"
 cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
-if [ "$DIR/vim/ycm_extra_conf.py" != "$(ls -l ~/.ycm_extra_conf.py | awk '{print $11}')" ]; then
+if [ $(realpath "$DIR/vim/ycm_extra_conf.py") != $(realpath ~/.ycm_extra_conf.py) ]; then
   mv ~/.ycm_extra_conf.py ~/.ycm_extra_conf.py.orig
   ln -s $DIR/vim/ycm_extr_conf.py ~/.ycm_extra_conf.py
 fi
@@ -140,19 +185,24 @@ make
 # Emacs
 #-------------------------------------------------------------
 
-cd ~/
 if [ ! -e .spacemacs ]; then
-  if [ -e .emacs.d ]; then
+  if [ ! -e ~/.emacs.d ]; then
+    NO_EMACS_CONF=1
+  elif ! git -C ~/.emacs.d rev-parse; then
+    NO_EMACS_CONF=1
     mv .emacs.d .emacs.d.orig
   fi
-  git clone --recursive http://github.com/syl20bnr/spacemacs ~/.emacs.d
+  if [ "$NO_EMACS_CONF" == 1 ]; then
+    git clone --recursive http://github.com/syl20bnr/spacemacs ~/.emacs.d
+  fi
 fi
+
 
 #-------------------------------------------------------------
 # IRSSI
 #-------------------------------------------------------------
 
-if [ "$DIR/irssi" != "$(ls -l ~/.irssi | awk '{print $11}')" ]; then
+if [ $(realpath "$DIR/irssi") != $(realpath ~/.irssi) ]; then
   mv ~/.irssi ~/.irssi.orig
   ln -s $DIR/irssi ~/.irssi
 fi
