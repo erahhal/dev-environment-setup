@@ -83,10 +83,18 @@ if [ ! -e ~/.tmux-plugins ]; then
 fi
 
 cd ~/.tmux-plugins
-git clone https://github.com/tmux-plugins/tpm
-git clone https://github.com/tmux-plugins/tmux-sensible
-git clone https://github.com/tmux-plugins/tmux-resurrect
-git clone https://github.com/tmux-plugins/tmux-open
+if [ ! -e tpm ]; then
+    git clone https://github.com/tmux-plugins/tpm
+fi
+if [ ! -e tmux-sensible ]; then
+    git clone https://github.com/tmux-plugins/tmux-sensible
+fi
+if [ ! -e tmux-resurrect ]; then
+    git clone https://github.com/tmux-plugins/tmux-resurrect
+fi
+if [ ! -e tmux-open ]; then
+    git clone https://github.com/tmux-plugins/tmux-open
+fi
 
 #-------------------------------------------------------------
 # 3rd party code
@@ -177,15 +185,16 @@ make
 cd ~/.vim/bundle/tern_for_vim
 npm install
 sudo npm install -g
-cd ~/.vim/bundle/Command-T/ruby/command-t/
-ruby extconf.rb
-make
+## Now using command-p, but leaving this for posterity
+# cd ~/.vim/bundle/Command-T/ruby/command-t/
+# ruby extconf.rb
+# make
 
 #-------------------------------------------------------------
 # Emacs
 #-------------------------------------------------------------
 
-if [ ! -e .spacemacs ]; then
+if [ ! -e ~/.spacemacs ]; then
   if [ ! -e ~/.emacs.d ]; then
     NO_EMACS_CONF=1
   elif ! git -C ~/.emacs.d rev-parse; then
