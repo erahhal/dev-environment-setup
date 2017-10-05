@@ -26,6 +26,7 @@ brew update
 brew install coreutils
 brew install gnu-sed
 brew install ack
+brew install git
 brew install aspell
 brew install nodejs
 brew install llvm
