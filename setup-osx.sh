@@ -29,6 +29,7 @@ brew install ack
 brew install git
 brew install aspell
 brew install nodejs
+brew install mosh
 brew install llvm
 brew install vim --with-python --override-system-vim
 # brew install macvim --with-python --override-system-vim
