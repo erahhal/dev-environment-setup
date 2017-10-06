@@ -20,35 +20,57 @@ fi
 if hash apt-get 2>/dev/null; then
   sudo apt-get install -y curl
   . /etc/lsb-release
-  # getdeb
-  URL='http://archive.getdeb.net/install_deb/getdeb-repository_0.1-1~getdeb1_all.deb'; FILE=`mktemp`; wget "$URL" -qO $FILE && sudo dpkg -i $FILE; rm $FILE
-  sudo rm /etc/apt/sources.list.d/getdeb.list.bck
-  # Emacs
-  sudo add-apt-repository -y ppa:ubuntu-elisp/ppa
-  # What is this?
-  sudo add-apt-repository -y ppa:fcwu-tw/ppa
+
+  # # getdeb
+  # URL='http://archive.getdeb.net/install_deb/getdeb-repository_0.1-1~getdeb1_all.deb'; FILE=`mktemp`; wget "$URL" -qO $FILE && sudo dpkg -i $FILE; rm $FILE
+  # sudo rm /etc/apt/sources.list.d/getdeb.list.bck
+
+  # # Emacs
+  # sudo add-apt-repository -y ppa:ubuntu-elisp/ppa
+
+  # # What is this?
+  # sudo add-apt-repository -y ppa:fcwu-tw/ppa
+
   # java
   sudo add-apt-repository -y ppa:webupd8team/java
-  # xmonad
-  sudo add-apt-repository -y ppa:gekkio/xmonad
+
+  # # xmonad
+  # sudo add-apt-repository -y ppa:gekkio/xmonad
+
   # Neovim
-  sudo add-apt-repository -y ppa:neovim-ppa/unstable
-  # Keepass
-  sudo add-apt-repository -y ppa:jtaylor/keepass
+  sudo add-apt-repository -y ppa:neovim-ppa/stable
+
+  # # Keepass
+  # sudo add-apt-repository -y ppa:jtaylor/keepass
+
   # Caffeine
   sudo add-apt-repository -y ppa:caffeine-developers/ppa
+
   # Gnome Xmonad session
   sudo add-apt-repository -y ppa:gekkio/xmonad
+
   # Add the Spotify repository signing keys to be able to verify downloaded packages
   sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886 0DF731E45CE24F27EEEB1450EFDC8610341D9410
+
   # Add the Spotify repository
   echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
   # Bazel
   echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
   curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
+
+  # nodejs
+  curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+  sudo apt-get install -y nodejs
+
   sudo apt-get update
-  sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs gocode golang-go gccgo ack-grep vim vim.nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xclip ack-grep emacs-snapshot mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client caffeine redshift redshift-gtk xubuntu-desktop keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
-  sudo apt remove --purge -y ubuntu-desktop
+  sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs gocode golang-go gccgo ack-grep vim vim-nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xclip ack-grep mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client caffeine redshift redshift-gtk keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
+
+  # sudo apt-get install -y emacs-snapshot
+
+  # # Installing xubuntu causes hwe (hardware enablement) versions of xorg to be removed...
+  # sudo apt-get install -y xubuntu-desktop
+  # sudo apt remove --purge -y ubuntu-desktop
+
   sudo apt-get install -y fcitx fcitx-googlepinyin fcitx-table-wbpy fcitx-pinyin fcitx-sunpinyin
   sudo apt-get install -y choqok
   sudo apt-get install -y neovim
@@ -80,7 +102,7 @@ if hash apt-get 2>/dev/null; then
   sudo pip3 install neovim
   sudo pip2 install simplejson
   sudo gem install neovim
-  sudo apt-get install -y oracle-java7-installer
+  sudo apt-get install -y oracle-java8-installer
   sudo apt-get install -y xmonad*
   sudo apt-get install -y suckless-tools xscreensaver xmobar scrot xfce4-power-manager stalonetray dmenu cabal-install
   sudo cabal update
