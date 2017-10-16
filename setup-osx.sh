@@ -77,3 +77,7 @@ launchctl load -w ${DIR}/emacs/gnu.emacs.daemon.plist
 # Arduino 1.16.13, which is latest version supported by teensy
 brew cask install https://raw.githubusercontent.com/caskroom/homebrew-cask/5ed77c9d0e487f2a2925c2b8c68b846fbd382109/Casks/arduino.rb
 
+# Google Cloud sdk
+gcloud init
+gcloud components install kubectl container-builder-local docker-credential-gcr
+

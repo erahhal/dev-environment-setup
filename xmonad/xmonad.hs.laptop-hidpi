@@ -38,6 +38,7 @@ myStartupHook = do
         spawn "~/pia.sh"
         spawn "caffeine-indicator"
         spawn "redshift-gtk"
+        spawn "python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &"
         -- spawn "ibus-daemon --xim --daemonize --desktop=xmonad --replace"
 
 myWorkspaces = withScreens 2 ["1","2","3","4","5","6","7","8","9"]
@@ -61,10 +62,11 @@ myKeys  = [ ((mod1Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
          ]
 
 floatManageHooks = composeAll [isFloat --> doFloat] where
-    isFloat = foldr1 (<||>) [isDo, isEdge, isVncviewer, isFirefoxDialog, isPidginDialog, isVMDdialog] where
+    isFloat = foldr1 (<||>) [isDo, isEdge, isVncviewer, isLogOut, isFirefoxDialog, isPidginDialog, isVMDdialog] where
         isDo   = className =? "Do"
         isEdge = className =? "Toplevel"
         isVncviewer = className =? "Vncviewer"
+        isLogOut  = className =? "Zenity" <&&> title =? "Log Out"
         isFirefoxDialog = className =? "FireFox" <&&> (resource =? "Browser" <||> resource =? "Toplevel")
         isPidginDialog  = className =? "Pidgin" <&&> foldr1 (<||>) [
             title =? "Accounts", title =? "System Log", title =? "Plugins",

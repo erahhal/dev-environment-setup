@@ -57,3 +57,9 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   export PS1='\[$(tput bold)\]\[$(tput setaf 6)\]\t \[$(tput setaf 2)\][\[$(tput setaf 3)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 3)\]\h \[$(tput setaf 6)\]\W\[$(tput setaf 2)\]]\[$(tput setaf 4)\]$(__git_ps1 " (%s)")\\$ \[$(tput sgr0)\]'
 fi
 [ -r /home/erahhal/.byobu/prompt ] && . /home/erahhal/.byobu/prompt   #byobu-prompt#
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/erahhal/google-cloud-sdk/path.bash.inc' ]; then source '/home/erahhal/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/erahhal/google-cloud-sdk/completion.bash.inc' ]; then source '/home/erahhal/google-cloud-sdk/completion.bash.inc'; fi

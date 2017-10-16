@@ -206,7 +206,6 @@ if [ ! -e ~/.spacemacs ]; then
   fi
 fi
 
-
 #-------------------------------------------------------------
 # IRSSI
 #-------------------------------------------------------------
@@ -215,3 +214,9 @@ if [ $(realpath "$DIR/irssi") != $(realpath ~/.irssi) ]; then
   mv ~/.irssi ~/.irssi.orig
   ln -s $DIR/irssi ~/.irssi
 fi
+
+#-------------------------------------------------------------
+# Google Cloud SDK
+#-------------------------------------------------------------
+
+gcloud container clusters get-credentials ellis-cluster

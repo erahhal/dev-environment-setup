@@ -38,6 +38,7 @@ myStartupHook = do
         spawn "~/pia.sh"
         spawn "caffeine-indicator"
         spawn "redshift-gtk"
+        spawn "python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &"
         -- spawn "ibus-daemon --xim --daemonize --desktop=xmonad --replace"
 
 myWorkspaces = withScreens 2 ["1","2","3","4","5","6","7","8","9"]

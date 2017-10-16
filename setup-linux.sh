@@ -49,6 +49,14 @@ if hash apt-get 2>/dev/null; then
   # Gnome Xmonad session
   sudo add-apt-repository -y ppa:gekkio/xmonad
 
+  # VSCode
+  curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo apt-key add -
+  sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+
+  # Syncthing
+  curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
+  echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list
+
   # Add the Spotify repository signing keys to be able to verify downloaded packages
   sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886 0DF731E45CE24F27EEEB1450EFDC8610341D9410
 
@@ -63,7 +71,7 @@ if hash apt-get 2>/dev/null; then
   sudo apt-get install -y nodejs
 
   sudo apt-get update
-  sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs gocode golang-go gccgo ack-grep vim vim-nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xclip ack-grep mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client caffeine redshift redshift-gtk keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
+  sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs syncthing syncthing-inotify code gocode golang-go gccgo ack-grep vim vim-nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xclip ack-grep mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client caffeine redshift redshift-gtk keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
 
   # sudo apt-get install -y emacs-snapshot
 
@@ -98,9 +106,12 @@ if hash apt-get 2>/dev/null; then
   sudo update-alternatives --set editor /usr/bin/nvim
   sudo update-alternatives --set vimdiff /usr/bin/vim.nox-py2
   sudo pip3 install --upgrade pip
+  sudo pip2 install --upgrade pip
   sudo pip2 install neovim
   sudo pip3 install neovim
   sudo pip2 install simplejson
+  sudo pip2 install pytz
+  sudo pip2 install requests_futures
   sudo gem install neovim
   sudo apt-get install -y oracle-java8-installer
   sudo apt-get install -y xmonad*
@@ -113,6 +124,19 @@ elif hash yum 2>/dev/null; then
 else
   echo "Unknown distribution"
   exit 1
+fi
+
+# Syncthing
+systemctl --user enable syncthing.service
+systemctl --user start syncthing.service
+
+# Google Cloud SDK
+curl https://sdk.cloud.google.com | bash
+bash -c 'gcloud init; gcloud components install kubectl container-builder-local docker-credential-gcr'
+
+# Placurl https://sdk.cloud.google.com | bashtformIO
+if ! hash platformio 2>/dev/null; then
+  python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/develop/scripts/get-platformio.py)"
 fi
 
 cd ~/Code-vendor
@@ -134,6 +158,10 @@ cd ~/Code-vendor
 git clone https://github.com/jedireza/gimp-hidpi.git
 mkdir -p ~/.gimp-2.8/themes
 cp -R gimp-hidpi ~/.gimp-2.8/themes/
+
+cd ~/Code-vendor
+git clone https://github.com/icaruseffect/syncthing-ubuntu-indicator.git
+
 
 if [ "$(readlink ~/.xmonad)" != "$DIR/xmonad" ]; then
   if [ -d "~/.xmonad" ]; then
