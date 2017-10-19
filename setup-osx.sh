@@ -26,6 +26,8 @@ brew update
 brew install coreutils
 brew install gnu-sed
 brew install ack
+brew install ripgrep
+brew install the_silver_searcher
 brew install git
 brew install aspell
 brew install nodejs
