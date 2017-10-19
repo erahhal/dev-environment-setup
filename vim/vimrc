@@ -51,7 +51,6 @@ Plug 'jreybert/vimagit'
 Plug 'bling/vim-airline'
 " set shiftwidth and expandtab automatically based on file or other files in the working directory
 Plug 'tpope/vim-sleuth'
-" Plug 'xolox/vim-misc'
 " Plug 'xolox/vim-session'
 " Plug 'bling/vim-bufferline'
 " syntax checking in vim
@@ -68,9 +67,9 @@ Plug 'hlissner/vim-multiedit'
   Plug 'majutsushi/tagbar'
 " endif
 " " misc autoload functionality needed for vim-easytags
-" Plug 'xolox/vim-misc'
+Plug 'xolox/vim-misc'
 " " easy tag generation
-" Plug 'xolox/vim-easytags'
+Plug 'xolox/vim-easytags'
 " grep-style functionality through ack
 Plug 'mileszs/ack.vim'
 " NERDTree integration with ack
@@ -223,6 +222,11 @@ let maplocalleader=" "
 " Things like ctrl-w ctrl-] won't find custom ctag files without this
 filetype plugin indent on
 
+" Automatically set working directory to the folder of open file.
+" Helps with things like syntastic/pylint, which look in parent folders for rc
+" files
+set autochdir
+
 " -----------------------------------------------------
 " Backspace settings
 "   indent  allow backspacing over autoindent
@@ -316,7 +320,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_python_pylint_post_args="--max-line-length=120"
+let g:syntastic_python_pylint_post_args="--max-line-length=80"
 
 " -----------------------------------------------------
 " Special syntax highlighting
@@ -675,6 +679,8 @@ let g:nerdtree_tabs_open_on_console_startup = 1
 let NERDTreeShowHidden=1
 " Make sure focus is on buffer
 autocmd VimEnter * wincmd p
+nmap ,n :NERDTreeFind<CR>
+nmap ,m :NERDTreeToggle<CR>
 
 " -----------------------------------------------------
 " Ack config
