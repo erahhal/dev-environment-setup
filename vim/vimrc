@@ -20,21 +20,25 @@ Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 " seemingly useless.  Will figure whether I'm using it wrong in the future
 " Plug 'wincent/Command-T'
 " Quickly find a file in a project
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit' }
+nnoremap <c-p> :FZF<cr>
+
 " Mustache template support
 Plug 'mustache/vim-mode'
-" less CSS preprocessor syntax highlighting
-Plug 'groenewege/vim-less'
-" mustache syntax highlighting and completion
-Plug 'juvenn/mustache.vim'
 " jshint support for vim
 Plug 'Shutnik/jshint2.vim'
 " hierarchical file tree for Vim
 Plug 'scrooloose/nerdtree'
 " tab support for NERDTree
 Plug 'jistr/vim-nerdtree-tabs'
-" NERD commenter
-Plug 'scrooloose/nerdcommenter'
+" Code Commenting
+" Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
 " Run a command or shell in a Vim window
 " Plug 'pthrasher/conqueterm-vim'
 " show git diff marks (disabled - slow and conflicts with VimOrganizer) (using vim-signify instead)
@@ -51,7 +55,8 @@ Plug 'tpope/vim-sleuth'
 " Plug 'xolox/vim-session'
 " Plug 'bling/vim-bufferline'
 " syntax checking in vim
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale'
 " a tree of undos
 Plug 'mbbill/undotree'
 " allows editing multiple lines simultaneous like Sublime
@@ -72,8 +77,16 @@ Plug 'mileszs/ack.vim'
 Plug 'tyok/nerdtree-ack'
 " recursive multiple file diff
 Plug 'vim-scripts/DirDiff.vim'
+" less CSS preprocessor syntax highlighting
+" Plug 'groenewege/vim-less'
 " markdown syntax highlighting
-Plug 'plasticboy/vim-markdown'
+" Plug 'plasticboy/vim-markdown'
+" JavaScript syntax highlighting
+" Plug 'jelera/vim-javascript-syntax'
+" 100 language packs
+Plug 'sheerun/vim-polyglot'
+" mustache syntax highlighting and completion
+Plug 'juvenn/mustache.vim'
 " typescript syntax highlighting
 " Plug 'leafgarland/typescript-vim'
 " vim tmux integration
@@ -84,8 +97,6 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'roxma/vim-tmux-clipboard'
 " stylus syntax highlighting
 Plug 'wavded/vim-stylus'
-" JavaScript syntax highlighting
-Plug 'jelera/vim-javascript-syntax'
 " Additional JavaScript syntax highlighting
 Plug 'pangloss/vim-javascript'
 " Highlighting for javascript indentation
@@ -113,6 +124,14 @@ Plug 'marijnh/tern_for_vim'
 Plug 'Shougo/deoplete.nvim'
 " tern js plugin for deoplete
 Plug 'carlitux/deoplete-ternjs'
+
+if 0
+  " Use deoplete.
+  " Seems to be hanging at the moment, breaking insert mode
+  " Also need to disable other autocomplete plugins and settings before using
+  let g:deoplete#enable_at_startup = 1
+endif
+
 " GLSL syntax highlighting
 Plug 'tikhomirov/vim-glsl'
 " Universal Text Linking

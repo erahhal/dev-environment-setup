@@ -131,11 +131,15 @@ else
   NODE_SUDO="sudo"
 fi
 
-$NODE_SUDO npm install -g bower
-$NODE_SUDO npm install -g grunt-cli
-$NODE_SUDO npm install -g tern
-$NODE_SUDO npm install -g eslint
-$NODE_SUDO npm install -g eslint-plugin-html
+$NODE_SUDO npm install --upgrade -g bower
+$NODE_SUDO npm install --upgrade -g grunt-cli
+$NODE_SUDO npm install --upgrade -g tern
+$NODE_SUDO npm install --upgrade -g eslint
+$NODE_SUDO npm install --upgrade -g eslint-plugin-html
+$NODE_SUDO npm install --upgrade -g eslint-plugin-import
+$NODE_SUDO npm install --upgrade -g eslint-config-airbnb-base
+$NODE_SUDO npm install --upgrade -g typescript
+$NODE_SUDO npm install --upgrade -g typescript-eslint-parser
 # Needed for tagbar in vim, but currently broken
 # $NODE_SUDO npm install -g jsctags
 
