@@ -70,6 +70,11 @@ if hash apt-get 2>/dev/null; then
   curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
   sudo apt-get install -y nodejs
 
+  #ripgrep
+  # sudo add-apt-repository -y ppa:x4121/ripgrep
+  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A03A097E3C3842E1
+  echo "deb http://ppa.launchpad.net/x4121/ripgrep/ubuntu zesty main" | sudo tee /etc/apt/sources.list.d/ripgrep.list
+
   sudo apt-get update
   sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs syncthing syncthing-inotify code gocode golang-go gccgo ack-grep silversearcher-ag vim vim-nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xclip ack-grep mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client caffeine redshift redshift-gtk keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
 
