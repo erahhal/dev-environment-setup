@@ -102,6 +102,7 @@ chatnets = {
   SILC = { type = "SILC"; };
   Freenode = { type = "IRC"; };
   Ubuntu = { type = "IRC"; };
+  Bitlbee = { type = "IRC"; };
 };
 
 channels = (
