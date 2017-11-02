@@ -389,6 +389,13 @@ endif
 " a tree of undos
 Plug 'mbbill/undotree'
 
+nmap ,u :UndotreeToggle<CR>
+
+if has("persistent_undo")
+    set undodir=~/.undodir/
+    set undofile
+endif
+
 " allows editing multiple lines simultaneous like Sublime
 Plug 'hlissner/vim-multiedit'
 
