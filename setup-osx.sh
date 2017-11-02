@@ -61,6 +61,9 @@ brew cask install skype
 brew cask install steam
 brew cask install anki
 brew cask install google-cloud-sdk
+brew cask install hipchat
+brew cask install unetbootin
+brew cask install etcher
 
 pip2 install PIL
 pip2 install Pillow

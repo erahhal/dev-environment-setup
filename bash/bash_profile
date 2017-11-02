@@ -33,7 +33,7 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # override /usr/bin with /usr/local/bin
-export PATH="~/.cabal/bin:/usr/local/bin:/usr/local/sbin:~/Scripts:~/Scripts/local:$PATH"
+export PATH="~/.cabal/bin:/usr/local/bin:/usr/local/sbin:~/npm-global/bin/:~/Scripts:~/Scripts/local:$PATH"
 
 #-------------------------------------------------------------
 # Default editor
@@ -98,6 +98,19 @@ if [ -e "$HOMEBREW_API_TOKEN_FILE" ]; then
 fi
 
 #-------------------------------------------------------------
+# FZF
+#-------------------------------------------------------------
+#
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --no-messages --hidden --follow --glob "!.git/*"'
+# export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_OPTS='
+--color fg:242,bg:236,hl:65,fg+:15,bg+:239,hl+:108
+--color info:108,prompt:109,spinner:108,pointer:168,marker:168
+'
+
+#-------------------------------------------------------------
 # Platform specific
 #-------------------------------------------------------------
 if [ "$(uname)" == "Darwin" ]; then
@@ -122,14 +135,4 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # keyboard rate
     xset r rate 250 30
   fi
-
-  # Vim FZF config
-  export FZF_DEFAULT_COMMAND='rg --files --no-ignore --no-messages --hidden --follow --glob "!.git/*"'
-  # export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
-  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-  export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
-  export FZF_DEFAULT_OPTS='
-  --color fg:242,bg:236,hl:65,fg+:15,bg+:239,hl+:108
-  --color info:108,prompt:109,spinner:108,pointer:168,marker:168
-  '
 fi
