@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# docker run --name pgadmin4 -p 5050:5050 -d fenglc/pgadmin4
+
+docker stop pgadmin || true && docker rm pgadmin || true
+# HOST_IP=$(ip route show 0.0.0.0/0 | grep -Eo 'via \S+' | awk '{ print $2 }')
+HOST_IP=$(ifconfig docker0 | grep "inet addr" | sed -r "s/.*inet addr:([0-9.]*).*$/\1/")
+docker run -d -p 5050:5050 --add-host database:$HOST_IP -v /home/erahhal/Documents/pgadmin4-config:/pgadmin --name pgadmin thajeztah/pgadmin4

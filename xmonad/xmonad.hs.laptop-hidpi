@@ -62,11 +62,11 @@ myKeys  = [ ((mod1Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
          ]
 
 floatManageHooks = composeAll [isFloat --> doFloat] where
-    isFloat = foldr1 (<||>) [isDo, isEdge, isVncviewer, isLogOut, isFirefoxDialog, isPidginDialog, isVMDdialog] where
+    isFloat = foldr1 (<||>) [isDo, isEdge, isVncviewer, isGnomeSystemAction, isFirefoxDialog, isPidginDialog, isVMDdialog] where
         isDo   = className =? "Do"
         isEdge = className =? "Toplevel"
         isVncviewer = className =? "Vncviewer"
-        isLogOut  = className =? "Zenity" <&&> title =? "Log Out"
+        isGnomeSystemAction  = className =? "Zenity" <&&> (title =? "Log Out" <||> title =? "Restart" <||> title =? "Shut Down")
         isFirefoxDialog = className =? "FireFox" <&&> (resource =? "Browser" <||> resource =? "Toplevel")
         isPidginDialog  = className =? "Pidgin" <&&> foldr1 (<||>) [
             title =? "Accounts", title =? "System Log", title =? "Plugins",
