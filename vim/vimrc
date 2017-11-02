@@ -1,180 +1,632 @@
 " -----------------------------------------------------
-" Plugin Manager
+" Initial Setup
 " -----------------------------------------------------
+
+if has("unix")
+    let s:uname = substitute(system("uname -s"), '\n', '', '')
+else
+    let s:uname = 'unknown'
+endif
+
+" ========================================================================================================
+" SECTION: PLUGINS AND SETTINGS
+" ========================================================================================================
+
 call plug#begin('~/.vim/bundle')
 
-" Re-enable vimball support after plugin manager kills it
-Plug 'vim-scripts/Vimball'
-" Start page
-" Plug 'mhinz/vim-startify'
-" Session management
-Plug 'tpope/vim-obsession'
-" Git wrapper
-Plug 'tpope/vim-fugitive'
-" Quickly navigate around a file
-Plug 'Lokaltog/vim-easymotion'
-" faster creation of HTML and CSS, handles expansion
-Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Quickly find a file in a project
-" Command-T doesn't seem to prioritize exact string matches, which makes it
-" seemingly useless.  Will figure whether I'm using it wrong in the future
-" Plug 'wincent/Command-T'
-" Quickly find a file in a project
-" Plug 'ctrlpvim/ctrlp.vim'
+" -----------------------------------------------------
+" Fuzzy file finding
+" -----------------------------------------------------
+
+" File search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
 let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit' }
+    \ 'ctrl-t': 'tab split',
+    \ 'ctrl-s': 'split',
+    \ 'ctrl-v': 'vsplit' }
 nnoremap <c-p> :FZF<cr>
 
-" Mustache template support
-Plug 'mustache/vim-mode'
-" jshint support for vim
-Plug 'Shutnik/jshint2.vim'
-" hierarchical file tree for Vim
-Plug 'scrooloose/nerdtree'
-" tab support for NERDTree
-Plug 'jistr/vim-nerdtree-tabs'
-" Code Commenting
-" Plug 'scrooloose/nerdcommenter'
-Plug 'tpope/vim-commentary'
-" Run a command or shell in a Vim window
-" Plug 'pthrasher/conqueterm-vim'
-" show git diff marks (disabled - slow and conflicts with VimOrganizer) (using vim-signify instead)
-" Plug 'airblade/vim-gitgutter'
-" show VCS diff marks
-Plug 'mhinz/vim-signify'
-" Magit
-Plug 'jreybert/vimagit'
-" nice looking status bar
-Plug 'bling/vim-airline'
-" set shiftwidth and expandtab automatically based on file or other files in the working directory
-Plug 'tpope/vim-sleuth'
-" Plug 'xolox/vim-session'
-" Plug 'bling/vim-bufferline'
-" syntax checking in vim
-" Plug 'scrooloose/syntastic'
-Plug 'w0rp/ale'
-" a tree of undos
-Plug 'mbbill/undotree'
-" allows editing multiple lines simultaneous like Sublime
-Plug 'hlissner/vim-multiedit'
-" See code tags in side bar
-" if !has('nvim')
-  " See: https://github.com/majutsushi/tagbar/issues/386
-  " See: https://github.com/neovim/neovim/issues/5817
-  Plug 'majutsushi/tagbar'
-" endif
-" " misc autoload functionality needed for vim-easytags
-Plug 'xolox/vim-misc'
-" " easy tag generation
-Plug 'xolox/vim-easytags'
+" Required by FuzzyFinder
+Plug 'vim-scripts/L9'
+" Fuzzy search of files, buffers, directories, MRU, tags, etc
+Plug 'vim-scripts/FuzzyFinder'
 
-let g:easytags_async = 1
+" ctrl-p is not synchronous and is slow
+if 0
+    Plug 'ctrlpvim/ctrlp.vim'
 
-" grep-style functionality through ack
+    " For projects with a ton of files
+    let g:ctrlp_max_files=0
+endif
+
+" -----------------------------------------------------
+" Tags
+" -----------------------------------------------------
+
+" TOO SLOW with large C++ code base
+if 0
+    " Utils needed by easytags
+    Plug 'xolox/vim-misc'
+    " create tags on file save
+    Plug 'xolox/vim-easytags'
+
+    let g:easytags_async = 1
+endif
+
+" Set default tag files
+set tags=./tags;,tags;./TAGS;,TAGS;
+
+" -----------------------------------------------------
+" Tag bar
+" -----------------------------------------------------
+
+Plug 'majutsushi/tagbar'
+
+" open Tagbar for supported files
+" autocmd BufEnter * nested :call tagbar#autoopen(0)
+
+let g:tagbar_width = 31
+nnoremap <leader>c :TagbarToggle<CR>
+
+" configure tags for javascript
+" let g:tagbar_ctags_bin = '~/node_modules/.bin/jsctags'
+" let g:tagbar_type_javascript = { 'ctagsbin' : '~/node_modules/.bin/jsctags' }
+" let g:tagbar_type_javascript = { 'ctagsbin' : '/Users/erahhal/node_modules/jsctags/bin/jsctags.js' }
+
+" autocmd FileType c,cpp,python,javascript,bash,sh,vim nested :TagbarOpen
+
+" -----------------------------------------------------
+" Live search highlighting
+" -----------------------------------------------------
+
+Plug 'haya14busa/incsearch.vim'
+
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+
+" -----------------------------------------------------
+" Ack grep replacement
+" -----------------------------------------------------
+
 Plug 'mileszs/ack.vim'
+
+if s:uname == "Linux"
+    let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+elseif s:uname == "Darwin"
+    let g:ackprg="ack -H -s --nocolor --nogroup --column"
+endif
+
+" -----------------------------------------------------
+" Hierarchical file tree
+" -----------------------------------------------------
+
+Plug 'scrooloose/nerdtree'
+" tab support
+Plug 'jistr/vim-nerdtree-tabs'
 " NERDTree integration with ack
 Plug 'tyok/nerdtree-ack'
-" recursive multiple file diff
-Plug 'vim-scripts/DirDiff.vim'
-" less CSS preprocessor syntax highlighting
-" Plug 'groenewege/vim-less'
-" markdown syntax highlighting
-" Plug 'plasticboy/vim-markdown'
-" JavaScript syntax highlighting
-" Plug 'jelera/vim-javascript-syntax'
-" 100 language packs
-Plug 'sheerun/vim-polyglot'
-" mustache syntax highlighting and completion
-Plug 'juvenn/mustache.vim'
-" typescript syntax highlighting
-" Plug 'leafgarland/typescript-vim'
-" vim tmux integration
-Plug 'christoomey/vim-tmux-navigator'
-" vim-tmux focus events
-Plug 'tmux-plugins/vim-tmux-focus-events'
-" integration with tmux clipboard
-Plug 'roxma/vim-tmux-clipboard'
-" stylus syntax highlighting
-Plug 'wavded/vim-stylus'
-" Additional JavaScript syntax highlighting
-Plug 'pangloss/vim-javascript'
-" Highlighting for javascript indentation
-Plug 'nathanaelkane/vim-indent-guides'
+
+" Start NERDTreeTabs on launch
+autocmd vimenter * NERDTree
+let g:nerdtree_tabs_open_on_console_startup = 1
+" Show hidden files
+let NERDTreeShowHidden=1
+" Make sure focus is on buffer
+autocmd VimEnter * wincmd p
+nmap ,n :NERDTreeFind<CR>
+nmap ,m :NERDTreeToggle<CR>
+
+" -----------------------------------------------------
+" Code commenting
+" -----------------------------------------------------
+
+" Type "gc" to comment
+Plug 'tpope/vim-commentary'
+
+" -----------------------------------------------------
+" Code delimiters
+" -----------------------------------------------------
+
 " Automatic closing quotes, brackets, etc
 Plug 'Raimondi/delimitMate'
-" Automatic closing quotes, brackets, etc
-" Plug 'jiangmiao/auto-pairs'
-" Tab completion
-" Plug 'ervandew/supertab'
-" Tab completion - Currently leaves around ycmd processes because
-" vim-nerdtree-tabs is breaking VimLeave in NeoVim
-" See: https://github.com/Valloric/YouCompleteMe/issues/2403
-" ALSO: YouCompleteMe is auto-selecting text and deleting whole lines for some reason
-" Plug 'Valloric/YouCompleteMe'
-" C++ Completion
-Plug 'Rip-Rip/clang_complete'
+
+" " This expands a carriage return into two, but doesn't always behave as expected
+" let delimitMate_expand_cr = 2
+
+" delete surrounding tags (dst)
+Plug 'tpope/vim-surround'
+
+" -----------------------------------------------------
+" Autocompletion
+" -----------------------------------------------------
+
+" faster creation of HTML and CSS, handles expansion
+Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
+
 " Auto complete popup for local vars
 Plug 'vim-scripts/AutoComplPop'
-" Code snippets
-Plug 'SirVer/ultisnips'
-" Better completion with YouCompleteMe
-Plug 'marijnh/tern_for_vim'
 " asynchronous completion
 Plug 'Shougo/deoplete.nvim'
 " tern js plugin for deoplete
 Plug 'carlitux/deoplete-ternjs'
 
+" Too many issues
 if 0
-  " Use deoplete.
-  " Seems to be hanging at the moment, breaking insert mode
-  " Also need to disable other autocomplete plugins and settings before using
-  let g:deoplete#enable_at_startup = 1
+    " -----------------------------------------------------
+    " YouCompleteMe
+    " -----------------------------------------------------
+    Plug 'Valloric/YouCompleteMe'
+    " Better completion with YouCompleteMe
+    Plug 'marijnh/tern_for_vim'
+
+    " These are the tweaks I apply to YCM's config, you don't need them but they might help.
+    " YCM gives you popups and splits by default that some people might not like, so these should tidy it up a bit for you.
+    " let g:ycm_add_preview_to_completeopt=0
+
+    " Don't prompt to load ycm conf
+    let g:ycm_confirm_extra_conf = 0
+    " Default conf
+    " let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+    " let g:ycm_collect_identifiers_from_tags_files = 1
+
+    " Disable for C++ so that clang_completer can kick in.
+    " YCM seems slow for clang completion, and also includes a lot more cruft in
+    " autocomplete popup
+    let g:ycm_filetype_blacklist = { 'cpp': 1, 'c': 1 }
+    " Let syntastic handle c/c++ errors rather than YCM
+    let g:ycm_show_diagnostics_ui = 0
 endif
 
-" GLSL syntax highlighting
-Plug 'tikhomirov/vim-glsl'
+" **************
+" clang_complete
+" **************
+
+Plug 'Rip-Rip/clang_complete'
+
+if s:uname == "Linux"
+    let g:clang_library_path='/usr/lib/llvm-3.8/lib'
+elseif s:uname == "Darwin"
+    let cmd = "brew list llvm | sed -n 1p | sed 's/^\\(.*\\/llvm\\/[^/]*\\).*$/\\1/'"
+    let g:clang_library_path = substitute(system(cmd), '\n\+$', '', '') . '/lib'
+endif
+let g:clang_auto_select = 1
+" Complete macros
+let g:clang_complete_macros = 1
+" Complete code constructs like loops
+let g:clang_complete_patterns = 1
+let g:clang_snippets = 1
+let g:clang_conceal_snippets=1
+let g:clang_snippets_engine = 'ultisnips'
+
+" ***************************
+" general completion settings
+" ***************************
+
+" The following two settings properly select argument completion
+set concealcursor=vin
+" Don't open preview window
+set completeopt-=preview
+" Popup menu height
+set pumheight=20
+"" Hides certain bits of text, like quotes in json files and brackets in markdown links
+" set conceallevel=2
+
+" *********
+" UltiSnips
+" *********
+
+Plug 'SirVer/ultisnips'
+
+let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsJumpForwardTrigger="<tab>"
+" let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+if 0
+    " Use deoplete.
+    " Seems to be hanging at the moment, breaking insert mode
+    " Also need to disable other autocomplete plugins and settings before using
+    let g:deoplete#enable_at_startup = 1
+endif
+
+" -----------------------------------------------------
+" VCS Support
+" -----------------------------------------------------
+"
+" Git wrapper
+Plug 'tpope/vim-fugitive'
+
+" Show diff marks
+Plug 'mhinz/vim-signify'
+
+let g:signify_vcs_cmds = {
+    \ 'git': 'git diff --no-color --no-ext-diff -U0 master -- %f'
+    \ }
+
+highlight SignColumn ctermbg=237
+
+" Magit
+Plug 'jreybert/vimagit'
+
+" slow and conflicts with VimOrganizer
+if 0
+    " Show diff marks
+    Plug 'airblade/vim-gitgutter'
+
+    if exists(":GitGutterLineHighlightsEnable")
+        autocmd VimEnter * GitGutterLineHighlightsEnable
+    endif
+
+    " compare against last ancestor commit before branch
+    let g:gitgutter_diff_args = "`git merge-base HEAD master`"
+
+    highlight GitGutterAddLine ctermbg=17
+    highlight GitGutterChangeLine ctermbg=237
+    " GitGutterDeleteLine       " default: links to DiffDelete
+    " GitGutterChangeDeleteLine " default: links to GitGutterChangeLineDefault, i.e. DiffChange
+
+    " " gitgutter solarized adjustments
+    " highlight clear SignColumn
+    " highlight link SignColumn CursorColumn
+endif
+
+" -----------------------------------------------------
+" Diffing
+" -----------------------------------------------------
+
+" recursive multiple file diff
+Plug 'vim-scripts/DirDiff.vim'
+
+" set colors
+" cterm - style, cterfg - text color, ctermbg - highlighting
+" DiffAdd - added line
+" highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffAdd    cterm=bold ctermfg=15 ctermbg=22 gui=none guifg=bg guibg=Red
+" DiffDelete - removed line
+" highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffDelete cterm=bold ctermfg=15 ctermbg=52 gui=none guifg=bg guibg=Red
+" DiffChange - changed line
+" highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffChange cterm=bold ctermfg=223 ctermbg=239 gui=none guifg=bg guibg=Red
+" DiffText - part of line that changed
+" highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
+highlight DiffText   cterm=bold ctermfg=15 ctermbg=124 gui=none guifg=bg guibg=Red
+
+set diffexpr=MyDiff()
+function MyDiff()
+    let opt = ""
+    if &diffopt =~ "icase"
+        let opt = opt . "-i "
+    endif
+    if &diffopt =~ "iwhite"
+        let opt = opt . "-b "
+    endif
+    silent execute "!diff -d -a --binary " . opt . v:fname_in . " " . v:fname_new . " > " . v:fname_out
+endfunction
+
+if &diff
+    function! CheckDiff()
+        if &modified
+            diffupdate
+        endif
+    endfunction
+
+    autocmd CursorMoved * call CheckDiff()
+endif
+
+" -----------------------------------------------------
+" Status line
+" -----------------------------------------------------
+
+Plug 'bling/vim-airline'
+
+" -----------------------------------------------------
+" File specific utilities
+" -----------------------------------------------------
+
+" set shiftwidth and expandtab automatically based on file or other files in the working directory
+Plug 'tpope/vim-sleuth'
+
+" -----------------------------------------------------
+" Syntax Highlighting
+" -----------------------------------------------------
+
+" 100 language packs
+Plug 'sheerun/vim-polyglot'
+" mustache syntax highlighting and completion
+Plug 'juvenn/mustache.vim'
+
+" Allows for custom syntax highlighting in different parts of File
+" Could add custom syntax highlighting for things like lit-HTML
+Plug 'vim-scripts/SyntaxRange'
+
+" -----------------------------------------------------
+" Syntax Checking
+" -----------------------------------------------------
+
+Plug 'w0rp/ale'
+
+let g:ale_linters = { 'cpp': ['clang'] }
+let g:ale_javascript_eslint_executable = $HOME.'/.config/yarn/global/node_modules/.bin/eslint'
+let g:ale_cpp_clang_options = '$(get-compile-options .clang_complete)'
+" This defaults to "normal", which doesn't lint on change for heavy things like clang
+let g:ale_link_on_text_changed = 'always'
+
+" Syntastic is not asynchronous
+if 0
+    Plug 'scrooloose/syntastic'
+    set statusline+=%#warningmsg#
+    set statusline+=%{SyntasticStatuslineFlag()}
+    set statusline+=%*
+
+    " let g:syntastic_debug = 1
+    let g:syntastic_cpp_checkers = ['clang_check']
+    " let g:syntastic_cpp_checkers = ['cppcheck']
+    " let g:syntastic_cpp_checkers = ['gcc']
+    " let g:syntastic_cpp_config_file = '.syntastic_cpp_config'
+    let g:syntastic_javascript_checkers = ['eslint']
+    " Must specify full path, since vim's 'executable' doesn't work in hidden paths
+     let g:syntastic_javascript_eslint_exec = '~/.config/yarn/global/node_modules/.bin/eslint'
+    let g:syntastic_javascript_eslint_args = '--quiet'
+    let g:syntastic_html_tidy_exec = 'tidy5 config ~/tidy-config.txt'
+    let g:syntastic_html_tidy_ignore_errors = ['discarding unexpected <', '> is not recognized']
+    let g:syntastic_html_checkers = ['tidy', 'eslint']
+    " Must specify full path, since vim's 'executable' doesn't work in hidden paths
+    let g:syntastic_html_eslint_exec = '~/.config/yarn/global/node_modules/.bin/eslint'
+    let g:syntastic_html_eslint_args = '--quiet'
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_auto_loc_list = 1
+    let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_wq = 0
+    let g:syntastic_python_pylint_post_args="--max-line-length=80"
+endif
+
+" -----------------------------------------------------
+" General Editing Enhancements
+" -----------------------------------------------------
+
+" a tree of undos
+Plug 'mbbill/undotree'
+
+" allows editing multiple lines simultaneous like Sublime
+Plug 'hlissner/vim-multiedit'
+
+" Quickly navigate around a file
+Plug 'Lokaltog/vim-easymotion'
+
+" -----------------------------------------------------
+" Tmux integration
+" -----------------------------------------------------
+
+" vim tmux integration
+Plug 'christoomey/vim-tmux-navigator'
+
+if has('nvim') && s:uname == "Darwin"
+    " for some reason nvim doesn't map ctrl-h properly
+    nmap <bs> :<c-u>TmuxNavigateLeft<cr>
+endif
+
+" Allow navigating out of NERDTree pane
+let g:NERDTreeMapJumpNextSibling = '<Nop>'
+let g:NERDTreeMapJumpPrevSibling = '<Nop>'
+
+" vim tmux focus events
+Plug 'tmux-plugins/vim-tmux-focus-events'
+" integration with tmux clipboard
+Plug 'roxma/vim-tmux-clipboard'
+
+" -----------------------------------------------------
+" File and Link opening
+" -----------------------------------------------------
+
 " Universal Text Linking
 Plug 'vim-scripts/utl.vim'
-" Repeat
+
+" -----------------------------------------------------
+" Enhanced repeating
+" -----------------------------------------------------
+
+" use the . command
 Plug 'tpope/vim-repeat'
-" Speeddating
+
+" -----------------------------------------------------
+" Date-time tools
+" -----------------------------------------------------
+
+" use ctrl-a and ctrl-x to to modify date
 Plug 'tpope/vim-speeddating'
-" Calendar
+
+" Calendar.  Use ":Calendar" to launch
 Plug 'mattn/calendar-vim'
-" SyntaxRange
-Plug 'vim-scripts/SyntaxRange'
+
+" -----------------------------------------------------
 " Org Mode
-" Plug 'jceb/vim-orgmode'
-Plug 'hsitz/VimOrganizer'
-" Vimwiki
+" -----------------------------------------------------
+
+if 1
+  Plug 'hsitz/VimOrganizer'
+  " ************
+  " VimOrganizer
+  " ************
+  " Keybindings
+  " https://github.com/hsitz/VimOrganizer/blob/master/doc/vimorg.txt
+  " <enter>   new item
+  " <tab>     expand/collapse
+  " >>        indent
+  " <<        unindent
+  " ,m        mark/unmark (selection)
+  " <,        Move heading tree up
+  " >.        Move headng tree down
+  " ,dd       enter DEADLINE date for headline
+  " ,ds       enter SCHEDULED date for headline
+  " ,dc       enter CLOSED date for headline
+  " ,dt       enter timestamp date (i.e., no indicator) for headline
+  " ,dg       set date at cursor
+  " ,r        refile
+  " ,le       add link
+  " ,ln       next link
+  " ,lp       previous link
+
+  let g:agenda_files=["~/ownCloud/Ellis' Stuff/Documents/agenda.org"]
+  au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
+  au BufEnter *.org call org#SetOrgFileType()
+  command! OrgCapture :call org#CaptureBuffer()
+  command! OrgCaptureFile :call org#OpenCaptureFile()
+  let g:org_todo_setup='TODO WAITING | DONE'
+
+  function! OrgCustomColors()
+      "hi Folded ctermfg=255 ctermbg=017
+      hi Folded ctermfg=255 ctermbg=000
+      " various Org syntax item highlighting statements below
+      " are the current defaults.  Uncomment and edit a line if you
+      " want different highlighting for the element.
+
+      " Below are defaults for any TODOS you define.  TODOS that
+      " come before the | in a definition will use  'NOTDONETODO'
+      " and those that come after are DONETODO
+      hi! DONETODO guifg=green ctermfg=green
+      hi! NOTDONETODO guifg=red ctermfg=lightred
+
+      " Heading level highlighting is done in pairs, one for the
+      " heading when unfolded and one for folded.  Default is to make
+      " them the same except for the folded version being bold:
+      " assign OL1 pair for level 1, OL2 pair for level 2, etc.
+      "hi! OL1 guifg=somecolor guibg=somecolor
+      "hi! OL1Folded guifg=somecolor guibg=somecolor gui=bold
+
+
+      " Tags are lines below headings that have :colon:separated:tags:
+      "hi! Org_Tag guifg=lightgreen ctermfg=blue
+
+      "  Lines that begin with '#+' in column 0 are config lines
+      "hi! Org_Config_Line guifg=darkgray ctermfg=magenta
+
+      " Drawers are :PROPERTIES: and :LOGBOOK: lines and their associated
+      " :END: lines
+      "hi! Org_Drawer guifg=pink ctermfg=magenta
+      "hi! Org_Drawer_Folded guifg=pink ctermfg=magenta gui=bold cterm=bold
+
+      " This applies to value names in :PROPERTIES: blocks
+      "hi! Org_Property_Value guifg=pink ctermfg=magenta
+
+      " Three lines below apply to different kinds of blocks
+      "hi! Org_Block guifg=#555555 ctermfg=magenta
+      "hi! Org_Src_Block guifg=#555555 ctermfg=magenta
+      "hi! Org_Table guifg=#888888 guibg=#333333 ctermfg=magenta
+
+      " Dates are date specs between angle brackets (<>) or square brackets ([])
+      "hi! Org_Date guifg=magenta ctermfg=magenta gui=underline cterm=underline
+
+      " Org_Star is used to "hide" initial asterisks in a heading
+      hi! Org_Star guifg=bg ctermfg=bg
+
+      "hi! Props guifg=#ffa0a0 ctermfg=gray
+
+      " Bold, italics, underline, and code are highlights applied
+      " to character formatting
+      "hi! Org_Code guifg=darkgray gui=bold ctermfg=14
+      "hi! Org_Itals gui=italic guifg=#aaaaaa ctermfg=lightgray
+      "hi! Org_Bold gui=bold guifg=#aaaaaa ctermfg=lightgray
+      "hi! Org_Underline gui=underline guifg=#aaaaaa ctermfg=lightgray
+      "hi! Org_Lnumber guifg=#999999 ctermfg=gray
+
+      " These lines apply to links: [[link]], and [[link][link desc]]
+      "if has("conceal")
+      "    hi! default linkends guifg=blue ctermfg=blue
+      "endif
+      "hi! Org_Full_Link guifg=cyan gui=underline ctermfg=lightblue cterm=underline
+      "hi! Org_Half_Link guifg=cyan gui=underline ctermfg=lightblue cterm=underline
+
+      "  Applies to the Heading line that can be displayed in column view
+      "highlight OrgColumnHeadings guibg=#444444 guifg=#aaaaaa gui=underline
+  endfunction
+endif
+
+" Better plugin but too slow. Try it out again sometime
+if 0
+    Plug 'jceb/vim-orgmode'
+    let g:org_heading_highlight_colors = ['Title', 'Constant', 'Identifier', 'Statement', 'PreProc', 'Type', 'Special']
+    " Enabling reverting back to solarized causes a load flicker for every file that is loaded
+    " autocmd BufEnter *.org colorscheme solarized
+    autocmd BufEnter *.org colorscheme srcery
+    autocmd BufEnter *.org highlight Folded cterm=bold gui=bold
+    let g:org_agenda_files=["~/ownCloud/Ellis' Stuff/Documents/agenda.org"]
+endif
+
+" -----------------------------------------------------
+" Vim-wiki
+" -----------------------------------------------------
+
 Plug 'vimwiki/vimwiki'
-" Huge Files
+
+let g:vimwiki_list = [{'path': '~/Documents/ellis/wiki/', 'index': 'index'}]
+
+" -----------------------------------------------------
+" Huge file handling
+" -----------------------------------------------------
+
 Plug 'mhinz/vim-hugefile'
-" Hacker News
-Plug 'ryanss/vim-hackernews'
+
+" in MiB
+let g:hugefile_trigger_size = 1
+
+" -----------------------------------------------------
 " Man page viewer
+" -----------------------------------------------------
+
 Plug 'vim-utils/vim-man'
-" delete surrounding tags (dst)
-Plug 'tpope/vim-surround'
-" vim-scripts repos
-Plug 'vim-scripts/L9'
-Plug 'vim-scripts/FuzzyFinder'
-" todo.txt
+
+" -----------------------------------------------------
+" Hackernews reader
+" -----------------------------------------------------
+
+Plug 'ryanss/vim-hackernews'
+
+" -----------------------------------------------------
+" todo.txt helper
+" -----------------------------------------------------
+
 Plug 'freitass/todo.txt-vim'
-"  lldb integration
-" Plug 'gilligan/vim-lldb'        " BROKEN - doesn't set breakpoints properly; Doesn't stop at breakpoints when set manually with just line number and filename
-" Plug 'critiqjo/lldb.nvim'       " BROKEN - doesn't set breakpoints properly; Doesn't stop at breakpoints when set manually with just line number and filename
-" gdb integration
-" Plug 'pyclewn'                  " UI kind of broken - loads things into NERDTree.  May be worth a revisit, for example turning off NERDTree when running
-" Plug 'vim-scripts/Conque-GDB'   " Too simple - doesn't do much beyond a normal debugger
-" interactive debugger and its dependency for interactive command execution
-Plug 'Shougo/vimproc.vim'
-Plug 'idanarye/vim-vebugger'      " Only debugger that seems to work at all, but very shitty
-Plug 'lambdatoast/elm.vim'
+
+" -----------------------------------------------------
+" LLDB Debugging
+" -----------------------------------------------------
+
+" BROKEN - doesn't set breakpoints properly; Doesn't stop at breakpoints when set manually with just line number and filename
+if 0
+    Plug 'gilligan/vim-lldb'
+endif
+
+" BROKEN - doesn't set breakpoints properly; Doesn't stop at breakpoints when set manually with just line number and filename
+if 0
+    Plug 'critiqjo/lldb.nvim'
+endif
+
+" -----------------------------------------------------
+" GDB Debugging
+" -----------------------------------------------------
+
+" UI kind of broken - loads things into NERDTree.  May be worth a revisit, for example turning off NERDTree when running
+if 0
+    Plug 'pyclewn'
+endif
+" Too simple - doesn't do much beyond a normal debugger
+if 0
+    Plug 'vim-scripts/Conque-GDB'
+endif
+
+" Dependency for vim-vebugger
+Plug  'Shougo/vimproc.vim'
+" Only debugger that seems to work at all, but very shitty
+Plug 'idanarye/vim-vebugger'
+
+let g:vebugger_leader='<Leader>'
+
+" -----------------------------------------------------
 " Color Schemes
+" -----------------------------------------------------
+
 Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
 Plug 'snowcrshd/cyberpunk.vim'
@@ -187,15 +639,26 @@ Plug 'vim-scripts/phd'
 
 call plug#end()
 
+" ========================================================================================================
+" END OF PLUGIN SECTION
+" ========================================================================================================
+
 " -----------------------------------------------------
-" Setup
+" Color Scheme Config (Must be located AFTER plug#end()
 " -----------------------------------------------------
 
-if has("unix")
-  let s:uname = substitute(system("uname -s"), '\n', '', '')
-else
-  let s:uname = 'unknown'
+" let g:solarized_termcolors=256   " only needed if terminal is not solarized
+if $COLORTERM == 'gnome-terminal'
+    set t_Co=256
+elseif s:uname == 'Linux'
+    set t_Co=256
 endif
+try
+    " colorscheme solarized
+    colorscheme gruvbox
+catch /^Vim\%((\a\+)\)\=:E185/
+  " deal with it
+endtry
 
 " -----------------------------------------------------
 " Use UTF-8
@@ -228,7 +691,9 @@ filetype plugin indent on
 " Automatically set working directory to the folder of open file.
 " Helps with things like syntastic/pylint, which look in parent folders for rc
 " files
-set autochdir
+if expand('%:t') =~ '\.py$'
+    set autochdir
+endif
 
 " -----------------------------------------------------
 " Backspace settings
@@ -276,63 +741,20 @@ set noerrorbells
 " -----------------------------------------------------
 
 if s:uname == "Darwin"
-  nnoremap <Leader>o :exe ':silent !open %'<CR>
+    nnoremap <Leader>o :exe ':silent !open %'<CR>
 endif
 
 " FormatJSON to pretty print JSON
 com! FormatJSON %!python -m json.tool
 
 " -----------------------------------------------------
-" Huge file handling
-" -----------------------------------------------------
-
-" in MiB
-let g:hugefile_trigger_size = 1
-
-" -----------------------------------------------------
-" ctrl-p settings
-" -----------------------------------------------------
-
-" For projects with a ton of files
-let g:ctrlp_max_files=0
-
-" -----------------------------------------------------
-" Syntax Checking
-" -----------------------------------------------------
-
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-" let g:syntastic_debug = 1
-let g:syntastic_cpp_checkers = ['clang_check']
-" let g:syntastic_cpp_checkers = ['cppcheck']
-" let g:syntastic_cpp_checkers = ['gcc']
-" let g:syntastic_cpp_config_file = '.syntastic_cpp_config'
-let g:syntastic_javascript_checkers = ['eslint']
-"" Must specify full path, since vim's 'executable' doesn't work in hidden paths
-" let g:syntastic_javascript_eslint_exec = '~/.config/yarn/global/node_modules/.bin/eslint'
-let g:syntastic_javascript_eslint_args = '--quiet'
-let g:syntastic_html_tidy_exec = 'tidy5 config ~/tidy-config.txt'
-let g:syntastic_html_tidy_ignore_errors = ['discarding unexpected <', '> is not recognized']
-let g:syntastic_html_checkers = ['tidy', 'eslint']
-"" Must specify full path, since vim's 'executable' doesn't work in hidden paths
-"let g:syntastic_html_eslint_exec = '~/.config/yarn/global/node_modules/.bin/eslint'
-let g:syntastic_html_eslint_args = '--quiet'
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_pylint_post_args="--max-line-length=80"
-
-" -----------------------------------------------------
 " Special syntax highlighting
 " -----------------------------------------------------
 
 fun! UpdateFileTypes()
-  if expand('%:t') =~ '\.clang-format'
-    set ft=yaml
-  endif
+    if expand('%:t') =~ '\.clang-format'
+        set ft=yaml
+    endif
 endfun
 
 autocmd BufEnter * call UpdateFileTypes()
@@ -342,28 +764,31 @@ autocmd BufEnter * call UpdateFileTypes()
 " -----------------------------------------------------
 
 fun! ShowLineLengthBoundary()
-  highlight OverLength ctermbg=52 guibg=#592929
-  " Don't highlight on these filetypes
-  if &ft =~ 'markdown\|text\|bash\|sh'
-    return
-  elseif expand('%:t') !~ '\.'
-    " No file extension
-    return
-  elseif expand('%:t') =~ '\.vimrc$'
-    return
-  elseif expand('%:t') =~ '\.org$'
-    return
-  elseif expand('%:t') =~ '\.json$'
-    return
-  elseif expand('%:t') =~ '\.cpp$' || expand('%:t') =~ '\.cc$' || expand('%:t') =~ '\.hpp$' || expand('%:t') =~ '\.h$'
-    call matchadd('OverLength', '\%>80v.\+')
-  else
-    call matchadd('OverLength', '\%>120v.\+')
-  endif
+    highlight OverLength ctermbg=52 guibg=#592929
+    " Don't highlight on these filetypes
+    if &ft =~ 'markdown\|text\|bash\|sh'
+        return
+    elseif expand('%:t') !~ '\.'
+        " No file extension
+        return
+    elseif expand('%:t') =~ '\.vimrc$'
+        return
+    elseif expand('%:t') =~ '\.org$'
+        return
+    elseif expand('%:t') =~ '\.json$'
+        return
+    elseif expand('%:t') =~ '\.cpp$' || expand('%:t') =~ '\.cc$' || expand('%:t') =~ '\.hpp$' || expand('%:t') =~ '\.h$' || expand('%:t') =~ '\.py$'
+        call matchadd('OverLength', '\%>80v.\+')
+    elseif expand('%:t') =~ '\.js$' || expand('%:t') =~ '\.ts$' || expand('%:t') =~ '\.html$'
+        call matchadd('OverLength', '\%>120v.\+')
+    " " No longer default to 120
+    " else
+    "    call matchadd('OverLength', '\%>120v.\+')
+    endif
 endfun
 
 augroup vimrc_autocmds
-  autocmd BufEnter * call ShowLineLengthBoundary()
+    autocmd BufEnter * call ShowLineLengthBoundary()
 augroup END
 
 " -----------------------------------------------------
@@ -373,22 +798,6 @@ augroup END
 setlocal spell spelllang=en_us
 autocmd BufRead,BufNewFile *.txt setlocal spell
 autocmd BufRead,BufNewFile *.md setlocal spell
-
-" -----------------------------------------------------
-" Color scheme
-" -----------------------------------------------------
-" let g:solarized_termcolors=256   " only needed if terminal is not solarized
-if $COLORTERM == 'gnome-terminal'
-  set t_Co=256
-elseif s:uname == 'Linux'
-  set t_Co=256
-endif
-try
-  " colorscheme solarized
-  colorscheme gruvbox
-catch /^Vim\%((\a\+)\)\=:E185/
-  " deal with it
-endtry
 
 " -----------------------------------------------------
 " Fold settings
@@ -416,9 +825,9 @@ let g:vim_markdown_folding_disabled=1
 " -----------------------------------------------------
 
 fun! TrimTrailingWhitespace()
-  if &ft =~ 'javascript\|html\|jade\|json\|css\|less\|php\|python\|sh\|c\|cpp\|markdown\|yaml\|vim'
-    :%s/\s\+$//e
-  endif
+    if &ft =~ 'javascript\|html\|jade\|json\|css\|less\|php\|python\|sh\|c\|cpp\|markdown\|yaml\|vim'
+        :%s/\s\+$//e
+    endif
 endfun
 
 augroup vimrc_autocmds
@@ -442,12 +851,6 @@ autocmd BufEnter * highlight ExtraTabs ctermbg=red guibg=red
 autocmd BufEnter * call matchadd('ExtraTabs', '\t\+')
 
 " -----------------------------------------------------
-" tags settings
-" -----------------------------------------------------
-
-set tags=./tags;,tags;./TAGS;,TAGS;
-
-" -----------------------------------------------------
 " cscope settings
 " -----------------------------------------------------
 
@@ -466,372 +869,17 @@ if has("cscope")
 endif
 
 " -----------------------------------------------------
-" Vimdiff settings
-" -----------------------------------------------------
-
-" set colors
-" cterm - style, cterfg - text color, ctermbg - highlighting
-" DiffAdd - added line
-" highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-highlight DiffAdd    cterm=bold ctermfg=15 ctermbg=22 gui=none guifg=bg guibg=Red
-" DiffDelete - removed line
-" highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-highlight DiffDelete cterm=bold ctermfg=15 ctermbg=52 gui=none guifg=bg guibg=Red
-" DiffChange - changed line
-" highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-highlight DiffChange cterm=bold ctermfg=223 ctermbg=239 gui=none guifg=bg guibg=Red
-" DiffText - part of line that changed
-" highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
-highlight DiffText   cterm=bold ctermfg=15 ctermbg=124 gui=none guifg=bg guibg=Red
-
-set diffexpr=MyDiff()
-function MyDiff()
-  let opt = ""
-  if &diffopt =~ "icase"
-    let opt = opt . "-i "
-  endif
-  if &diffopt =~ "iwhite"
-    let opt = opt . "-b "
-  endif
-  silent execute "!diff -d -a --binary " . opt . v:fname_in . " " . v:fname_new . " > " . v:fname_out
-endfunction
-
-if &diff
-  function! CheckDiff()
-    if &modified
-      diffupdate
-    endif
-  endfunction
-
-  autocmd CursorMoved * call CheckDiff()
-endif
-
-" -----------------------------------------------------
-" Sessions
-" -----------------------------------------------------
-
-" Look into: http://vim.wikia.com/wiki/Go_away_and_come_back
-" Look into: http://vim.wikia.com/wiki/Automatic_session_restore_in_git_directories
-
-" -----------------------------------------------------
-" Startify
-" -----------------------------------------------------
-
-" -------------------------------
-" let g:startify_session_autoload = 1
-" " let g:startify_session_before_save = [
-" "     \ 'echo "Cleaning up before saving.."',
-" "     \ 'silent! NERDTreeTabsClose'
-" "     \ ]
-" autocmd VimEnter *
-"             \   if !argc()
-"             \ |   Startify
-"             \ |   NERDTree
-"             \ |   wincmd w
-"             \ | endif
-" let g:startify_session_persistence = 1
-" let g:startify_change_to_vcs_root = 1
-" let NERDTreeHijackNetrw = 0
-
-" -----------------------------------------------------
-" Tmux Navigator
-" -----------------------------------------------------
-
-if has('nvim') && s:uname == "Darwin"
-  " for some reason nvim doesn't map ctrl-h properly
-  nmap <bs> :<c-u>TmuxNavigateLeft<cr>
-endif
-
-" -----------------------------------------------------
-" DelimitMate settings
-" -----------------------------------------------------
-
-" " This expands a carriage return into two, but doesn't always behave as expected
-" let delimitMate_expand_cr = 2
-
-" -----------------------------------------------------
-" JSHint
-" -----------------------------------------------------
-
-" Run JSHint on save
-" au BufWritePost *.js :JSHint
-
-" -----------------------------------------------------
-" command-t
-" -----------------------------------------------------
-
-let g:CommandTNeverShowDotFiles = 1
-let g:CommandTScanDotDirectories = 0
-
-" -----------------------------------------------------
-" YouCompleteMe
-" -----------------------------------------------------
-
-" These are the tweaks I apply to YCM's config, you don't need them but they might help.
-" YCM gives you popups and splits by default that some people might not like, so these should tidy it up a bit for you.
-" let g:ycm_add_preview_to_completeopt=0
-
-" Don't prompt to load ycm conf
-let g:ycm_confirm_extra_conf = 0
-" Default conf
-" let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-" let g:ycm_collect_identifiers_from_tags_files = 1
-
-" Disable for C++ so that clang_completer can kick in.
-" YCM seems slow for clang completion, and also includes a lot more cruft in
-" autocomplete popup
-let g:ycm_filetype_blacklist = { 'cpp': 1, 'c': 1 }
-" Let syntastic handle c/c++ errors rather than YCM
-let g:ycm_show_diagnostics_ui = 0
-
-" -----------------------------------------------------
-" clang_complete
-" -----------------------------------------------------
-
-if s:uname == "Linux"
-  let g:clang_library_path='/usr/lib/llvm-3.8/lib'
-elseif s:uname == "Darwin"
-  let cmd = "brew list llvm | sed -n 1p | sed 's/^\\(.*\\/llvm\\/[^/]*\\).*$/\\1/'"
-  let g:clang_library_path = substitute(system(cmd), '\n\+$', '', '') . '/lib'
-endif
-let g:clang_auto_select = 1
-" Complete macros
-let g:clang_complete_macros = 1
-" Complete code constructs like loops
-let g:clang_complete_patterns = 1
-let g:clang_snippets = 1
-let g:clang_conceal_snippets=1
-let g:clang_snippets_engine = 'ultisnips'
-
-" -----------------------------------------------------
-" general completion settings
-" -----------------------------------------------------
-
-" The following two settings properly select argument completion
-set concealcursor=vin
-" Don't open preview window
-set completeopt-=preview
-" Popup menu height
-set pumheight=20
-"" Hides certain bits of text, like quotes in json files and brackets in markdown links
-" set conceallevel=2
-
-" -----------------------------------------------------
-" UltiSnips
-" -----------------------------------------------------
-
-let g:UltiSnipsExpandTrigger="<tab>"
-" let g:UltiSnipsJumpForwardTrigger="<tab>"
-" let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-
-" -----------------------------------------------------
-" gitgutter
-" -----------------------------------------------------
-
-if exists(":GitGutterLineHighlightsEnable")
-  autocmd VimEnter * GitGutterLineHighlightsEnable
-endif
-
-" compare against last ancestor commit before branch
-let g:gitgutter_diff_args = "`git merge-base HEAD master`"
-
-highlight GitGutterAddLine ctermbg=17
-highlight GitGutterChangeLine ctermbg=237
-" GitGutterDeleteLine       " default: links to DiffDelete
-" GitGutterChangeDeleteLine " default: links to GitGutterChangeLineDefault, i.e. DiffChange
-
-" " gitgutter solarized adjustments
-" highlight clear SignColumn
-" highlight link SignColumn CursorColumn
-
-" -----------------------------------------------------
-" signify
-" -----------------------------------------------------
-
-let g:signify_vcs_cmds = {
-  \ 'git': 'git diff --no-color --no-ext-diff -U0 master -- %f'
-  \ }
-
-highlight SignColumn ctermbg=237
-
-" -----------------------------------------------------
-" tagbar config
-" -----------------------------------------------------
-
-" open Tagbar for supported files
-" autocmd BufEnter * nested :call tagbar#autoopen(0)
-
-let g:tagbar_width = 31
-nnoremap <leader>c :TagbarToggle<CR>
-
-" configure tags for javascript
-" let g:tagbar_ctags_bin = '~/node_modules/.bin/jsctags'
-" let g:tagbar_type_javascript = { 'ctagsbin' : '~/node_modules/.bin/jsctags' }
-" let g:tagbar_type_javascript = { 'ctagsbin' : '/Users/erahhal/node_modules/jsctags/bin/jsctags.js' }
-
-" autocmd FileType c,cpp,python,javascript,bash,sh,vim nested :TagbarOpen
-
-" -----------------------------------------------------
-" NERDTree config
-" -----------------------------------------------------
-
-" Start NERDTreeTabs on launch
-autocmd vimenter * NERDTree
-let g:nerdtree_tabs_open_on_console_startup = 1
-" Show hidden files
-let NERDTreeShowHidden=1
-" Make sure focus is on buffer
-autocmd VimEnter * wincmd p
-nmap ,n :NERDTreeFind<CR>
-nmap ,m :NERDTreeToggle<CR>
-
-" -----------------------------------------------------
-" Ack config
-" -----------------------------------------------------
-
-if s:uname == "Linux"
-  let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-elseif s:uname == "Darwin"
-  let g:ackprg="ack -H -s --nocolor --nogroup --column"
-endif
-
-" -----------------------------------------------------
-" mustache config
-" -----------------------------------------------------
-
-let g:mustache_abbreviations = 1
-
-" -----------------------------------------------------
 " Remember the last cursor location across sessions
 " -----------------------------------------------------
 
 function! ResCur()
-  if line("'\"") <= line("$")
-    normal! g`"
-    return 1
-  endif
+    if line("'\"") <= line("$")
+        normal! g`"
+        return 1
+    endif
 endfunction
 
 augroup resCur
-  autocmd!
-  autocmd BufWinEnter * call ResCur()
+    autocmd!
+    autocmd BufWinEnter * call ResCur()
 augroup END
-
-" -----------------------------------------------------
-"  Vebugger
-" -----------------------------------------------------
-
-let g:vebugger_leader='<Leader>'
-
-" -----------------------------------------------------
-"  Org Mode (vim-orgmode)
-" -----------------------------------------------------
-
-" let g:org_heading_highlight_colors = ['Title', 'Constant', 'Identifier', 'Statement', 'PreProc', 'Type', 'Special']
-" " Enabling reverting back to solarized causes a load flicker for every file that is loaded
-" " autocmd BufEnter *.org colorscheme solarized
-" autocmd BufEnter *.org colorscheme srcery
-" autocmd BufEnter *.org highlight Folded cterm=bold gui=bold
-" let g:org_agenda_files=["~/ownCloud/Ellis' Stuff/Documents/agenda.org"]
-
-" -----------------------------------------------------
-"  Org Mode (VimOrganizer)
-" -----------------------------------------------------
-" Keybindings
-" https://github.com/hsitz/VimOrganizer/blob/master/doc/vimorg.txt
-" <enter>   new item
-" <tab>     expand/collapse
-" >>        indent
-" <<        unindent
-" ,m        mark/unmark (selection)
-" <,        Move heading tree up
-" >.        Move headng tree down
-" ,dd       enter DEADLINE date for headline
-" ,ds       enter SCHEDULED date for headline
-" ,dc       enter CLOSED date for headline
-" ,dt       enter timestamp date (i.e., no indicator) for headline
-" ,dg       set date at cursor
-" ,r        refile
-" ,le       add link
-" ,ln       next link
-" ,lp       previous link
-
-let g:agenda_files=["~/ownCloud/Ellis' Stuff/Documents/agenda.org"]
-au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
-au BufEnter *.org call org#SetOrgFileType()
-command! OrgCapture :call org#CaptureBuffer()
-command! OrgCaptureFile :call org#OpenCaptureFile()
-let g:org_todo_setup='TODO WAITING | DONE'
-
-function! OrgCustomColors()
-  "hi Folded ctermfg=255 ctermbg=017
-  hi Folded ctermfg=255 ctermbg=000
-  " various Org syntax item highlighting statements below
-  " are the current defaults.  Uncomment and edit a line if you
-  " want different highlighting for the element.
-
-  " Below are defaults for any TODOS you define.  TODOS that
-  " come before the | in a definition will use  'NOTDONETODO'
-  " and those that come after are DONETODO
-  hi! DONETODO guifg=green ctermfg=green
-  hi! NOTDONETODO guifg=red ctermfg=lightred
-
-  " Heading level highlighting is done in pairs, one for the
-  " heading when unfolded and one for folded.  Default is to make
-  " them the same except for the folded version being bold:
-  " assign OL1 pair for level 1, OL2 pair for level 2, etc.
-  "hi! OL1 guifg=somecolor guibg=somecolor
-  "hi! OL1Folded guifg=somecolor guibg=somecolor gui=bold
-
-
-  " Tags are lines below headings that have :colon:separated:tags:
-  "hi! Org_Tag guifg=lightgreen ctermfg=blue
-
-  "  Lines that begin with '#+' in column 0 are config lines
-  "hi! Org_Config_Line guifg=darkgray ctermfg=magenta
-
-  " Drawers are :PROPERTIES: and :LOGBOOK: lines and their associated
-  " :END: lines
-  "hi! Org_Drawer guifg=pink ctermfg=magenta
-  "hi! Org_Drawer_Folded guifg=pink ctermfg=magenta gui=bold cterm=bold
-
-  " This applies to value names in :PROPERTIES: blocks
-  "hi! Org_Property_Value guifg=pink ctermfg=magenta
-
-  " Three lines below apply to different kinds of blocks
-  "hi! Org_Block guifg=#555555 ctermfg=magenta
-  "hi! Org_Src_Block guifg=#555555 ctermfg=magenta
-  "hi! Org_Table guifg=#888888 guibg=#333333 ctermfg=magenta
-
-  " Dates are date specs between angle brackets (<>) or square brackets ([])
-  "hi! Org_Date guifg=magenta ctermfg=magenta gui=underline cterm=underline
-
-  " Org_Star is used to "hide" initial asterisks in a heading
-  hi! Org_Star guifg=bg ctermfg=bg
-
-  "hi! Props guifg=#ffa0a0 ctermfg=gray
-
-  " Bold, italics, underline, and code are highlights applied
-  " to character formatting
-  "hi! Org_Code guifg=darkgray gui=bold ctermfg=14
-  "hi! Org_Itals gui=italic guifg=#aaaaaa ctermfg=lightgray
-  "hi! Org_Bold gui=bold guifg=#aaaaaa ctermfg=lightgray
-  "hi! Org_Underline gui=underline guifg=#aaaaaa ctermfg=lightgray
-  "hi! Org_Lnumber guifg=#999999 ctermfg=gray
-
-  " These lines apply to links: [[link]], and [[link][link desc]]
-  "if has("conceal")
-  "    hi! default linkends guifg=blue ctermfg=blue
-  "endif
-  "hi! Org_Full_Link guifg=cyan gui=underline ctermfg=lightblue cterm=underline
-  "hi! Org_Half_Link guifg=cyan gui=underline ctermfg=lightblue cterm=underline
-
-  "  Applies to the Heading line that can be displayed in column view
-  "highlight OrgColumnHeadings guibg=#444444 guifg=#aaaaaa gui=underline
-endfunction
-
-" -----------------------------------------------------
-"  Vimwiki
-" -----------------------------------------------------
-
-let g:vimwiki_list = [{'path': '~/Documents/ellis/wiki/', 'index': 'index'}]
