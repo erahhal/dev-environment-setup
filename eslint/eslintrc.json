@@ -11,8 +11,8 @@
   ],
   "rules": {
     "brace-style": "off",
+    "arrow-parens": ["error", "always"],
     "new-cap": ["error", { "capIsNewExceptions": ["Polymer"] }],
-    "no-var": "off",
     "require-jsdoc": "off",
     "indent": ["error", 4, {
       "SwitchCase": 1

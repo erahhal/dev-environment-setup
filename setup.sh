@@ -74,6 +74,10 @@ if [ $(realpath "$DIR/bash/screenrc") != $(realpath ~/.screenrc) ]; then
   mv ~/.screenrc ~/.screenrc.orig
   ln -s $DIR/bash/screenrc ~/.screenrc
 fi
+if [ $(realpath "$DIR/eslint/eslintrc.json") != $(realpath ~/.eslintrc.json) ]; then
+  mv ~/.eslintrc.json ~/.eslintrc.json.orig
+  ln -s $DIR/eslint/eslintrc.json ~/.eslintrc.json
+fi
 if [ $(realpath "$DIR/bash/tmux.conf") != $(realpath ~/.tmux.conf) ]; then
   mv ~/.tmux.conf ~/.tmux.conf.orig
   ln -s $DIR/bash/tmux.conf ~/.tmux.conf

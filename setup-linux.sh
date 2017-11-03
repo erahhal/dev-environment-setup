@@ -84,6 +84,7 @@ if hash apt-get 2>/dev/null; then
   # sudo apt-get install -y xubuntu-desktop
   # sudo apt remove --purge -y ubuntu-desktop
 
+  # Google pinyin input
   sudo apt-get install -y fcitx fcitx-googlepinyin fcitx-table-wbpy fcitx-pinyin fcitx-sunpinyin
   sudo apt-get install -y choqok
   sudo apt-get install -y neovim
@@ -130,6 +131,18 @@ else
   echo "Unknown distribution"
   exit 1
 fi
+
+# Android
+sudo add-apt-repository -y ppa:paolorotolo/android-studio
+sudo apt-get update -y
+sudo apt-get install -y libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
+sudo apt-get install -y android-tools-adb
+sudo ln -sf /lib/udev/rules.d/70-android-tools-adb.rules /etc/udev/rules.d/
+sudo ln -sf $DIR/android/70-onepluse3.rules /etc/udev/rules.d/
+sudo udevadm control --reload-rules
+sudo service udev restart
+sudo adb kill-server
+
 
 # Syncthing
 systemctl --user enable syncthing.service

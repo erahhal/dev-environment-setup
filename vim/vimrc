@@ -1,5 +1,52 @@
 " -----------------------------------------------------
-" Initial Setup
+" Notes
+" -----------------------------------------------------
+
+" :help     - Help for VIM
+" ctrl-]    - Go to section in VIM help
+"
+" Motion
+" --------
+" http://vimdoc.sourceforge.net/htmldoc/motion.html
+"
+" ~         - Swap case
+" g~        - Swap case for <modifier>
+" gu        - Lower case
+" gU        - Upper case
+" %         - Move to matching item for bracket under or after cursor.
+" [(        - go to [count] previous unmatched '('.
+" [{        - go to [count] previous unmatched '{'.
+" ])        - go to [count] next unmatched ')'.
+" ]}        - go to [count] next unmatched '}'.
+" )         - go [count] sentences forward.
+" (         - go [count] sentences backward.
+" }         - go [count] paragraphs forward.
+" {         - go [count] paragraphs backward.
+" ]]        - [count] sections forward or to the next '{' in the first column.
+" ][        - [count] sections forward or to the next '}' in the first column.
+" [[        - [count] sections backward or to the previous '{' in the first column.
+" []        - [count] sections backward or to the previous '}' in the first column.
+" ]m        - Go to [count] next start of a method (for Java or similar structured language)
+" ]M        - Go to [count] next end of a method (for Java or similar structured language)
+" [m        - Go to [count] previous start of a method (for Java or similar structured language)
+" [M        - Go to [count] previous end of a method (for Java or similar structured language)
+" [* or [/  - go to [count] previous start of a C comment "/*".
+" ]* or ]/  - go to [count] next end of a C comment "*/".
+" m{a-zA-Z} - Set mark {a-zA-Z} at cursor position
+" '{a-zA-Z} - Jump to mark
+" m' or m`  - Set the previous context mark.
+" '' or ''  - Jump to previous context mark.
+" H         - Jump to top of window.
+" M         - Jump to middle of window.
+" L         - Jump to bottom of window.
+" zz        - recenter window.
+
+" =====================================================
+" SECTION: Vanilla VIM Settings
+" =====================================================
+
+" -----------------------------------------------------
+" OS Detection
 " -----------------------------------------------------
 
 if has("unix")
@@ -8,9 +55,254 @@ else
     let s:uname = 'unknown'
 endif
 
-" ========================================================================================================
-" SECTION: PLUGINS AND SETTINGS
-" ========================================================================================================
+" -----------------------------------------------------
+" Use UTF-8
+" -----------------------------------------------------
+
+set fencs=ucs-bom
+set enc=utf-8
+
+" -----------------------------------------------------
+" General settings
+" -----------------------------------------------------
+
+let mapleader=" "               " Set leader
+let maplocalleader=" "          " Set local leader
+set nocompatible                " Be iMproved
+set exrc                        " enable per-directory .vimrc files
+set secure                      " disable unsafe commands in local .vimrc files
+set pastetoggle=<F10>           " use F10 to disable and enable all indentation options
+set clipboard=unnamedplus       " Set system clipboard as default"
+set viminfo='20,<1000,s1000     " increase copy and paste buffer size
+set mouse=a                     " enable mouse support in xterm
+if 0
+    set scrolloff=999             " always keep the cursor vertically centered
+endif
+
+" - enables filetype detection,
+" - enables filetype-specific scripts (ftplugins),
+" - enables filetype-specific indent scripts.
+" Things like ctrl-w ctrl-] won't find custom ctag files without this
+filetype plugin indent on
+
+" Automatically set working directory to the folder of open file.
+" Helps with things like syntastic/pylint, which look in parent folders for rc
+" files
+if expand('%:t') =~ '\.py$'
+    set autochdir
+endif
+
+" -----------------------------------------------------
+" Backspace settings
+"   indent  allow backspacing over autoindent
+"   eol     allow backspacing over line breaks (join lines)
+"   start   allow backspacing over the start of insert; CTRL-W and CTRL-U
+"   0     same as ":set backspace=" (Vi compatible)
+"   1     same as ":set backspace=indent,eol"
+"   2     same as ":set backspace=indent,eol,start"
+" -----------------------------------------------------
+
+set bs=2
+
+" -----------------------------------------------------
+" Indentation  settings
+" -----------------------------------------------------
+
+set tabstop=4       " number of spaces a tab counts for
+set shiftwidth=4    " control how many columns text is indented with the reindent operations (<< and >>) and automatic C-style indentation.
+set expandtab       " Insert spaces when entering <Tab>
+set softtabstop=4   " Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>.  It "feels" like a tab though
+set ai              " auto indent
+
+" Indentation per file type
+au FileType javascript setl ts=4 sw=4 sts=4
+au FileType python setl ts=4 sw=4 sts=4
+au FileType cpp setl ts=4 sw=4 sts=4
+au FileType hpp setl ts=4 sw=4 sts=4
+
+" -----------------------------------------------------
+" Look and feel
+" -----------------------------------------------------
+
+syn on            " syntax highlighting
+set bg=dark       " set colors for dark background
+" set termguicolors " true color
+set nonumber      " don't display row numbers
+set ruler         " display ruler
+set vb t_vb=      " visual bell
+set visualbell
+set noerrorbells
+
+" -----------------------------------------------------
+" External commands
+" -----------------------------------------------------
+
+if s:uname == "Darwin"
+    nnoremap <Leader>o :exe ':silent !open %'<CR>
+endif
+
+" FormatJSON to pretty print JSON
+com! FormatJSON %!python -m json.tool
+
+" -----------------------------------------------------
+" Special syntax highlighting
+" -----------------------------------------------------
+
+fun! UpdateFileTypes()
+    if expand('%:t') =~ '\.clang-format'
+        set ft=yaml
+    endif
+endfun
+
+autocmd BufEnter * call UpdateFileTypes()
+
+" -----------------------------------------------------
+" Line length highlight
+" -----------------------------------------------------
+
+fun! ShowLineLengthBoundary()
+    if exists('w:overlength')
+        call matchdelete(w:overlength)
+        unlet w:overlength
+    endif
+    highlight OverLength ctermbg=52 guibg=#592929
+    " Don't highlight on these filetypes
+    if &ft =~ 'markdown\|text\|bash\|sh'
+    elseif expand('%:t') !~ '\.'
+        return
+    elseif expand('%:t') =~ '\.vimrc$'
+        return
+    elseif expand('%:t') =~ '\.org$'
+        return
+    elseif expand('%:t') =~ '\.json$'
+        return
+    elseif expand('%:t') =~ '\.cpp$' || expand('%:t') =~ '\.cc$' || expand('%:t') =~ '\.hpp$' || expand('%:t') =~ '\.h$' || expand('%:t') =~ '\.py$'
+        let w:overlength = matchadd('OverLength', '\%>80v.\+')
+    elseif expand('%:t') =~ '\.js$' || expand('%:t') =~ '\.ts$' || expand('%:t') =~ '\.html$'
+        let w:overlength = matchadd('OverLength', '\%>120v.\+')
+    " " No longer default to 120
+    " else
+    "    let w:overlength = matchadd('OverLength', '\%>120v.\+')
+    endif
+endfun
+
+augroup vimrc_autocmds
+    autocmd BufEnter * call ShowLineLengthBoundary()
+augroup END
+
+" -----------------------------------------------------
+" Spell checking
+" -----------------------------------------------------
+
+setlocal spell spelllang=en_us
+autocmd BufRead,BufNewFile *.txt setlocal spell
+autocmd BufRead,BufNewFile *.md setlocal spell
+
+" -----------------------------------------------------
+" Fold settings
+"
+"   fdm:
+"     manual     Folds are created manually.
+"     indent     Lines with equal indent form a fold.
+"     expr       'foldexpr' gives the fold level of a line.
+"     marker     Markers are used to specify folds.
+"     syntax     Syntax highlighting items specify folds.
+"     diff       Fold text that is not changed.
+" -----------------------------------------------------
+
+set fdm=marker
+hi Folded ctermfg=255 ctermbg=23
+"set foldmethod=indent
+"set foldlevelstart=0
+" javascript folding doesn't work very well with several levels of nested anonymous functions
+"let javaScript_fold=1         " JavaScript
+"let php_folding=1             " PHP
+let g:vim_markdown_folding_disabled=1
+
+" -----------------------------------------------------
+" Remove trailing whitespace from certain file types
+" -----------------------------------------------------
+
+fun! TrimTrailingWhitespace()
+    if &ft =~ 'javascript\|html\|jade\|json\|css\|less\|php\|python\|sh\|c\|cpp\|markdown\|yaml\|vim'
+        :%s/\s\+$//e
+    endif
+endfun
+
+augroup vimrc_autocmds
+  autocmd BufWritePre * call TrimTrailingWhitespace()
+augroup END
+
+" -----------------------------------------------------
+" Highlight unwanted text
+" -----------------------------------------------------
+"
+" can't use "match" keyword directly as each usage overwrites the previous one,
+" so use matchadd function, which can be called as much as needed
+
+" Highlight trailing whitespace
+autocmd BufEnter * highlight ExtraWhitespace ctermbg=red guibg=red
+" TODO: This doesn't seem to highlight spaces after # comments in yaml files...
+autocmd BufEnter * call matchadd('ExtraWhitespace', '\s\+$')
+
+fun! ShowExtraTabs()
+    if exists('w:extratabs')
+        call matchdelete(w:extratabs)
+        unlet w:extratabs
+    endif
+    highlight ExtraTabs ctermbg=red guibg=red
+    if expand('%:t') =~ '\.txt$'
+        return
+    else
+        let w:extratabs=matchadd('ExtraTabs', '\t\+')
+    endif
+endfun
+
+augroup vimrc_autocmds
+    autocmd BufEnter * call ShowExtraTabs()
+augroup END
+
+" Highlight tabs
+" autocmd BufEnter * highlight ExtraTabs ctermbg=red guibg=red
+" autocmd BufEnter * call matchadd('ExtraTabs', '\t\+')
+
+" -----------------------------------------------------
+" cscope settings
+" -----------------------------------------------------
+
+if has("cscope")
+    set csprg=cscope
+    set csto=0
+    set cst
+    set nocsverb
+    " add any database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+        " else add database pointed to by environment
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+endif
+
+" -----------------------------------------------------
+" Remember the last cursor location across sessions
+" -----------------------------------------------------
+
+function! ResCur()
+    if line("'\"") <= line("$")
+        normal! g`"
+        return 1
+    endif
+endfunction
+
+augroup resCur
+    autocmd!
+    autocmd BufWinEnter * call ResCur()
+augroup END
+
+" =====================================================
+" SECTION: PLUGINS AND THEIR SETTINGS
+" =====================================================
 
 call plug#begin('~/.vim/bundle')
 
@@ -151,6 +443,8 @@ Plug 'vim-scripts/AutoComplPop'
 Plug 'Shougo/deoplete.nvim'
 " tern js plugin for deoplete
 Plug 'carlitux/deoplete-ternjs'
+" Better javascript completion
+Plug 'marijnh/tern_for_vim'
 
 " Too many issues
 if 0
@@ -158,8 +452,6 @@ if 0
     " YouCompleteMe
     " -----------------------------------------------------
     Plug 'Valloric/YouCompleteMe'
-    " Better completion with YouCompleteMe
-    Plug 'marijnh/tern_for_vim'
 
     " These are the tweaks I apply to YCM's config, you don't need them but they might help.
     " YCM gives you popups and splits by default that some people might not like, so these should tidy it up a bit for you.
@@ -353,6 +645,9 @@ let g:ale_cpp_clang_options = '$(get-compile-options .clang_complete)'
 " This defaults to "normal", which doesn't lint on change for heavy things like clang
 let g:ale_link_on_text_changed = 'always'
 
+nmap <silent> ,k <Plug>(ale_previous_wrap)
+nmap <silent> ,j <Plug>(ale_next_wrap)
+
 " Syntastic is not asynchronous
 if 0
     Plug 'scrooloose/syntastic'
@@ -400,7 +695,15 @@ endif
 Plug 'hlissner/vim-multiedit'
 
 " Quickly navigate around a file
+" <leader><leader>w - jump to any word
+" <leader><leader>f<char> - jump to character
+" <leader><leader>j - jump to lines below
+" <leader><leader>k - jump to lines above
 Plug 'Lokaltog/vim-easymotion'
+
+Plug 'haya14busa/vim-easyoperator-line'
+
+Plug 'haya14busa/vim-easyoperator-phrase'
 
 " -----------------------------------------------------
 " Tmux integration
@@ -646,10 +949,6 @@ Plug 'vim-scripts/phd'
 
 call plug#end()
 
-" ========================================================================================================
-" END OF PLUGIN SECTION
-" ========================================================================================================
-
 " -----------------------------------------------------
 " Color Scheme Config (Must be located AFTER plug#end()
 " -----------------------------------------------------
@@ -667,226 +966,6 @@ catch /^Vim\%((\a\+)\)\=:E185/
   " deal with it
 endtry
 
-" -----------------------------------------------------
-" Use UTF-8
-" -----------------------------------------------------
-set fencs=ucs-bom
-set enc=utf-8
-
-" -----------------------------------------------------
-" General settings
-" -----------------------------------------------------
-
-set nocompatible     " Be iMproved
-set exrc             " enable per-directory .vimrc files
-set secure           " disable unsafe commands in local .vimrc files
-set pastetoggle=<F10> " use F10 to disable and enable all indentation options
-set clipboard=unnamedplus " Set system clipboard as default"
-set viminfo='20,<1000,s1000 " increase copy and paste buffer size
-set mouse=a          " enable mouse support in xterm
-" Enable scrolloff to always keep the cursor vertically centered
-" set scrolloff=999
-let mapleader=" "
-let maplocalleader=" "
-
-" - enables filetype detection,
-" - enables filetype-specific scripts (ftplugins),
-" - enables filetype-specific indent scripts.
-" Things like ctrl-w ctrl-] won't find custom ctag files without this
-filetype plugin indent on
-
-" Automatically set working directory to the folder of open file.
-" Helps with things like syntastic/pylint, which look in parent folders for rc
-" files
-if expand('%:t') =~ '\.py$'
-    set autochdir
-endif
-
-" -----------------------------------------------------
-" Backspace settings
-"   indent  allow backspacing over autoindent
-"   eol     allow backspacing over line breaks (join lines)
-"   start   allow backspacing over the start of insert; CTRL-W and CTRL-U
-"   0     same as ":set backspace=" (Vi compatible)
-"   1     same as ":set backspace=indent,eol"
-"   2     same as ":set backspace=indent,eol,start"
-" -----------------------------------------------------
-
-set bs=2
-
-" -----------------------------------------------------
-" Indentation  settings
-" -----------------------------------------------------
-
-set tabstop=2       " number of spaces a tab counts for
-set shiftwidth=2    " control how many columns text is indented with the reindent operations (<< and >>) and automatic C-style indentation.
-set expandtab       " Insert spaces when entering <Tab>
-set softtabstop=2   " Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>.  It "feels" like a tab though
-set ai              " auto indent
-
-" Indentation per file type
-au FileType javascript setl ts=4 sw=4 sts=4
-au FileType python setl ts=4 sw=4 sts=4
-au FileType cpp setl ts=4 sw=4 sts=4
-au FileType hpp setl ts=4 sw=4 sts=4
-
-" -----------------------------------------------------
-" Look and feel
-" -----------------------------------------------------
-
-syn on            " syntax highlighting
-set bg=dark       " set colors for dark background
-" set termguicolors " true color
-set nonumber      " don't display row numbers
-set ruler         " display ruler
-set vb t_vb=      " visual bell
-set visualbell
-set noerrorbells
-
-" -----------------------------------------------------
-" External commands
-" -----------------------------------------------------
-
-if s:uname == "Darwin"
-    nnoremap <Leader>o :exe ':silent !open %'<CR>
-endif
-
-" FormatJSON to pretty print JSON
-com! FormatJSON %!python -m json.tool
-
-" -----------------------------------------------------
-" Special syntax highlighting
-" -----------------------------------------------------
-
-fun! UpdateFileTypes()
-    if expand('%:t') =~ '\.clang-format'
-        set ft=yaml
-    endif
-endfun
-
-autocmd BufEnter * call UpdateFileTypes()
-
-" -----------------------------------------------------
-" Line length highlight
-" -----------------------------------------------------
-
-fun! ShowLineLengthBoundary()
-    highlight OverLength ctermbg=52 guibg=#592929
-    " Don't highlight on these filetypes
-    if &ft =~ 'markdown\|text\|bash\|sh'
-        return
-    elseif expand('%:t') !~ '\.'
-        " No file extension
-        return
-    elseif expand('%:t') =~ '\.vimrc$'
-        return
-    elseif expand('%:t') =~ '\.org$'
-        return
-    elseif expand('%:t') =~ '\.json$'
-        return
-    elseif expand('%:t') =~ '\.cpp$' || expand('%:t') =~ '\.cc$' || expand('%:t') =~ '\.hpp$' || expand('%:t') =~ '\.h$' || expand('%:t') =~ '\.py$'
-        call matchadd('OverLength', '\%>80v.\+')
-    elseif expand('%:t') =~ '\.js$' || expand('%:t') =~ '\.ts$' || expand('%:t') =~ '\.html$'
-        call matchadd('OverLength', '\%>120v.\+')
-    " " No longer default to 120
-    " else
-    "    call matchadd('OverLength', '\%>120v.\+')
-    endif
-endfun
-
-augroup vimrc_autocmds
-    autocmd BufEnter * call ShowLineLengthBoundary()
-augroup END
-
-" -----------------------------------------------------
-" Spell checking
-" -----------------------------------------------------
-
-setlocal spell spelllang=en_us
-autocmd BufRead,BufNewFile *.txt setlocal spell
-autocmd BufRead,BufNewFile *.md setlocal spell
-
-" -----------------------------------------------------
-" Fold settings
-"
-"   fdm:
-"     manual     Folds are created manually.
-"     indent     Lines with equal indent form a fold.
-"     expr       'foldexpr' gives the fold level of a line.
-"     marker     Markers are used to specify folds.
-"     syntax     Syntax highlighting items specify folds.
-"     diff       Fold text that is not changed.
-" -----------------------------------------------------
-
-set fdm=marker
-hi Folded ctermfg=255 ctermbg=23
-"set foldmethod=indent
-"set foldlevelstart=0
-" javascript folding doesn't work very well with several levels of nested anonymous functions
-"let javaScript_fold=1         " JavaScript
-"let php_folding=1             " PHP
-let g:vim_markdown_folding_disabled=1
-
-" -----------------------------------------------------
-" Remove trailing whitespace from certain file types
-" -----------------------------------------------------
-
-fun! TrimTrailingWhitespace()
-    if &ft =~ 'javascript\|html\|jade\|json\|css\|less\|php\|python\|sh\|c\|cpp\|markdown\|yaml\|vim'
-        :%s/\s\+$//e
-    endif
-endfun
-
-augroup vimrc_autocmds
-  autocmd BufWritePre * call TrimTrailingWhitespace()
-augroup END
-
-" -----------------------------------------------------
-" Highlight unwanted text
-" -----------------------------------------------------
-"
-" can't use "match" keyword directly as each usage overwrites the previous one,
-" so use matchadd function, which can be called as much as needed
-
-" Highlight trailing whitespace
-autocmd BufEnter * highlight ExtraWhitespace ctermbg=red guibg=red
-" TODO: This doesn't seem to highlight spaces after # comments in yaml files...
-autocmd BufEnter * call matchadd('ExtraWhitespace', '\s\+$')
-
-" Highlight tabs
-autocmd BufEnter * highlight ExtraTabs ctermbg=red guibg=red
-autocmd BufEnter * call matchadd('ExtraTabs', '\t\+')
-
-" -----------------------------------------------------
-" cscope settings
-" -----------------------------------------------------
-
-if has("cscope")
-    set csprg=cscope
-    set csto=0
-    set cst
-    set nocsverb
-    " add any database in current directory
-    if filereadable("cscope.out")
-        cs add cscope.out
-        " else add database pointed to by environment
-    elseif $CSCOPE_DB != ""
-        cs add $CSCOPE_DB
-    endif
-endif
-
-" -----------------------------------------------------
-" Remember the last cursor location across sessions
-" -----------------------------------------------------
-
-function! ResCur()
-    if line("'\"") <= line("$")
-        normal! g`"
-        return 1
-    endif
-endfunction
-
-augroup resCur
-    autocmd!
-    autocmd BufWinEnter * call ResCur()
-augroup END
+" =====================================================
+" END OF PLUGIN SECTION
+" =====================================================
