@@ -3,9 +3,9 @@ import XMonad.Config.Gnome
 import XMonad.Layout.Minimize
 import qualified Data.Map as M
 import System.Exit -- exitWith
-import XMonad.Layout.Fullscreen
-import XMonad.Layout.NoBorders
 import XMonad.Layout.Gaps
+import XMonad.Layout.NoBorders
+import XMonad.Layout.ToggleLayouts
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.DynamicLog
@@ -22,7 +22,6 @@ import System.IO
 unityManageHook = composeAll (
     [ manageHook gnomeConfig
     , className =? "Unity-2d-panel" --> doIgnore
---    , className =? "Unity-2d-launcher" --> doFloat
     , className =? "Unity-2d-launcher" --> doIgnore
     ])
 
@@ -39,7 +38,6 @@ myStartupHook = do
         spawn "caffeine-indicator"
         spawn "redshift-gtk"
         spawn "python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &"
-        -- spawn "ibus-daemon --xim --daemonize --desktop=xmonad --replace"
 
 myWorkspaces = withScreens 2 ["1","2","3","4","5","6","7","8","9"]
 
@@ -62,9 +60,11 @@ myKeys  = [ ((mod1Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
          ]
 
 floatManageHooks = composeAll [isFloat --> doFloat] where
-    isFloat = foldr1 (<||>) [isDo, isEdge, isVncviewer, isGnomeSystemAction, isFirefoxDialog, isPidginDialog, isVMDdialog] where
+    isFloat = foldr1 (<||>) [isDo, isEdge, isVlc, isMpv, isVncviewer, isGnomeSystemAction, isFirefoxDialog, isPidginDialog, isVMDdialog] where
         isDo   = className =? "Do"
         isEdge = className =? "Toplevel"
+        isVlc = className =? "vlc"
+        isMpv = className =? "mpv"
         isVncviewer = className =? "Vncviewer"
         isGnomeSystemAction  = className =? "Zenity" <&&> (title =? "Log Out" <||> title =? "Restart" <||> title =? "Shut Down")
         isFirefoxDialog = className =? "FireFox" <&&> (resource =? "Browser" <||> resource =? "Toplevel")
@@ -78,12 +78,13 @@ conf = ewmh defaultConfig {
       modMask = mod1Mask     -- default mod key is left alt
     , terminal = "gnome-terminal"
     , workspaces = myWorkspaces
-    -- , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
-    , manageHook = floatManageHooks <+> manageDocks <+> manageHook defaultConfig <+> composeAll myManagementHooks
-    , layoutHook = gaps [(U, 48)] $ avoidStruts $ layoutHook defaultConfig
+    , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
+    , manageHook = floatManageHooks <+> manageDocks <+> (isFullscreen --> doFullFloat) <+> manageHook defaultConfig <+> composeAll myManagementHooks
+    , layoutHook = gaps [(U, 48)] $ avoidStruts $ smartBorders $ layoutHook defaultConfig 
     , startupHook = startupHook gnomeConfig >> myStartupHook
     , focusFollowsMouse = False
     , clickJustFocuses = False
+    , focusedBorderColor = "#00FFDD"
     , borderWidth = 3
     } `additionalKeys` (myKeys)
 
