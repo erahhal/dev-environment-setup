@@ -1,0 +1,2 @@
+heartbeat-cmd="xscreensaver-command -deactivate >&- 2>&- &"
+fs=yes

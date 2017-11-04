@@ -195,6 +195,11 @@ if [ "$(readlink ~/.xmonad)" != "$DIR/xmonad" ]; then
   fi
 fi
 
+if [ "$(readlink ~/.mpv)" != "$DIR/mpv" ]; then
+  mv ~/.mpv ~/.mpv.orig
+  ln -s $DIR/mpv ~/.mpv
+fi
+
 if [ "$(readlink ~/.stalonetrayrc)" != "$DIR/xmonad/stalonetrayrc" ]; then
   mv ~/.stalonetrayrc ~/.stalonetrayrc.orig
   ln -s $DIR/xmonad/stalonetrayrc ~/.stalonetrayrc
