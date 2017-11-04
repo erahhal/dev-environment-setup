@@ -1,5 +1,5 @@
 #!/bin/bash
-                               
+
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 #-------------------------------------------------------------
@@ -8,5 +8,5 @@ DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 if [ "$DIR/irssi" != "$(ls -l ~/.irssi | awk '{print $11}')" ]; then
   mv ~/.irssi ~/.irssi.orig
-  ln -s $DIR/irssi ~/.irssi     
+  ln -s $DIR/irssi ~/.irssi
 fi

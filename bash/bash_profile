@@ -110,6 +110,8 @@ export FZF_DEFAULT_OPTS='
 --color info:108,prompt:109,spinner:108,pointer:168,marker:168
 '
 
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 #-------------------------------------------------------------
 # Platform specific
 #-------------------------------------------------------------

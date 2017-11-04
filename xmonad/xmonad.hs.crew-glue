@@ -60,10 +60,9 @@ conf xmproc = ewmh defaultConfig {
         setWMName "LG3D"
         spawn "stalonetray"
         spawn "nm-applet"
-        spawn "blueman-applet"
         spawn "/usr/bin/synergys -f --config ~/synergy.conf"
         spawn "caffeine"
-        spawn "pidgin"
+        spawn "blueman-applet"
         spawn "ibus-daemon --xim --daemonize --desktop=xmonad --replace"
         spawn "gnome-panel"
     , logHook = dynamicLogWithPP xmobarPP

@@ -119,6 +119,7 @@ au FileType javascript setl ts=4 sw=4 sts=4
 au FileType python setl ts=4 sw=4 sts=4
 au FileType cpp setl ts=4 sw=4 sts=4
 au FileType hpp setl ts=4 sw=4 sts=4
+au FileType sh setl ts=4 sw=5 sts=4
 
 " -----------------------------------------------------
 " Look and feel
@@ -312,12 +313,14 @@ call plug#begin('~/.vim/bundle')
 
 " File search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 let g:fzf_action = {
     \ 'ctrl-t': 'tab split',
     \ 'ctrl-s': 'split',
     \ 'ctrl-v': 'vsplit' }
 nnoremap <c-p> :FZF<cr>
+nnoremap <c-s> :Ag<cr>
 
 " Required by FuzzyFinder
 Plug 'vim-scripts/L9'
@@ -529,6 +532,8 @@ endif
 " Git wrapper
 Plug 'tpope/vim-fugitive'
 
+" :help fugitive
+
 " Show diff marks
 Plug 'mhinz/vim-signify'
 
@@ -632,6 +637,9 @@ Plug 'juvenn/mustache.vim'
 " Allows for custom syntax highlighting in different parts of File
 " Could add custom syntax highlighting for things like lit-HTML
 Plug 'vim-scripts/SyntaxRange'
+
+" Improved Javascript indentation and syntax support.
+Plug 'pangloss/vim-javascript'
 
 " -----------------------------------------------------
 " Syntax Checking

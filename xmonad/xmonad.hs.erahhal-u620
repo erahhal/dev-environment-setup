@@ -61,6 +61,7 @@ conf xmproc = ewmh defaultConfig {
         spawn "stalonetray"
         spawn "nm-applet"
         spawn "/usr/bin/synergyc -f --name erahhal-u620 crew-glue"
+        -- spawn "blueman-applet"
         spawn "caffeine"
         spawn "ibus-daemon --xim --daemonize --desktop=xmonad --replace"
         spawn "gnome-panel"
