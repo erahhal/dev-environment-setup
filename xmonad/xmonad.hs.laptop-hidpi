@@ -84,7 +84,7 @@ conf = ewmh defaultConfig {
     , startupHook = startupHook gnomeConfig >> myStartupHook
     , focusFollowsMouse = False
     , clickJustFocuses = False
-    , focusedBorderColor = "#00FFDD"
+    , focusedBorderColor = "#FFFF00"
     , borderWidth = 3
     } `additionalKeys` (myKeys)
 

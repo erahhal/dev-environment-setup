@@ -1,4 +1,12 @@
 import XMonad
+import XMonad.Config.Gnome
+import XMonad.Layout.Minimize
+import qualified Data.Map as M
+import System.Exit -- exitWith
+import XMonad.Layout.Gaps
+import XMonad.Layout.NoBorders
+import XMonad.Layout.ToggleLayouts
+import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -7,17 +15,31 @@ import XMonad.Util.Run(spawnPipe)
 import qualified XMonad.StackSet as W
 import XMonad.Util.EZConfig
 import XMonad.Layout.IndependentScreens
+import Control.Monad
+import Data.Monoid (All (All))
 import System.IO
+
+unityManageHook = composeAll (
+    [ manageHook gnomeConfig
+    , className =? "Unity-2d-panel" --> doIgnore
+    , className =? "Unity-2d-launcher" --> doIgnore
+    ])
 
 myManagementHooks :: [ManageHook]
 myManagementHooks = [
-  resource =? "stalonetray"    --> doIgnore
+    unityManageHook
   ]
 
 myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
 
+myStartupHook = do
+        setWMName "LG3D"
+        spawn "caffeine-indicator"
+        spawn "redshift-gtk"
+        spawn "/usr/bin/synergys -f --config ~/synergy.conf"
+
 myWorkspaces = withScreens 2 ["1","2","3","4","5","6","7","8","9"]
- 
+
 myKeys xmproc = [ ((mod1Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
          , ((0, xK_F3), spawn "sleep 0.2; scrot -s")
          , ((0, xK_F4), spawn "scrot")
@@ -37,11 +59,13 @@ myKeys xmproc = [ ((mod1Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -
          ]
 
 floatManageHooks = composeAll [isFloat --> doFloat] where
-    isFloat = foldr1 (<||>) [isDo, isGimp, isEdge, isVncviewer, isFirefoxDialog, isPidginDialog, isVMDdialog] where
+    isFloat = foldr1 (<||>) [isDo, isEdge, isVlc, isMpv, isVncviewer, isGnomeSystemAction, isFirefoxDialog, isPidginDialog, isVMDdialog] where
         isDo   = className =? "Do"
-        isGimp = className =? "Gimp"
         isEdge = className =? "Toplevel"
+        isVlc = className =? "vlc"
+        isMpv = className =? "mpv"
         isVncviewer = className =? "Vncviewer"
+        isGnomeSystemAction  = className =? "Zenity" <&&> (title =? "Log Out" <||> title =? "Restart" <||> title =? "Shut Down")
         isFirefoxDialog = className =? "FireFox" <&&> (resource =? "Browser" <||> resource =? "Toplevel")
         isPidginDialog  = className =? "Pidgin" <&&> foldr1 (<||>) [
             title =? "Accounts", title =? "System Log", title =? "Plugins",
@@ -49,32 +73,19 @@ floatManageHooks = composeAll [isFloat --> doFloat] where
             title =? "File Transfers", title =? "Buddy Information"]
         isVMDdialog = title =? "Graphical Representations"
 
-conf xmproc = ewmh defaultConfig { 
+conf = ewmh defaultConfig {
       modMask = mod1Mask     -- default mod key is left alt
     , terminal = "gnome-terminal"
     , workspaces = myWorkspaces
-    -- , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
-    , manageHook = floatManageHooks <+> manageDocks <+> manageHook defaultConfig <+> composeAll myManagementHooks
-    , layoutHook = avoidStruts $ layoutHook defaultConfig
-    , startupHook = do
-        setWMName "LG3D"
-        spawn "stalonetray"
-        spawn "nm-applet"
-        spawn "/usr/bin/synergys -f --config ~/synergy.conf"
-        spawn "caffeine"
-        spawn "blueman-applet"
-        spawn "ibus-daemon --xim --daemonize --desktop=xmonad --replace"
-        spawn "gnome-panel"
-    , logHook = dynamicLogWithPP xmobarPP
-                            { ppOutput = hPutStrLn xmproc
-                            , ppTitle = xmobarColor "green" "" . shorten 50
-                            }
+    , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
+    , manageHook = floatManageHooks <+> manageDocks <+> (isFullscreen --> doFullFloat) <+> manageHook defaultConfig <+> composeAll myManagementHooks
+    , layoutHook = gaps [(U, 24)] $ avoidStruts $ smartBorders $ layoutHook defaultConfig 
+    , startupHook = startupHook gnomeConfig >> myStartupHook
     , focusFollowsMouse = False
     , clickJustFocuses = False
+    , focusedBorderColor = "#FFFF00"
     , borderWidth = 2
     } `additionalKeys` (myKeys xmproc)
 
 main = do
-  -- the x argument tells xmobar which screen to run on
-  xmproc <- spawnPipe "/usr/bin/xmobar -x 1 ~/.xmonad/xmobarrc"
-  xmonad $ conf xmproc
+  xmonad $ conf
