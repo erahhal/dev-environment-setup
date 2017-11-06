@@ -138,6 +138,9 @@ sudo apt-get update -y
 sudo apt-get install -y libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
 sudo apt-get install -y android-tools-adb
 
+# fonts
+$DIR/fonts/install.sh
+
 # Syncthing
 systemctl --user enable syncthing.service
 systemctl --user start syncthing.service

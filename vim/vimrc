@@ -241,18 +241,31 @@ augroup END
 " can't use "match" keyword directly as each usage overwrites the previous one,
 " so use matchadd function, which can be called as much as needed
 
-" Highlight trailing whitespace
-autocmd BufEnter * highlight ExtraWhitespace ctermbg=red guibg=red
-" TODO: This doesn't seem to highlight spaces after # comments in yaml files...
-autocmd BufEnter * call matchadd('ExtraWhitespace', '\s\+$')
+fun! HighlightTrailingWhitespace()
+    if exists('w:trailingwhitespace')
+        call matchdelete(w:trailingwhitespace)
+        unlet w:trailingwhitespace
+    endif
+    highlight TrailingWhitespace ctermbg=red guibg=red
+    if &ft == 'help'
+        return
+    else
+        " TODO: This doesn't seem to highlight spaces after # comments in yaml files...
+        let w:trailingwhitespace=matchadd('TrailingWhitespace', '\s\+$')
+    endif
+endfun
 
-fun! ShowExtraTabs()
+augroup vimrc_autocmds
+    autocmd BufEnter * call HighlightTrailingWhitespace()
+augroup END
+
+fun! HighlightTabs()
     if exists('w:extratabs')
         call matchdelete(w:extratabs)
         unlet w:extratabs
     endif
     highlight ExtraTabs ctermbg=red guibg=red
-    if expand('%:t') =~ '\.txt$'
+    if &ft == 'help'
         return
     else
         let w:extratabs=matchadd('ExtraTabs', '\t\+')
@@ -260,12 +273,8 @@ fun! ShowExtraTabs()
 endfun
 
 augroup vimrc_autocmds
-    autocmd BufEnter * call ShowExtraTabs()
+    autocmd BufEnter * call HighlightTabs()
 augroup END
-
-" Highlight tabs
-" autocmd BufEnter * highlight ExtraTabs ctermbg=red guibg=red
-" autocmd BufEnter * call matchadd('ExtraTabs', '\t\+')
 
 " -----------------------------------------------------
 " cscope settings
@@ -785,6 +794,8 @@ if 1
   " ,le       add link
   " ,ln       next link
   " ,lp       previous link
+  " ,ci       clock in
+  " ,co       clock out
 
   let g:agenda_files=["~/ownCloud/Ellis' Stuff/Documents/agenda.org"]
   au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
