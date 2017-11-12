@@ -4,6 +4,7 @@ import XMonad.Layout.Minimize
 import qualified Data.Map as M
 import System.Exit -- exitWith
 import XMonad.Layout.Gaps
+import XMonad.Layout.PerScreen
 import XMonad.Layout.NoBorders
 import XMonad.Layout.ToggleLayouts
 import XMonad.Hooks.ManageHelpers
@@ -74,18 +75,20 @@ floatManageHooks = composeAll [isFloat --> doFloat] where
             title =? "File Transfers", title =? "Buddy Information"]
         isVMDdialog = title =? "Graphical Representations"
 
+myLayoutHook = avoidStruts $ smartBorders $ layoutHook defaultConfig
+
 conf = ewmh defaultConfig {
       modMask = mod1Mask     -- default mod key is left alt
     , terminal = "gnome-terminal"
     , workspaces = myWorkspaces
     , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
     , manageHook = floatManageHooks <+> manageDocks <+> (isFullscreen --> doFullFloat) <+> manageHook defaultConfig <+> composeAll myManagementHooks
-    , layoutHook = gaps [(U, 24)] $ avoidStruts $ smartBorders $ layoutHook defaultConfig 
+    , layoutHook = gaps [(U, 24)] $ myLayoutHook
     , startupHook = startupHook gnomeConfig >> myStartupHook
     , focusFollowsMouse = False
     , clickJustFocuses = False
     , focusedBorderColor = "#FFFF00"
-    , borderWidth = 3
+    , borderWidth = 1
     } `additionalKeys` (myKeys)
 
 main = do

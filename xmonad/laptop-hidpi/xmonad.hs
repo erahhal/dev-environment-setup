@@ -4,6 +4,7 @@ import XMonad.Layout.Minimize
 import qualified Data.Map as M
 import System.Exit -- exitWith
 import XMonad.Layout.Gaps
+import XMonad.Layout.PerScreen
 import XMonad.Layout.NoBorders
 import XMonad.Layout.ToggleLayouts
 import XMonad.Hooks.ManageHelpers
@@ -41,7 +42,7 @@ myStartupHook = do
 
 myWorkspaces = withScreens 2 ["1","2","3","4","5","6","7","8","9"]
 
-myKeys  = [ ((mod1Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
+myKeys = [ ((mod1Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
          -- , ((0, xK_F3), spawn "sleep 0.2; scrot -s")
          -- , ((0, xK_F4), spawn "scrot")
          -- Media Key888s
@@ -74,13 +75,15 @@ floatManageHooks = composeAll [isFloat --> doFloat] where
             title =? "File Transfers", title =? "Buddy Information"]
         isVMDdialog = title =? "Graphical Representations"
 
+myLayoutHook = avoidStruts $ smartBorders $ layoutHook defaultConfig
+
 conf = ewmh defaultConfig {
       modMask = mod1Mask     -- default mod key is left alt
     , terminal = "gnome-terminal"
     , workspaces = myWorkspaces
     , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
     , manageHook = floatManageHooks <+> manageDocks <+> (isFullscreen --> doFullFloat) <+> manageHook defaultConfig <+> composeAll myManagementHooks
-    , layoutHook = gaps [(U, 48)] $ avoidStruts $ smartBorders $ layoutHook defaultConfig 
+    , layoutHook = gaps [(U, 48)] $ myLayoutHook
     , startupHook = startupHook gnomeConfig >> myStartupHook
     , focusFollowsMouse = False
     , clickJustFocuses = False
