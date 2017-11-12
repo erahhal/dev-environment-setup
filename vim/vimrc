@@ -446,8 +446,15 @@ Plug 'Raimondi/delimitMate'
 " " This expands a carriage return into two, but doesn't always behave as expected
 " let delimitMate_expand_cr = 2
 
-" delete surrounding tags (dst)
+" support surrounding tags (dst)
 Plug 'tpope/vim-surround'
+" cs"'       - change double quotes to single quotes
+" cs'<q>     - change single quotes to html tags
+" ds"        - delete surrounding quotes
+" ysiw"      - surround word with double quotes
+" ys$"       - surround to end of line with double quotes
+" yss"       - surround entire sentence with quotes
+" S"         - surround visual selection with quotes
 
 " -----------------------------------------------------
 " Autocompletion
@@ -653,6 +660,7 @@ let g:ale_javascript_eslint_executable = $HOME.'/.config/yarn/global/node_module
 let g:ale_cpp_clang_options = '$(get-compile-options .clang_complete)'
 " This defaults to "normal", which doesn't lint on change for heavy things like clang
 let g:ale_link_on_text_changed = 'always'
+let g:ale_html_tidy_options = '--custom-tags blocklevel'
 
 nmap <silent> ,k <Plug>(ale_previous_wrap)
 nmap <silent> ,j <Plug>(ale_next_wrap)
@@ -713,6 +721,9 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'haya14busa/vim-easyoperator-line'
 
 Plug 'haya14busa/vim-easyoperator-phrase'
+
+" Automatically resize panes on small screens
+Plug 'roman/golden-ratio'
 
 " -----------------------------------------------------
 " Tmux integration

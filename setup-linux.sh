@@ -93,6 +93,8 @@ if hash apt-get 2>/dev/null; then
     sudo apt-get install -y llvm
     sudo apt-get install -y lldb
     sudo apt-get install -y bazel
+    # To build html5-tidy man page
+    sudo apt-get install -y xsltproc
     # Remove bottom bar from gnome xmonad session
     dconf write /org/gnome/gnome-panel/layout/toplevel-id-list "['top-panel']"
     # To re-display bottom bar, use:
