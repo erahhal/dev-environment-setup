@@ -722,8 +722,15 @@ Plug 'haya14busa/vim-easyoperator-line'
 
 Plug 'haya14busa/vim-easyoperator-phrase'
 
-" Automatically resize panes on small screens
-Plug 'roman/golden-ratio'
+" Doesn't work with NERDTree
+if 0
+  " Automatically resize panes on small screens
+  Plug 'roman/golden-ratio'
+
+  let g:golden_ratio_exclude_nonmodifiable = 1
+  let b:golden_ratio_resizing_ignored = 1
+  let g:golden_ratio_filetypes_blacklist = ["nerdtree", "unite"]
+endif
 
 " -----------------------------------------------------
 " Tmux integration
