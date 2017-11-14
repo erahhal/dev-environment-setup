@@ -6,6 +6,8 @@ DIR="$( cd "$( dirname "$0" )" && pwd )"
 # Linux
 #-------------------------------------------------------------
 
+. /etc/os-release
+
 arch=`uname -m`
 if [[ "$arch" == "i686" ]]; then
     echo "Linux i686"
@@ -30,6 +32,14 @@ if hash apt-get 2>/dev/null; then
 
     # # What is this?
     # sudo add-apt-repository -y ppa:fcwu-tw/ppa
+
+    # diffmerge
+    echo "deb http://debian.sourcegear.com/ubuntu precise main" | sudo tee /etc/apt/sources.list.d/sourcegear.list
+    sudo wget -O - http://debian.sourcegear.com/SOURCEGEAR-GPG-KEY | sudo apt-key add -
+
+    # xpra (used to scale lo-res apps to hidpi
+    sudo wget -O - https://winswitch.org/gpg.asc | sudo apt-key add -
+    echo "deb http://winswitch.org/ $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/winswitch.list;
 
     # java
     sudo add-apt-repository -y ppa:webupd8team/java
@@ -89,6 +99,8 @@ if hash apt-get 2>/dev/null; then
     sudo apt-get install -y choqok
     sudo apt-get install -y neovim
     sudo apt-get install -y clang
+    # For vim
+    sudo apt-get install -y libclang-3.8
     sudo apt-get install -y clang-format
     sudo apt-get install -y llvm
     sudo apt-get install -y lldb

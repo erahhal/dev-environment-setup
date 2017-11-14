@@ -3,6 +3,7 @@ import XMonad.Config.Gnome
 import XMonad.Layout.Minimize
 import qualified Data.Map as M
 import System.Exit -- exitWith
+import XMonad.Actions.PhysicalScreens
 import XMonad.Layout.Gaps
 import XMonad.Layout.PerScreen
 import XMonad.Layout.NoBorders
@@ -35,9 +36,6 @@ myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso88
 
 myStartupHook = do
         setWMName "LG3D"
-        spawn "caffeine-indicator"
-        -- redshift should be launched automatically by gnome
-        -- spawn "redshift-gtk"
         spawn "/usr/bin/synergys -f --config ~/synergy.conf"
 
 myWorkspaces = withScreens 2 ["1","2","3","4","5","6","7","8","9"]
@@ -58,14 +56,22 @@ myKeys = [ ((mod1Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
           ((m .|. mod1Mask, k), windows $ onCurrentScreen f i)
                | (i, k) <- zip (workspaces' (conf)) [xK_1 .. xK_9]
                , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
+         ] ++
+         [
+         -- make sure screens are ordered by physical location rather than screen ID
+          ((m .|. mod1Mask, k), f sc)
+             | (k, sc) <- zip [xK_w, xK_e, xK_r] [0..]
+             , (f, m) <- [(viewScreen, 0), (sendToScreen, shiftMask)]
          ]
 
 floatManageHooks = composeAll [isFloat --> doFloat] where
-    isFloat = foldr1 (<||>) [isDo, isEdge, isVlc, isMpv, isVncviewer, isGnomeSystemAction, isFirefoxDialog, isPidginDialog, isVMDdialog] where
+    isFloat = foldr1 (<||>) [isDo, isEdge, isVlc, isMpv, isXpra, isQjackctl, isVncviewer, isGnomeSystemAction, isFirefoxDialog, isPidginDialog, isVMDdialog] where
         isDo   = className =? "Do"
         isEdge = className =? "Toplevel"
         isVlc = className =? "vlc"
         isMpv = className =? "mpv"
+        isXpra = className =? "Xpra-Launcher"
+        isQjackctl = className =? "qjackctl"
         isVncviewer = className =? "Vncviewer"
         isGnomeSystemAction  = className =? "Zenity" <&&> (title =? "Log Out" <||> title =? "Restart" <||> title =? "Shut Down")
         isFirefoxDialog = className =? "FireFox" <&&> (resource =? "Browser" <||> resource =? "Toplevel")
@@ -77,19 +83,22 @@ floatManageHooks = composeAll [isFloat --> doFloat] where
 
 myLayoutHook = avoidStruts $ smartBorders $ layoutHook defaultConfig
 
-conf = ewmh defaultConfig {
+myDefaultConf = ewmh defaultConfig {
       modMask = mod1Mask     -- default mod key is left alt
     , terminal = "gnome-terminal"
     , workspaces = myWorkspaces
     , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
     , manageHook = floatManageHooks <+> manageDocks <+> (isFullscreen --> doFullFloat) <+> manageHook defaultConfig <+> composeAll myManagementHooks
-    , layoutHook = ifWider 1920 (gaps [(U, 24)] $ myLayoutHook) (gaps [(U, 0)] $ myLayoutHook)
     , startupHook = startupHook gnomeConfig >> myStartupHook
     , focusFollowsMouse = False
     , clickJustFocuses = False
     , focusedBorderColor = "#FFFF00"
-    , borderWidth = 1
     } `additionalKeys` (myKeys)
+
+conf = myDefaultConf {
+      borderWidth = 1
+    , layoutHook = ifWider 1920 (gaps [(U, 24)] $ myLayoutHook) (gaps [(U, 0)] $ myLayoutHook)
+    }
 
 main = do
   xmonad $ conf
