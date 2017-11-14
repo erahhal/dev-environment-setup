@@ -13,6 +13,10 @@
 " ctrl-i    - forward
 " :jumps    - history
 "
+" .         - REPEAT AN OPERATION!
+" gf        - Go to file (e.g. C++ header)
+" ^wf       - Go to file in new pane
+" ^wgf      - Go to file in new tab
 " ~         - Swap case
 " g~        - Swap case for <modifier>
 " gu        - Lower case
@@ -44,6 +48,33 @@
 " M         - Jump to middle of window.
 " L         - Jump to bottom of window.
 " zz        - recenter window.
+" :'<,'>    - visual selection as range.  So type : with a selection then do a s/// search/replace
+" yiw       - yank word
+" yi"       - yank between quotes
+" yiW       - yank to surrounding spaces
+" viwp      - select word then replace
+" vi"p      - select between quotes and replace
+" viw"0p    - select word then replace with first selection rather than last replaced word
+"
+" Search and Replace in files
+" ---------------------------
+" Select files first:
+" :args **/*.js
+" :args `find . -type f`
+"
+" then search and replace:
+" :argdo %s/search/replace/g
+" :bufdo
+" :windo
+" :tabdo
+"
+" Using quickfix list, select files:
+" :grep blah -r **/*.txt
+" (or "ms" search in NERDTree)
+"
+" then search and replace, save, then close all buffers:
+" :cfdo %s/from/to/g | update
+" :cfdo :bd
 
 " =====================================================
 " SECTION: Vanilla VIM Settings
@@ -281,6 +312,15 @@ augroup vimrc_autocmds
 augroup END
 
 " -----------------------------------------------------
+" Language specific settings
+" -----------------------------------------------------
+
+" Add include paths to support "gf" command
+if findfile('.clang_complete', '.') == '.clang_complete'
+    let &path .= system('get-clang-include-paths .clang_complete')
+endif
+
+" -----------------------------------------------------
 " cscope settings
 " -----------------------------------------------------
 
@@ -327,6 +367,10 @@ call plug#begin('~/.vim/bundle')
 " File search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+
+" Default command seems to hang in large codebases while opening the file
+" let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore --no-messages --hidden --follow --glob "!.git/*"'
+let $FZF_DEFAULT_COMMAND = 'rg --files --no-messages --glob "!.git/*"'
 
 " Prevent content search from matching filenames
 command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
@@ -657,7 +701,9 @@ Plug 'w0rp/ale'
 
 let g:ale_linters = { 'cpp': ['clang'] }
 let g:ale_javascript_eslint_executable = $HOME.'/.config/yarn/global/node_modules/.bin/eslint'
-let g:ale_cpp_clang_options = '$(get-compile-options .clang_complete)'
+if findfile('.clang_complete', '.') == '.clang_complete'
+    let g:ale_cpp_clang_options = '$(get-clang-compile-options .clang_complete)'
+endif
 " This defaults to "normal", which doesn't lint on change for heavy things like clang
 let g:ale_link_on_text_changed = 'always'
 let g:ale_html_tidy_options = '--custom-tags blocklevel'

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+FILE=$1
+PATHS=""
+while read -r line; do
+    [[ "$line" =~ ^#.*$ ]] && continue
+    if [[ "$line" =~ ^-I(.*)$ ]]; then
+        PATHS="$PATHS,${BASH_REMATCH[1]}"
+    fi
+done < "$FILE"
+
+echo $PATHS
