@@ -759,6 +759,7 @@ noremap <Tab> :WSNext<CR>
 noremap <S-Tab> :WSPrev<CR>
 noremap <Leader><Tab> :WSClose<CR>
 noremap <Leader><S-Tab> :WSClose!<CR>
+noremap <Leader>t :WSTabNew<CR>
 
 " a tree of undos
 Plug 'mbbill/undotree'
@@ -1012,17 +1013,21 @@ endif
 if 0
     Plug 'pyclewn'
 endif
+
 " Too simple - doesn't do much beyond a normal debugger
 if 0
     Plug 'vim-scripts/Conque-GDB'
 endif
 
-" Dependency for vim-vebugger
-Plug  'Shougo/vimproc.vim'
-" Only debugger that seems to work at all, but very shitty
-Plug 'idanarye/vim-vebugger'
+" Disabled as it overrides <leader>t which I want to use for workspaces
+if 0
+    " Dependency for vim-vebugger
+    Plug  'Shougo/vimproc.vim'
+    " Only debugger that seems to work at all, but very shitty
+    Plug 'idanarye/vim-vebugger'
 
-let g:vebugger_leader='<Leader>'
+    let g:vebugger_leader='<Leader>'
+endif
 
 " -----------------------------------------------------
 " Color Schemes

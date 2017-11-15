@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -
+set -e
 
 cd ~/Code-vendor/
 if [ ! -e nerd-fonts ]; then
