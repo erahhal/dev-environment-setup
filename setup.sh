@@ -165,6 +165,9 @@ git config --global mergetool.prompt false
 # VIM
 #-------------------------------------------------------------
 
+# Install fonts
+$DIR/vim/install-fonts.sh
+
 if [ $(realpath "$DIR/vim/vimrc") != $(realpath ~/.vimrc) ]; then
     mv ~/.vimrc ~/.vimrc.orig
     ln -s $DIR/vim/vimrc ~/.vimrc
