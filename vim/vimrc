@@ -14,6 +14,7 @@
 " :jumps    - history
 "
 " .         - REPEAT AN OPERATION!
+" :retab    - convert tabs to spaces
 " gf        - Go to file (e.g. C++ header)
 " ^wf       - Go to file in new pane
 " ^wgf      - Go to file in new tab
@@ -155,6 +156,9 @@ au FileType python setl ts=4 sw=4 sts=4
 au FileType cpp setl ts=4 sw=4 sts=4
 au FileType hpp setl ts=4 sw=4 sts=4
 au FileType sh setl ts=4 sw=5 sts=4
+
+" Align function parameters that are on multiple lines
+set cino+=(0
 
 " -----------------------------------------------------
 " Look and feel
@@ -387,13 +391,9 @@ Plug 'vim-scripts/L9'
 " Fuzzy search of files, buffers, directories, MRU, tags, etc
 Plug 'vim-scripts/FuzzyFinder'
 
-" ctrl-p is not synchronous and is slow
-if 0
-    Plug 'ctrlpvim/ctrlp.vim'
-
-    " For projects with a ton of files
-    let g:ctrlp_max_files=0
-endif
+" Another file search plugin that uses the quickfix window.
+" Requires :UpdateRemovePlugins after install/upgrade
+Plug 'shougo/denite.nvim'
 
 " -----------------------------------------------------
 " Tags
@@ -668,7 +668,10 @@ endif
 " Status line
 " -----------------------------------------------------
 
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+let g:airline_powerline_fonts = 1
 
 " -----------------------------------------------------
 " File specific utilities
@@ -1019,7 +1022,7 @@ if 0
     Plug 'vim-scripts/Conque-GDB'
 endif
 
-" Disabled as it overrides <leader>t which I want to use for workspaces
+" Disabled as it overrides <leader>t which I want to use for creating workspaces
 if 0
     " Dependency for vim-vebugger
     Plug  'Shougo/vimproc.vim'
@@ -1076,6 +1079,19 @@ highlight DiffChange cterm=bold ctermfg=223 ctermbg=239 gui=none guifg=bg guibg=
 " DiffText - part of line that changed
 " highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
 highlight DiffText   cterm=bold ctermfg=15 ctermbg=124 gui=none guifg=bg guibg=Red
+
+" -----------------------------------------------------
+" Denite Config (Must be located AFTER plug#end()
+" since Denite is a remote plugin.
+" -----------------------------------------------------
+
+call denite#custom#var('file_rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+call denite#custom#var('grep', 'command', ['rg'])
+call denite#custom#var('grep', 'default_opts', ['--vimgrep', '--no-heading'])
+call denite#custom#var('grep', 'recursive_opts', [])
+call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
+call denite#custom#var('grep', 'separator', ['--'])
+call denite#custom#var('grep', 'final_opts', [])
 
 " =====================================================
 " END OF PLUGIN SECTION
