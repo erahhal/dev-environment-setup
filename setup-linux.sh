@@ -86,7 +86,7 @@ if hash apt-get 2>/dev/null; then
     echo "deb http://ppa.launchpad.net/x4121/ripgrep/ubuntu zesty main" | sudo tee /etc/apt/sources.list.d/ripgrep.list
 
     sudo apt-get update
-    sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs syncthing syncthing-inotify code gocode golang-go gccgo ack-grep silversearcher-ag ripgrep vim vim-nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xclip ack-grep mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client caffeine redshift redshift-gtk keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
+    sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs syncthing syncthing-inotify code gocode golang-go gccgo ack-grep silversearcher-ag ripgrep vim vim-nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xclip ack-grep mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client g++ libstdc++6 caffeine redshift redshift-gtk keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
 
     # sudo apt-get install -y emacs-snapshot
 
@@ -151,6 +151,9 @@ sudo add-apt-repository -y ppa:paolorotolo/android-studio
 sudo apt-get update -y
 sudo apt-get install -y libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
 sudo apt-get install -y android-tools-adb
+
+# lib fix for building Unreal editor
+sudo ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libstdc++.so
 
 # fonts
 $DIR/fonts/install.sh

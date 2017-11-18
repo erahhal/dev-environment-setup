@@ -23,7 +23,9 @@ myManagementHooks = [
     unityManageHook
   ]
 
-myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
+-- must run in a bash context to utilize $PATH
+-- font of 15 is about the same size as the panel
+myLauncher = "/bin/bash -c \"$(yeganesh -x -- -fn 'DroidSansMono Nerd Font-15' -p 'CHOOSE YOUR POISON \57521\57521')\""
 
 myStartupHook = do
         setWMName "LG3D"
