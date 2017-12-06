@@ -29,7 +29,6 @@ myLauncher = "/bin/bash -c \"$(yeganesh -x -- -fn 'DroidSansMono Nerd Font-15' -
 
 myStartupHook = do
         setWMName "LG3D"
-        spawn "/usr/bin/synergys -f --config ~/synergy.conf"
 
 myWorkspaces = withScreens 2 ["1","2","3","4","5","6","7","8","9"]
 

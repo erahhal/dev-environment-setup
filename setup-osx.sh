@@ -65,13 +65,13 @@ brew cask install hipchat
 brew cask install unetbootin
 brew cask install etcher
 
-pip2 install PIL
-pip2 install Pillow
-pip2 install neovim
+pip2 install --upgrade PIL
+pip2 install --upgrade Pillow
+pip2 install --upgrade neovim
 # for FormatJSON command in VIM
-pip2 install simplejson
-pip2 install pep8
-pip2 install pylint
+pip2 install --upgrade simplejson
+pip2 install --upgrade pep8
+pip2 install --upgrade pylint
 
 # for python libs that need freetype headers
 ln -s /usr/local/include/freetype2 /usr/local/include/freetype

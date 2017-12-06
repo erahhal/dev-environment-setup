@@ -63,6 +63,9 @@ if hash apt-get 2>/dev/null; then
     curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo apt-key add -
     sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 
+    # VIM 8
+    sudo apt-add-repository -y ppa:jonathonf/vim
+
     # Syncthing
     curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
     echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list
@@ -86,7 +89,7 @@ if hash apt-get 2>/dev/null; then
     echo "deb http://ppa.launchpad.net/x4121/ripgrep/ubuntu zesty main" | sudo tee /etc/apt/sources.list.d/ripgrep.list
 
     sudo apt-get update
-    sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs syncthing syncthing-inotify code gocode golang-go gccgo ack-grep silversearcher-ag ripgrep vim vim-nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xclip ack-grep mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client g++ libstdc++6 caffeine redshift redshift-gtk keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
+    sudo apt-get install -y software-properties-common python-software-properties vim vim-scripts vim-doc vim-gtk-py2 vim-gtk3-py2 vim-addon-manager vim-nox-py2 postgresql nginx cmake python-dev cmake nodejs syncthing syncthing-inotify code gocode golang-go gccgo ack-grep silversearcher-ag ripgrep xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xclip ack-grep mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client g++ libstdc++6 caffeine redshift redshift-gtk keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
 
     # sudo apt-get install -y emacs-snapshot
 
@@ -127,11 +130,11 @@ if hash apt-get 2>/dev/null; then
     sudo update-alternatives --set vimdiff /usr/bin/vim.nox-py2
     sudo pip3 install --upgrade pip
     sudo pip2 install --upgrade pip
-    sudo pip2 install neovim
-    sudo pip3 install neovim
-    sudo pip2 install simplejson
-    sudo pip2 install pytz
-    sudo pip2 install requests_futures
+    sudo pip2 install --upgrade neovim
+    sudo pip3 install --upgrade neovim
+    sudo pip2 install --upgrade simplejson
+    sudo pip2 install --upgrade pytz
+    sudo pip2 install --upgrade requests_futures
     sudo gem install neovim
     sudo apt-get install -y oracle-java8-installer
     sudo apt-get install -y xmonad*

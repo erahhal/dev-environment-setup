@@ -124,9 +124,10 @@ filetype plugin indent on
 " Automatically set working directory to the folder of open file.
 " Helps with things like syntastic/pylint, which look in parent folders for rc
 " files
-if expand('%:t') =~ '\.py$'
-    set autochdir
-endif
+
+" if expand('%:t') =~ '\.py$'
+"     set autochdir
+" endif
 
 " -----------------------------------------------------
 " Backspace settings
@@ -547,6 +548,8 @@ endif
 
 Plug 'Rip-Rip/clang_complete'
 
+" ctrl-x ctrl-u to get argument completion for member functions
+
 if s:uname == "Linux"
     let g:clang_library_path='/usr/lib/llvm-3.8/lib'
 elseif s:uname == "Darwin"
@@ -559,8 +562,10 @@ let g:clang_complete_macros = 1
 " Complete code constructs like loops
 let g:clang_complete_patterns = 1
 let g:clang_snippets = 1
-let g:clang_conceal_snippets=1
+let g:clang_conceal_snippets = 1
 let g:clang_snippets_engine = 'ultisnips'
+" let g:clang_snippets_engine = 'clang_complete'
+" let g:clang_debug = 1
 
 " ***************************
 " general completion settings
@@ -598,8 +603,6 @@ endif
 "
 " Git wrapper
 Plug 'tpope/vim-fugitive'
-
-" :help fugitive
 
 " Show diff marks
 Plug 'mhinz/vim-signify'
@@ -1014,7 +1017,7 @@ endif
 
 " UI kind of broken - loads things into NERDTree.  May be worth a revisit, for example turning off NERDTree when running
 if 0
-    Plug 'pyclewn'
+    Plug 'jimmysitu/pyclewn'
 endif
 
 " Too simple - doesn't do much beyond a normal debugger
@@ -1025,7 +1028,7 @@ endif
 " Disabled as it overrides <leader>t which I want to use for creating workspaces
 if 0
     " Dependency for vim-vebugger
-    Plug  'Shougo/vimproc.vim'
+    Plug 'Shougo/vimproc.vim'
     " Only debugger that seems to work at all, but very shitty
     Plug 'idanarye/vim-vebugger'
 

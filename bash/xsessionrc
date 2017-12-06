@@ -1,19 +1,26 @@
 #!/bin/bash
 
 if [ -f $HOME/.Xresources]; then
-  xrdb -merge ~/.Xresources
+    xrdb -merge ~/.Xresources
 fi
-
-# Already have power management through gnome
-# xfce4-power-manager &
 
 # feh --bg-scale /usr/share/backgrounds/The_Forbidden_City_by_Daniel_Mathis.jpg &
 
 xscreensaver -no-splash &
-caffeine-indicator &
-redshift-gtk &
-python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &
 
-ps aux | grep [p]ia_manager | awk '{ print $2 }' | xargs kill
-sleep 2
-~/pia.sh &
+if [ "$DESKTOP_SESSION" == "gnome-xmonad"]; then
+    caffeine-indicator &
+    redshift-gtk &
+fi
+
+if [ "$HOSTNAME" == "crew-glue" ]; then
+    nohup /usr/bin/synergys -f --config ~/synergy.conf </dev/null >/dev/null 2>&1 &
+elif [ "$HOSTNAME" == "erahhal-u620" ]; then
+    nohup /usr/bin/synergyc -f --name erahhal-u620 crew-glue </dev/null >/dev/null 2>&1 &
+else
+    python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &
+    ps aux | grep [p]ia_manager | awk '{ print $2 }' | xargs kill
+    sleep 2
+    ~/pia.sh &
+fi
+
