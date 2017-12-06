@@ -121,6 +121,11 @@ if [ "$(uname)" == "Darwin" ]; then
   export ANDROID_SDK="/Applications/Android Studio.app/sdk"
   export ANDROID_HOME="/Applications/Android Studio.app/sdk"
 
+  # Colors
+  export PS1="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ "
+  export LSCOLORS=ExFxBxDxCxegedabagacad
+  export CLICOLOR=1
+
   # Bash completion
   if [ -f $(brew --prefix)/etc/bash_completion ]; then
     . $(brew --prefix)/etc/bash_completion
@@ -137,4 +142,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # keyboard rate
     xset r rate 250 30
   fi
+
+  # Colors
+  export PS1='\[$(tput bold)\]\[$(tput setaf 6)\]\t \[$(tput setaf 2)\][\[$(tput setaf 7)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 7)\]\h \[$(tput setaf 6)\]\W\[$(tput setaf 2)\]]\[$(tput setaf 4)\]$(__git_ps1 " (%s)")\\$ \[$(tput sgr0)\]'
 fi
