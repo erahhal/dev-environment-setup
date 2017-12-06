@@ -1,26 +1,29 @@
 #!/bin/bash
 
-if [ -f $HOME/.Xresources]; then
+if [ -f $HOME/.Xresources ]; then
     xrdb -merge ~/.Xresources
 fi
 
-# feh --bg-scale /usr/share/backgrounds/The_Forbidden_City_by_Daniel_Mathis.jpg &
-
 xscreensaver -no-splash &
 
-if [ "$DESKTOP_SESSION" == "gnome-xmonad"]; then
+if [ "$DESKTOP_SESSION" == "gnome-xmonad" ]; then
+    pkill -f caffeine
     caffeine-indicator &
+    pkill -f redshift
     redshift-gtk &
 fi
 
 if [ "$HOSTNAME" == "crew-glue" ]; then
+    pkill -f synergy
     nohup /usr/bin/synergys -f --config ~/synergy.conf </dev/null >/dev/null 2>&1 &
 elif [ "$HOSTNAME" == "erahhal-u620" ]; then
+    pkill -f synergy
     nohup /usr/bin/synergyc -f --name erahhal-u620 crew-glue </dev/null >/dev/null 2>&1 &
 else
     python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &
-    ps aux | grep [p]ia_manager | awk '{ print $2 }' | xargs kill
+    pkill -f pia_manager
     sleep 2
     ~/pia.sh &
 fi
 
+# feh --bg-scale /usr/share/backgrounds/The_Forbidden_City_by_Daniel_Mathis.jpg &
