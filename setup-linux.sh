@@ -219,6 +219,10 @@ if [ "$(readlink ~/.xmonad)" != "$DIR/xmonad" ]; then
   fi
 fi
 
+# Build xmonadctl
+cd ~/.xmonad
+ghc --make xmonadctl.hs
+
 if [ "$(readlink ~/.mpv)" != "$DIR/mpv" ]; then
   mv ~/.mpv ~/.mpv.orig
   ln -s $DIR/mpv ~/.mpv
