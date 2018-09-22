@@ -4,7 +4,8 @@ if [ -f $HOME/.Xresources ]; then
     xrdb -merge ~/.Xresources
 fi
 
-xscreensaver -no-splash &
+## Disabled as this annoys the shit out of people
+# xscreensaver -no-splash &
 
 if [ "$DESKTOP_SESSION" == "gnome-xmonad" ]; then
     pkill -f caffeine
@@ -16,6 +17,10 @@ fi
 if [ "$HOSTNAME" == "crew-glue" ]; then
     pkill -f synergy
     nohup /usr/bin/synergys -f --config ~/synergy.conf </dev/null >/dev/null 2>&1 &
+    # Monitor display changes
+    xrandr --output DVI-I-1 --pos 0x400
+    pkill -f check_resolution.py
+    nohup-nolog ~/Scripts/check_resolution.py on-display-change-crew-glue.sh
 elif [ "$HOSTNAME" == "erahhal-u620" ]; then
     pkill -f synergy
     nohup /usr/bin/synergyc -f --name erahhal-u620 crew-glue </dev/null >/dev/null 2>&1 &

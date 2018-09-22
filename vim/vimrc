@@ -121,6 +121,9 @@ endif
 " Things like ctrl-w ctrl-] won't find custom ctag files without this
 filetype plugin indent on
 
+" Automatically resize splits when window is resized
+autocmd VimResized * wincmd =
+
 " Automatically set working directory to the folder of open file.
 " Helps with things like syntastic/pylint, which look in parent folders for rc
 " files
@@ -128,6 +131,28 @@ filetype plugin indent on
 " if expand('%:t') =~ '\.py$'
 "     set autochdir
 " endif
+
+let g:LargeFile = 1    " in megabytes
+let g:LargeFile = g:LargeFile*1024*1024
+
+fun! OptimizeLargeFile()
+   let f = expand("<afile>")
+   if getfsize(f) >= g:LargeFile
+       let b:eikeep = &ei
+       let b:ulkeep = &ul
+       set ei = FileType
+       setlocal noswf bh=unload
+       let f = escape(substitute(f,'\','/','g'),' ')
+       exe "au LargeFile BufEnter ".f." set ul=-1"
+       exe "au LargeFile BufLeave ".f." let &ul=".b:ulkeep."|set ei=".b:eikeep
+       exe "au LargeFile BufUnload ".f." au! LargeFile * ".f
+       echomsg "***note*** handling a large file"
+   endif
+endfun
+
+augroup LargeFile
+  autocmd BufReadPre * call OptimizeLargeFile()
+augroup END
 
 " -----------------------------------------------------
 " Backspace settings
@@ -159,7 +184,9 @@ au FileType hpp setl ts=4 sw=4 sts=4
 au FileType sh setl ts=4 sw=5 sts=4
 
 " Align function parameters that are on multiple lines
-set cino+=(0
+if expand('%:t') =~ '\.cpp$' || expand('%:t') =~ '\.cc$' || expand('%:t') =~ '\.hpp$' || expand('%:t') =~ '\.h$' || expand('%:t') =~ '\.py$'
+    set cino+=(0
+endif
 
 " -----------------------------------------------------
 " Look and feel
@@ -196,6 +223,9 @@ fun! UpdateFileTypes()
 endfun
 
 autocmd BufEnter * call UpdateFileTypes()
+
+" Make sure syntax highlighting doesn't break when viewing from middle of a file
+autocmd BufEnter * :syntax sync fromstart
 
 " -----------------------------------------------------
 " Line length highlight
@@ -266,6 +296,8 @@ let g:vim_markdown_folding_disabled=1
 
 fun! TrimTrailingWhitespace()
     if &ft =~ 'javascript\|html\|jade\|json\|css\|less\|php\|python\|sh\|c\|cpp\|markdown\|yaml\|vim'
+        :%s/\s\+$//e
+    elseif expand('%:t') =~ '\.gltf$' || expand('%:t') =~ '\.glsl$'
         :%s/\s\+$//e
     endif
 endfun
@@ -551,7 +583,7 @@ Plug 'Rip-Rip/clang_complete'
 " ctrl-x ctrl-u to get argument completion for member functions
 
 if s:uname == "Linux"
-    let g:clang_library_path='/usr/lib/llvm-3.8/lib'
+    let g:clang_library_path='/usr/lib/llvm-3.9/lib'
 elseif s:uname == "Darwin"
     let cmd = "brew list llvm | sed -n 1p | sed 's/^\\(.*\\/llvm\\/[^/]*\\).*$/\\1/'"
     let g:clang_library_path = substitute(system(cmd), '\n\+$', '', '') . '/lib'
@@ -596,6 +628,20 @@ if 0
     " Also need to disable other autocomplete plugins and settings before using
     let g:deoplete#enable_at_startup = 1
 endif
+
+" -----------------------------------------------------
+" clang-format support
+" -----------------------------------------------------
+
+Plug 'rhysd/vim-clang-format'
+
+" map to <Leader>cf in C++ code
+autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+" if you install vim-operator-user
+"autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
+" Toggle auto formatting:
+"nmap <Leader>C :ClangFormatAutoToggle<CR>
 
 " -----------------------------------------------------
 " VCS Support
@@ -706,7 +752,11 @@ Plug 'pangloss/vim-javascript'
 Plug 'w0rp/ale'
 
 let g:ale_linters = { 'cpp': ['clang'] }
-let g:ale_javascript_eslint_executable = $HOME.'/.config/yarn/global/node_modules/.bin/eslint'
+if s:uname == "Linux"
+    let g:ale_javascript_eslint_executable = $HOME.'/node_modules/.bin/eslint'
+elseif s:uname == "Darwin"
+    let g:ale_javascript_eslint_executable = $HOME.'/npm-global/bin/eslint'
+endif
 if findfile('.clang_complete', '.') == '.clang_complete'
     let g:ale_cpp_clang_options = '$(get-clang-compile-options .clang_complete)'
 endif
@@ -731,13 +781,13 @@ if 0
     " let g:syntastic_cpp_config_file = '.syntastic_cpp_config'
     let g:syntastic_javascript_checkers = ['eslint']
     " Must specify full path, since vim's 'executable' doesn't work in hidden paths
-     let g:syntastic_javascript_eslint_exec = '~/.config/yarn/global/node_modules/.bin/eslint'
+     let g:syntastic_javascript_eslint_exec = 'eslint'
     let g:syntastic_javascript_eslint_args = '--quiet'
     let g:syntastic_html_tidy_exec = 'tidy5 config ~/tidy-config.txt'
     let g:syntastic_html_tidy_ignore_errors = ['discarding unexpected <', '> is not recognized']
     let g:syntastic_html_checkers = ['tidy', 'eslint']
     " Must specify full path, since vim's 'executable' doesn't work in hidden paths
-    let g:syntastic_html_eslint_exec = '~/.config/yarn/global/node_modules/.bin/eslint'
+    let g:syntastic_html_eslint_exec = 'eslint'
     let g:syntastic_html_eslint_args = '--quiet'
     let g:syntastic_always_populate_loc_list = 1
     let g:syntastic_auto_loc_list = 1
@@ -1020,9 +1070,15 @@ if 0
     Plug 'jimmysitu/pyclewn'
 endif
 
-" Too simple - doesn't do much beyond a normal debugger
+" Pretty simple - doesn't do much beyond a normal debugger
 if 0
     Plug 'vim-scripts/Conque-GDB'
+    " 1: strip color after 200 line, 2: always with color
+    let g:ConqueTerm_Color=2
+    " close conque when program ends running
+    let g:ConqueTerm_CloseOnEnd=1
+    " display warning message if conqueTerm is configed incorrect
+    let g:ConqueTerm_StartMessages=1
 endif
 
 " Disabled as it overrides <leader>t which I want to use for creating workspaces

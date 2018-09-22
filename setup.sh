@@ -96,6 +96,9 @@ fi
 if [ ! -e tmux-resurrect ]; then
     git clone https://github.com/tmux-plugins/tmux-resurrect
 fi
+if [ ! -e tmux-continuum ]; then
+    git clone https://github.com/tmux-plugins/tmux-continuum
+fi
 if [ ! -e tmux-open ]; then
     git clone https://github.com/tmux-plugins/tmux-open
 fi

@@ -7,6 +7,7 @@ import XMonad.Layout.NoBorders
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ServerMode
 import XMonad.Hooks.SetWMName
 import qualified XMonad.StackSet as W
 import XMonad.Util.EZConfig
@@ -48,13 +49,14 @@ myKeys = [ ((mod1Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
           ((m .|. mod1Mask, k), windows $ onCurrentScreen f i)
                | (i, k) <- zip (workspaces' (myDefaultConf)) [xK_1 .. xK_9]
                , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
-         ] ++
-         [
-         -- make sure screens are ordered by physical location rather than screen ID
-          ((m .|. mod1Mask, k), f sc)
-             | (k, sc) <- zip [xK_w, xK_e, xK_r] [0..]
-             , (f, m) <- [(viewScreen, 0), (sendToScreen, shiftMask)]
          ]
+         -- ] ++
+         -- [
+         -- -- make sure screens are ordered by physical location rather than screen ID
+         --  ((m .|. mod1Mask, k), f sc)
+         --     | (k, sc) <- zip [xK_w, xK_e, xK_r] [0..]
+         --     , (f, m) <- [(viewScreen, 0), (sendToScreen, shiftMask)]
+         -- ]
 
 floatManageHooks = composeAll [isFloat --> doFloat] where
     isFloat = foldr1 (<||>) [isDo, isEdge, isVlc, isMpv, isXpra, isQjackctl, isVncviewer, isGnomeSystemAction, isFirefoxDialog, isPidginDialog, isVMDdialog] where
@@ -79,7 +81,7 @@ myDefaultConf = ewmh def {
       modMask = mod1Mask     -- default mod key is left alt
     , terminal = "gnome-terminal"
     , workspaces = myWorkspaces
-    , handleEventHook = handleEventHook def <+> fullscreenEventHook
+    , handleEventHook = serverModeEventHook <+> handleEventHook def <+> fullscreenEventHook
     , manageHook = floatManageHooks <+> manageDocks <+> (isFullscreen --> doFullFloat) <+> manageHook def <+> composeAll myManagementHooks
     , startupHook = startupHook gnomeConfig >> myStartupHook
     , focusFollowsMouse = False

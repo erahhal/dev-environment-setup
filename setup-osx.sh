@@ -65,6 +65,11 @@ brew cask install hipchat
 brew cask install unetbootin
 brew cask install etcher
 
+# FAC (Git Fix All Conflicts)
+
+brew tap mkchoi212/fac https://github.com/mkchoi212/fac.git
+brew install fac
+
 pip2 install --upgrade PIL
 pip2 install --upgrade Pillow
 pip2 install --upgrade neovim

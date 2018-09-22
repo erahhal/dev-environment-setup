@@ -102,8 +102,9 @@ if hash apt-get 2>/dev/null; then
     sudo apt-get install -y choqok
     sudo apt-get install -y neovim
     sudo apt-get install -y clang
+    sudo apt-get install -y clang-3.9
     # For vim
-    sudo apt-get install -y libclang-3.8
+    sudo apt-get install -y libclang-3.9
     sudo apt-get install -y clang-format
     sudo apt-get install -y llvm
     sudo apt-get install -y lldb
@@ -237,6 +238,19 @@ if [ "$(readlink ~/.Xresources)" != "$DIR/bash/Xresources" ]; then
   mv ~/.Xresources ~/.Xresources.orig
   ln -s $DIR/bash/Xresources ~/.Xresources
 fi
+
+# Gnome multimonitor fix
+mkdir -p ~/.config/autostart
+if [ "$(readlink ~/.config/autostart/update-screen-pos.desktop)" != "$DIR/gnome/update-screen-pos.desktop" ]; then
+  if [ -e ~/.config/autostart/update-screen-pos.desktop ]; then
+    mv ~/.config/autostart/update-screen-pos.desktop ~/.config/autostart/update-screen-pos.desktop.orig
+  fi
+  ln -s $DIR/gnome/update-screen-pos.desktop ~/.config/autostart/update-screen-pos.desktop
+fi
+
+# FAC (Git Fix All Conflicts)
+
+go get github.com/mkchoi212/fac
 
 # udev
 
