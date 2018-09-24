@@ -33,7 +33,7 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # override /usr/bin with /usr/local/bin
-export PATH="~/.cabal/bin:/usr/local/bin:/usr/local/sbin:~/node_modules/.bin/:~/Scripts:~/Scripts/local:~/Code-vendor/UnrealEngine/Engine/Binaries/Linux:$PATH"
+export PATH="~/.cabal/bin:/usr/local/bin:/usr/local/sbin:$HOME/node_modules/.bin/:$HOME/npm-global/bin/:$HOME/Scripts:$HOME/Scripts/local:$PATH"
 
 #-------------------------------------------------------------
 # Default editor
@@ -85,17 +85,7 @@ export MAVEN_OPTS="-Xms768m -Xmx6144m -XX:MaxPermSize=128M"
 
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
-ulimit -n 8096
-
-#-------------------------------------------------------------
-# Homebrew
-#-------------------------------------------------------------
-
-export HOMEBREW_NO_ANALYTICS=1
-HOMEBREW_API_TOKEN_FILE=~/Scripts/config/homebrew_github_api_token
-if [ -e "$HOMEBREW_API_TOKEN_FILE" ]; then
-  export HOMEBREW_GITHUB_API_TOKEN=$(cat ${HOMEBREW_API_TOKEN_FILE})
-fi
+# ulimit -n 8096
 
 #-------------------------------------------------------------
 # FZF
@@ -145,4 +135,8 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 
   # Colors
   export PS1='\[$(tput bold)\]\[$(tput setaf 6)\]\t \[$(tput setaf 2)\][\[$(tput setaf 7)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 7)\]\h \[$(tput setaf 6)\]\W\[$(tput setaf 2)\]]\[$(tput setaf 4)\]$(__git_ps1 " (%s)")\\$ \[$(tput sgr0)\]'
+
+  # npm
+  export NPM_PACKAGES="${HOME}/.npm-packages"
+  PATH="$NPM_PACKAGES/bin:$PATH"
 fi

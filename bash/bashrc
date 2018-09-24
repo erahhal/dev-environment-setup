@@ -14,10 +14,6 @@ if [ -f /etc/bashrc ]; then
   . /etc/bashrc   # --> Read /etc/bashrc, if present.
 fi
 
-#-------------------------------------------------------------
-# Aliases
-#-------------------------------------------------------------
-
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
   DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
@@ -27,6 +23,25 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 alias vimdiff='nvim -d'
+
+#-------------------------------------------------------------
+# Homebrew
+#-------------------------------------------------------------
+
+export HOMEBREW_NO_ANALYTICS=1
+HOMEBREW_API_TOKEN_FILE=~/Scripts/config/homebrew_github_api_token
+if [ -e "$HOMEBREW_API_TOKEN_FILE" ]; then
+  export HOMEBREW_GITHUB_API_TOKEN=$(cat ${HOMEBREW_API_TOKEN_FILE})
+fi
+
+#-------------------------------------------------------------
+# Backblaze
+#-------------------------------------------------------------
+
+BACKBLAZE_API_FILE=~/Scripts/config/backblaze
+if [ -e "$BACKBLAZE_API_FILE" ]; then
+  . "$BACKBLAZE_API_FILE"
+fi
 
 if [ "$(uname)" == "Darwin" ]; then
   #-------------------------------------------------------------
@@ -50,6 +65,10 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     TERM=xterm-256color
   fi
   export TERM
+  if [ ! -z $DISPLAY ]; then
+    # keyboard rate
+    xset r rate 250 30
+  fi
   alias irssi='TERM=screen-256color irssi'
   alias open=gnome-open
   . "/etc/bash_completion"

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+~/Scripts/run_scaled --sleep=30 /usr/bin/qjackctl

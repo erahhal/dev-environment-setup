@@ -62,6 +62,10 @@ if [ $(realpath "$DIR/bash/xsessionrc") != $(realpath ~/.xsessionrc) ]; then
     mv ~/.xsessionrc ~/.xsessionrc.orig
     ln -s $DIR/bash/xsessionrc ~/.xsessionrc
 fi
+if [ $(realpath "$DIR/bash/xbindkeysrc") != $(realpath ~/.xbindkeysrc) ]; then
+    mv ~/.xbindkeysrc ~/.xbindkeysrc.orig
+    ln -s $DIR/bash/xbindkeysrc ~/.xbindkeysrc
+fi
 if [ $(realpath "$DIR/bash/bash_profile") != $(realpath ~/.bash_profile) ]; then
     mv ~/.bash_profile ~/.bash_profile.orig
     ln -s $DIR/bash/bash_profile ~/.bash_profile

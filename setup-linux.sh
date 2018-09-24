@@ -89,14 +89,43 @@ if hash apt-get 2>/dev/null; then
     echo "deb http://ppa.launchpad.net/x4121/ripgrep/ubuntu zesty main" | sudo tee /etc/apt/sources.list.d/ripgrep.list
 
     sudo apt-get update
-    sudo apt-get install -y software-properties-common python-software-properties vim vim-scripts vim-doc vim-gtk-py2 vim-gtk3-py2 vim-addon-manager vim-nox-py2 postgresql nginx cmake python-dev cmake nodejs syncthing syncthing-inotify code gocode golang-go gccgo ack-grep silversearcher-ag ripgrep xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xclip ack-grep mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client g++ libstdc++6 caffeine redshift redshift-gtk keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
+    sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs syncthing syncthing-inotify code gocode golang-go gccgo ack-grep silversearcher-ag ripgrep vim vim-nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xclip ack-grep mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client g++ libstdc++6 caffeine keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
+
+    # Disable tap-to-click on touchpads
+    sudo apt-get install -y xserver-xorg-input-libinput
+    sudo apt-get remove --purge -y xserver-xorg-input-synaptics
+
+    if [ "$DISTRIB_CODENAME" == "xenial" ]; then
+        sudo apt-get install -y redshift redshift-gtk geoclue-2.0
+
+        # Redshift
+REDSHIFT_CONFIG=$(cat <<-END
+[redshift]
+allowed=true
+system=false
+users=
+END
+)
+      if ! grep -q "redshift" /etc/geoclue/geoclue.conf
+      then
+        echo "$REDSHIFT_CONFIG" | sudo tee -a /etc/geoclue/geoclue.conf
+        sudo service geoclue restart
+        fi
+    fi
+
+    if [ "$DISTRIB_CODENAME" == "artful" ]; then
+        sudo apt-get install -y chrome-gnome-shell gnome-shell-extensions gnome-shell-extension-caffeine gnome-shell-extension-multi-monitors gnome-shell-extension-trash gnome-shell-extension-system-monitor gnome-shell-extension-mediaplayer
+    fi
 
     # sudo apt-get install -y emacs-snapshot
 
     # # Installing xubuntu causes hwe (hardware enablement) versions of xorg to be removed...
     # sudo apt-get install -y xubuntu-desktop
     # sudo apt remove --purge -y ubuntu-desktop
+    # sudo apt-get install -y xfce4-power-manager
 
+    # Android USB file access
+    sudo apt-get install -y jmtpfs
     # Google pinyin input
     sudo apt-get install -y fcitx fcitx-googlepinyin fcitx-table-wbpy fcitx-pinyin fcitx-sunpinyin
     sudo apt-get install -y choqok
@@ -139,7 +168,7 @@ if hash apt-get 2>/dev/null; then
     sudo gem install neovim
     sudo apt-get install -y oracle-java8-installer
     sudo apt-get install -y xmonad*
-    sudo apt-get install -y suckless-tools xscreensaver xmobar scrot xfce4-power-manager stalonetray dmenu cabal-install
+    sudo apt-get install -y suckless-tools xscreensaver xmobar scrot stalonetray dmenu cabal-install
     sudo cabal update
     sudo cabal install --global yeganesh
     sudo apt-get install -y xscreensaver xscreensaver-gl-extra xscreensaver-data-extra xfishtank xdaliclock fortune
@@ -222,6 +251,11 @@ fi
 # Build xmonadctl
 cd ~/.xmonad
 ghc --make xmonadctl.hs
+
+if [ "$(readlink ~/.config/kitty)" != "$DIR/kitty" ]; then
+  mv ~/.config/kitty ~/.config/kitty.orig
+  ln -s $DIR/kitty ~/.config/kitty
+fi
 
 if [ "$(readlink ~/.mpv)" != "$DIR/mpv" ]; then
   mv ~/.mpv ~/.mpv.orig

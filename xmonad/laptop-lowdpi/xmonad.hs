@@ -1,12 +1,12 @@
-import Config
-import XMonad
-import XMonad.Layout.Gaps
-import XMonad.Layout.PerScreen
+import qualified Config
+import qualified XMonad
+import qualified XMonad.Layout.Gaps as Gaps
+import qualified XMonad.Layout.PerScreen as PerScreen
 
-conf = myDefaultConf {
-      borderWidth = 1
-    , layoutHook = gaps [(U, 24)] $ myLayoutHook
+conf = Config.myDefaultConf {
+      XMonad.borderWidth = 1
+    , XMonad.layoutHook = Gaps.gaps [(Gaps.U, 24)] $ Config.myLayoutHook
     }
 
 main = do
-  xmonad $ conf
+  XMonad.xmonad $ conf

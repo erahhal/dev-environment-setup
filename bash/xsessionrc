@@ -1,18 +1,26 @@
 #!/bin/bash
 
-if [ -f $HOME/.Xresources ]; then
+. /etc/lsb-release
+
+if [ -f $HOME/.Xresources]; then
     xrdb -merge ~/.Xresources
 fi
 
 ## Disabled as this annoys the shit out of people
 # xscreensaver -no-splash &
 
-if [ "$DESKTOP_SESSION" == "gnome-xmonad" ]; then
+# artsy has gnome shell extensions instead
+if [ "$DESKTOP_SESSION" == "gnome-xmonad" ] || [ "$DESKTOP_SESSION" == "xmonad" ] || [ "$DESKTOP_SESSION" == "gnome-flashback-xmonad" ]; then
     pkill -f caffeine
     caffeine-indicator &
     pkill -f redshift
-    redshift-gtk &
+    # Redshift is not needed anymore in new distributions as Gnome 3 has it built in
+    if [ "$DISTRIB_CODENAME" == "xenial" ]; then
+        redshift-gtk &
+    fi
+    python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &
 fi
+
 
 if [ "$HOSTNAME" == "crew-glue" ]; then
     pkill -f synergy
@@ -21,14 +29,19 @@ if [ "$HOSTNAME" == "crew-glue" ]; then
     xrandr --output DVI-I-1 --pos 0x400
     pkill -f check_resolution.py
     nohup-nolog ~/Scripts/check_resolution.py on-display-change-crew-glue.sh
+    # feh --bg-scale /usr/share/backgrounds/The_Forbidden_City_by_Daniel_Mathis.jpg &
 elif [ "$HOSTNAME" == "erahhal-u620" ]; then
     pkill -f synergy
     nohup /usr/bin/synergyc -f --name erahhal-u620 crew-glue </dev/null >/dev/null 2>&1 &
 else
     python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &
     pkill -f pia_manager
-    sleep 2
-    ~/pia.sh &
-fi
+    # ~/Scripts/random-wallpaper.sh
 
-# feh --bg-scale /usr/share/backgrounds/The_Forbidden_City_by_Daniel_Mathis.jpg &
+    # # PIA is now run from Ubuntu's VPN manager
+    # ps aux | grep [p]ia_manager | awk '{ print $2 }' | xargs kill
+    # sleep 2
+    # ~/pia.sh &
+
+    feh --bg-scale ~/Pictures/3rd-party/wallpapers/e6ce738a-c1a4-4a62-9f75-89b1738b0efd.jpg
+fi
