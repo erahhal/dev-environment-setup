@@ -108,6 +108,17 @@ if [ ! -e tmux-open ]; then
 fi
 
 #-------------------------------------------------------------
+# OS X launchd
+#-------------------------------------------------------------
+
+if [ "$(uname)" == "Darwin" ]; then
+    if [ $(realpath "$DIR/launchd/tunnel-crew-glue.plist") != $(realpath ~/Library/LaunchAgents/tunnel-crew-glue.plist) ]; then
+        rm ~/Library/LaunchAgents/tunnel-crew-glue.plist
+        ln -s $DIR/launchd/tunnel-crew-glue.plist ~/Library/LaunchAgents/tunnel-crew-glue.plist
+    fi
+fi
+
+#-------------------------------------------------------------
 # 3rd party code
 #-------------------------------------------------------------
 

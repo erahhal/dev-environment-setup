@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd ~/Library/LaunchAgents
+launchctl unload tunnel-crew-glue.plist
+launchctl load tunnel-crew-glue.plist
+launchctl start tunnel-crew-glue.plist
+launchctl list | grep tunnel

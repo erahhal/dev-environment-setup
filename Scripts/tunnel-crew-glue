@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# For this to run in launchctl:
+# - the plist file must sit in ~/Library/LaunchAgents
+# - the plist file must be owned by the user
+# - every executable in this file must use absolute paths
+# - launchctl must be run in a normal shell rather than in tmux or screen
+
+killall autossh
+/usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L 24800:crew-glue:24800 crew-glue &
+PID_SYNERGY=$!
+/usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L 10101:crew-glue:10101 crew-glue &
+PID_TELEMETRY=$!
+/usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L 10201:crew-glue:10201 crew-glue &
+PID_COMMANDING=$!
+/usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L 10150:crew-glue:10150 crew-glue &
+PID_ALERTS=$!
+
+onLogout() {
+    kill $PID_SYNERGY
+    kill $PID_TELEMETRY
+    kill $PID_COMMANDING
+    kill $PID_ALERTS
+    exit
+}
+
+trap 'onLogout' SIGINT SIGHUP SIGTERM
+while true; do
+    sleep 86400 &
+    wait $!
+done
