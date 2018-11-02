@@ -6,21 +6,21 @@
 # - every executable in this file must use absolute paths
 # - launchctl must be run in a normal shell rather than in tmux or screen
 
+REMOTE=crew-glue
+
+if [[ ! -z $PASSWORD ]]; then
+    SSHPASS="/usr/local/bin/sshpass -p $PASSWORD"
+fi
+
 killall autossh
-/usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L 24800:crew-glue:24800 crew-glue &
-PID_SYNERGY=$!
-/usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L 10101:crew-glue:10101 crew-glue &
-PID_TELEMETRY=$!
-/usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L 10201:crew-glue:10201 crew-glue &
-PID_COMMANDING=$!
-/usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L 10150:crew-glue:10150 crew-glue &
-PID_ALERTS=$!
+$SSHPASS /usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L 8000:$REMOTE:8000 $USER@$REMOTE
+$SSHPASS /usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L 24800:$REMOTE:24800 $USER@$REMOTE
+$SSHPASS /usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L 10101:$REMOTE:10101 $USER@$REMOTE
+$SSHPASS /usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L 10201:$REMOTE:10201 $USER@$REMOTE
+$SSHPASS /usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L 10150:$REMOTE:10150 $USER@$REMOTE
 
 onLogout() {
-    kill $PID_SYNERGY
-    kill $PID_TELEMETRY
-    kill $PID_COMMANDING
-    kill $PID_ALERTS
+    killall autossh
     exit
 }
 

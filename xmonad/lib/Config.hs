@@ -98,13 +98,6 @@ myKeys = [ ((XMonad.mod1Mask Bits..|. XMonad.shiftMask, XMonad.xK_z), XMonad.spa
              | (physicalScreenKey, screenCount) <- zip [XMonad.xK_w, XMonad.xK_e, XMonad.xK_r] [0..]
              , (screenOperation, modifierKey) <- [(PhysicalScreens.viewScreen, 0), (PhysicalScreens.sendToScreen, XMonad.shiftMask)]
          ]
-         -- ] ++
-         -- [
-         -- -- make sure screens are ordered by physical location rather than screen ID
-         --  ((m .|. mod1Mask, k), f sc)
-         --     | (k, sc) <- zip [xK_w, xK_e, xK_r] [0..]
-         --     , (f, m) <- [(viewScreen, 0), (sendToScreen, shiftMask)]
-         -- ]
 
 -- Can get things from xprop using stringProperty "WM_NAME", or the like
 -- q =? x
@@ -148,7 +141,7 @@ myLayoutHook = ManageDocks.avoidStruts $ NoBorders.smartBorders $ XMonad.layoutH
 
 myDefaultConf = EmwhDesktops.ewmh XMonad.def {
       XMonad.modMask = XMonad.mod1Mask     -- default mod key is left alt
-    , XMonad.terminal = "kitty"
+    , XMonad.terminal = "gnome-terminal"
     , XMonad.workspaces = myWorkspaces
     , XMonad.handleEventHook = ServerMode.serverModeEventHook <+> XMonad.handleEventHook XMonad.def <+> EmwhDesktops.fullscreenEventHook
     , XMonad.manageHook = floatManageHooks <+> ManageDocks.manageDocks <+> (ManageHelpers.isFullscreen --> ManageHelpers.doFullFloat) <+> XMonad.manageHook XMonad.def <+> XMonad.composeAll myManagementHooks
