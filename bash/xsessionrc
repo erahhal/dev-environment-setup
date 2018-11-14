@@ -34,7 +34,9 @@ elif [ "$HOSTNAME" == "erahhal-u620" ]; then
     pkill -f synergy
     nohup /usr/bin/synergyc -f --name erahhal-u620 crew-glue </dev/null >/dev/null 2>&1 &
 else
-    python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &
+    # syncthing indicator no longer needs to be started here on Ubuntu 18.04
+    # python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &
+
     pkill -f pia_manager
     # ~/Scripts/random-wallpaper.sh
 

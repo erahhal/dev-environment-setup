@@ -87,6 +87,7 @@
 
 if has("unix")
     let s:uname = substitute(system("uname -s"), '\n', '', '')
+    let s:ubuntu_version = substitute(system("lsb_release -a | grep Release | awk '{ print $2 }'"), '\n', '', '')
 else
     let s:uname = 'unknown'
 endif
@@ -586,7 +587,11 @@ Plug 'Rip-Rip/clang_complete'
 " ctrl-x ctrl-u to get argument completion for member functions
 
 if s:uname == "Linux"
-    let g:clang_library_path='/usr/lib/llvm-3.9/lib'
+    if s:ubuntu_version == "18.04"
+        let g:clang_library_path='/usr/lib/llvm-6.0/lib'
+    else
+        let g:clang_library_path='/usr/lib/llvm-3.9/lib'
+    endif
 elseif s:uname == "Darwin"
     let cmd = "brew list llvm | sed -n 1p | sed 's/^\\(.*\\/llvm\\/[^/]*\\).*$/\\1/'"
     let g:clang_library_path = substitute(system(cmd), '\n\+$', '', '') . '/lib'
