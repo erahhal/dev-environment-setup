@@ -141,6 +141,7 @@ myLayoutHook = ManageDocks.avoidStruts $ NoBorders.smartBorders $ XMonad.layoutH
 
 myDefaultConf = EmwhDesktops.ewmh XMonad.def {
       XMonad.modMask = XMonad.mod1Mask     -- default mod key is left alt
+    -- , XMonad.terminal = "kitty"
     , XMonad.terminal = "gnome-terminal"
     , XMonad.workspaces = myWorkspaces
     , XMonad.handleEventHook = ServerMode.serverModeEventHook <+> XMonad.handleEventHook XMonad.def <+> EmwhDesktops.fullscreenEventHook

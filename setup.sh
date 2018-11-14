@@ -93,18 +93,38 @@ fi
 cd ~/.tmux-plugins
 if [ ! -e tpm ]; then
     git clone https://github.com/tmux-plugins/tpm
+else
+    cd tpm
+    git pull
+    cd ..
 fi
 if [ ! -e tmux-sensible ]; then
     git clone https://github.com/tmux-plugins/tmux-sensible
+else
+    cd tmux-sensible
+    git pull
+    cd ..
 fi
 if [ ! -e tmux-resurrect ]; then
     git clone https://github.com/tmux-plugins/tmux-resurrect
+else
+    cd tmux-resurrect
+    git pull
+    cd ..
 fi
 if [ ! -e tmux-continuum ]; then
     git clone https://github.com/tmux-plugins/tmux-continuum
+else
+    cd tmux-continuum
+    git pull
+    cd ..
 fi
 if [ ! -e tmux-open ]; then
     git clone https://github.com/tmux-plugins/tmux-open
+else
+    cd tmux-open
+    git pull
+    cd ..
 fi
 
 #-------------------------------------------------------------
