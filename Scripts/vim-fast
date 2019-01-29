@@ -1,0 +1,3 @@
+#!/bin/bash
+
+vim -u NONE -c 'set ft= | set syn= | syntax off | set nowrap' $@
