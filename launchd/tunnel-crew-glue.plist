@@ -6,7 +6,7 @@
     <string>tunnel-crew-glue</string>
     <key>ProgramArguments</key>
     <array>
-    <string>/Users/erahhal/Scripts/tunnel-crew-glue</string>
+    <string>/Users/erahhal/Scripts/tunnel-erahhal-mbp15tb-crew-glue</string>
     </array>
     <key>RunAtLoad</key>
     <true/>

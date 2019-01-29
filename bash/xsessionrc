@@ -19,6 +19,8 @@ if [ "$DESKTOP_SESSION" == "gnome-xmonad" ] || [ "$DESKTOP_SESSION" == "xmonad" 
         redshift-gtk &
     fi
     python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &
+
+    nohup-nolog xcompmgr -C -f -D 3
 fi
 
 

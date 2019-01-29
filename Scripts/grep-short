@@ -1,0 +1,3 @@
+#!/bin/bash
+
+grep -rLZE '.{200}' . | xargs -r0 grep $1

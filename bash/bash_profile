@@ -33,7 +33,7 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # override /usr/bin with /usr/local/bin
-export PATH="~/.cabal/bin:/usr/local/bin:/usr/local/sbin:$HOME/node_modules/.bin/:$HOME/npm-global/bin/:$HOME/Scripts:$HOME/Scripts/local:$PATH"
+export PATH="~/.cabal/bin:~/.cargo/bin:/usr/local/bin:/usr/local/sbin:$HOME/node_modules/.bin/:$HOME/npm-global/bin/:$HOME/Scripts:$HOME/Scripts/local:$PATH"
 
 #-------------------------------------------------------------
 # Default editor

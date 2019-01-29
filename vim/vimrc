@@ -251,10 +251,12 @@ fun! ShowLineLengthBoundary()
         return
     elseif expand('%:t') =~ '\.json$'
         return
-    elseif expand('%:t') =~ '\.cpp$' || expand('%:t') =~ '\.cc$' || expand('%:t') =~ '\.hpp$' || expand('%:t') =~ '\.h$' || expand('%:t') =~ '\.py$'
-        let w:overlength = matchadd('OverLength', '\%>80v.\+')
+    elseif expand('%:t') =~ '\.cpp$' || expand('%:t') =~ '\.cc$' || expand('%:t') =~ '\.hpp$' || expand('%:t') =~ '\.h$'
+        let w:overlength = matchadd('OverLength', '\%>79v.\+')
+    elseif expand('%:t') =~ '\.py$'
+        let w:overlength = matchadd('OverLength', '\%>99v.\+')
     elseif expand('%:t') =~ '\.js$' || expand('%:t') =~ '\.ts$' || expand('%:t') =~ '\.html$'
-        let w:overlength = matchadd('OverLength', '\%>120v.\+')
+        let w:overlength = matchadd('OverLength', '\%>119v.\+')
     " " No longer default to 120
     " else
     "    let w:overlength = matchadd('OverLength', '\%>120v.\+')
@@ -771,6 +773,8 @@ endif
 " This defaults to "normal", which doesn't lint on change for heavy things like clang
 let g:ale_link_on_text_changed = 'always'
 let g:ale_html_tidy_options = '--custom-tags blocklevel'
+let g:ale_python_flake8_options = '--max-line-length=100'
+let g:ale_python_pylint_options = '--max-line-length=100'
 
 nmap <silent> ,k <Plug>(ale_previous_wrap)
 nmap <silent> ,j <Plug>(ale_next_wrap)
@@ -801,7 +805,7 @@ if 0
     let g:syntastic_auto_loc_list = 1
     let g:syntastic_check_on_open = 1
     let g:syntastic_check_on_wq = 0
-    let g:syntastic_python_pylint_post_args="--max-line-length=80"
+    let g:syntastic_python_pylint_post_args="--max-line-length=100"
 endif
 
 " -----------------------------------------------------
@@ -886,7 +890,12 @@ set clipboard=unnamed,unnamedplus      " Set system clipboard as default
 " Plug 'svermeulen/vim-easyclip'
 " integration with tmux clipboard
 Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'roxma/vim-tmux-clipboard'
+" Make sure DISPLAY is available before enabling tmux clipboard
+" integration, as it uses xsel or xclip in tmux.conf which seems to
+" strip newlines when copying
+if !empty($DISPLAY)
+    Plug 'roxma/vim-tmux-clipboard'
+endif
 
 " -----------------------------------------------------
 " File and Link opening
@@ -1023,9 +1032,9 @@ if 0
     let g:org_heading_highlight_colors = ['Title', 'Constant', 'Identifier', 'Statement', 'PreProc', 'Type', 'Special']
     " Enabling reverting back to solarized causes a load flicker for every file that is loaded
     " autocmd BufEnter *.org colorscheme solarized
-    autocmd BufEnter *.org colorscheme srcery
-    autocmd BufEnter *.org highlight Folded cterm=bold gui=bold
-    let g:org_agenda_files=["~/ownCloud/Ellis' Stuff/Documents/agenda.org"]
+
+    " autocmd BufEnter *.org highlight Folded cterm=bold gui=bold
+    let g:org_agenda_files=["~/Documents/org-mode/agenda.org"]
 endif
 
 " -----------------------------------------------------

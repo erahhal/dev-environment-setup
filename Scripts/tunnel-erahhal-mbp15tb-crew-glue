@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# For this to run in launchctl:
+# - the plist file must sit in ~/Library/LaunchAgents
+# - the plist file must be owned by the user
+# - every executable in this file must use absolute paths
+# - launchctl must be run in a normal shell rather than in tmux or screen
+
+REMOTE=crew-glue
+
+killall autossh
+
+ports=(
+    8000
+    8082
+    24800
+    10101
+    10201
+    10150
+)
+
+for port in "${ports[@]}"; do
+    /usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L $port:$REMOTE:$port $USER@$REMOTE
+    sleep 2
+done
+
+onLogout() {
+    killall autossh
+    exit
+}
+
+trap 'onLogout' SIGINT SIGHUP SIGTERM
+while true; do
+    sleep 86400 &
+    wait $!
+done

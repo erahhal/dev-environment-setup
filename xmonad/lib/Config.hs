@@ -1,7 +1,6 @@
 -- General terms
 --
--- Monoid: Associative binary operations with an identity.
---   e.g. (1 + 2) + 3 = (3 + 1) + 2 (associativity)
+-- Monoid: Associative binary operations with an identity.  e.g. (1 + 2) + 3 = (3 + 1) + 2 (associativity)
 --        3 + 0 = 3 (identity, which is 0)
 
 -- Module definition
@@ -34,6 +33,8 @@ import qualified XMonad.Layout.IndependentScreens as IndependentScreens
 import qualified Data.List as List
 import qualified Data.Bits as Bits
 
+myModMask = XMonad.mod4Mask
+
 -- composeAll (XMonad) - compose a list of ManageHooks
 gnomeManageHook = XMonad.composeAll [ XMonad.manageHook Gnome.gnomeConfig ]
 
@@ -58,13 +59,14 @@ myWorkspaces = IndependentScreens.withScreens 2 ["1","2","3","4","5","6","7","8"
 -- ( a, b) is a tuple constructor
 -- (<modifier>, <key>), where 0 for <modifier> means no modifier
 -- XMonad.mod1Mask = Alt
+-- XMonad.mod4Mask = Super
 -- "spawn" executes a command
 -- ++ concatenates two lists
 -- <- is variable assignment
 -- [ x | x <- l, p x ] is list comprehension
 -- .. is range (inclusive)
 -- $ is for grouping, a synonym for parens
-myKeys = [ ((XMonad.mod1Mask Bits..|. XMonad.shiftMask, XMonad.xK_z), XMonad.spawn "xscreensaver-command -lock")
+myKeys = [ ((myModMask Bits..|. XMonad.shiftMask, XMonad.xK_z), XMonad.spawn "xscreensaver-command -lock")
          , ((0, XMonad.xK_F3), XMonad.spawn "sleep 0.2; scrot -s")
          , ((0, XMonad.xK_F4), XMonad.spawn "scrot")
          -- Media Keys
@@ -73,7 +75,8 @@ myKeys = [ ((XMonad.mod1Mask Bits..|. XMonad.shiftMask, XMonad.xK_z), XMonad.spa
          , ((0, XMonad.xK_F10 ), XMonad.spawn "amixer set Master 5%+") -- XF86AudioRaiseVolume
          -- Spawn the launcher using command specified by myLauncher.
          -- Use this to launch programs without a key binding.
-         , ((XMonad.mod1Mask, XMonad.xK_p), XMonad.spawn myLauncher)
+         , ((myModMask, XMonad.xK_p), XMonad.spawn myLauncher)
+         , ((XMonad.mod1Mask, XMonad.xK_Tab), windows StackSet.focusDown)
          ] ++
          [
          -- workspaces are distinct per physical screen
@@ -88,16 +91,17 @@ myKeys = [ ((XMonad.mod1Mask Bits..|. XMonad.shiftMask, XMonad.xK_z), XMonad.spa
          --
          -- This is a list comprehension that takes each windowSet (set of windows per virtual screen), and maps a view and shift key binding
          -- that operates on the appropriate physical screen
-          ((modifierKey Bits..|. XMonad.mod1Mask, numberKey), XMonad.windows $ IndependentScreens.onCurrentScreen screenOperation windowSet)
+          ((modifierKey Bits..|. myModMask, numberKey), XMonad.windows $ IndependentScreens.onCurrentScreen screenOperation windowSet)
                | (windowSet, numberKey) <- zip (IndependentScreens.workspaces' myDefaultConf) [XMonad.xK_1 .. XMonad.xK_9]
                , (screenOperation, modifierKey) <- [(StackSet.view, 0), (StackSet.shift, XMonad.shiftMask)]
-         ] ++
-         [
-         -- make sure screens are ordered by physical location rather than screen ID, as screen ID is unpredictable
-          ((modifierKey Bits..|. XMonad.mod1Mask, physicalScreenKey), screenOperation screenCount)
-             | (physicalScreenKey, screenCount) <- zip [XMonad.xK_w, XMonad.xK_e, XMonad.xK_r] [0..]
-             , (screenOperation, modifierKey) <- [(PhysicalScreens.viewScreen, 0), (PhysicalScreens.sendToScreen, XMonad.shiftMask)]
          ]
+         -- ] ++
+         -- [
+         -- -- make sure screens are ordered by physical location rather than screen ID, as screen ID is unpredictable
+         --  ((modifierKey Bits..|. myModMask, physicalScreenKey), screenOperation screenCount)
+         --     | (physicalScreenKey, screenCount) <- zip [XMonad.xK_w, XMonad.xK_e, XMonad.xK_r] [0..]
+         --     , (screenOperation, modifierKey) <- [(PhysicalScreens.viewScreen, 0), (PhysicalScreens.sendToScreen, XMonad.shiftMask)]
+         -- ]
 
 -- Can get things from xprop using stringProperty "WM_NAME", or the like
 -- q =? x
@@ -140,7 +144,7 @@ floatManageHooks = XMonad.composeAll [isFloat --> XMonad.doFloat] where
 myLayoutHook = ManageDocks.avoidStruts $ NoBorders.smartBorders $ XMonad.layoutHook XMonad.def
 
 myDefaultConf = EmwhDesktops.ewmh XMonad.def {
-      XMonad.modMask = XMonad.mod1Mask     -- default mod key is left alt
+      XMonad.modMask = myModMask
     -- , XMonad.terminal = "kitty"
     , XMonad.terminal = "gnome-terminal"
     , XMonad.workspaces = myWorkspaces
