@@ -487,7 +487,7 @@ map g/ <Plug>(incsearch-stay)
 Plug 'mileszs/ack.vim'
 
 if s:uname == "Linux"
-    let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+    let g:ackprg="ack -H --nocolor --nogroup --column"
 elseif s:uname == "Darwin"
     let g:ackprg="ack -H -s --nocolor --nogroup --column"
 endif

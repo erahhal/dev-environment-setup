@@ -41,6 +41,7 @@ brew install tmux
 brew install tidy-html5
 brew install go
 brew install ctags-exuberant
+brew install exa
 brew install neovim/neovim/neovim
 brew uninstall ffmpeg --force
 brew install ffmpeg --with-libvorbis --with-libass --with-freetype --with-openssl --with-libvpx --with-fdk-aac --with-sdl2 --with-frei0r --with-opencore-amr --with-openjpeg --with-opus --with-rtmpdump --with-schroedinger --with-speex --with-theora --with-tools

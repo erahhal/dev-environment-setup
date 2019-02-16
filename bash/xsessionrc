@@ -6,8 +6,6 @@ if [ -f $HOME/.Xresources]; then
     xrdb -merge ~/.Xresources
 fi
 
-## Disabled as this annoys the shit out of people
-# xscreensaver -no-splash &
 
 # artsy has gnome shell extensions instead
 if [ "$DESKTOP_SESSION" == "gnome-xmonad" ] || [ "$DESKTOP_SESSION" == "xmonad" ] || [ "$DESKTOP_SESSION" == "gnome-flashback-xmonad" ]; then
@@ -20,7 +18,8 @@ if [ "$DESKTOP_SESSION" == "gnome-xmonad" ] || [ "$DESKTOP_SESSION" == "xmonad" 
     fi
     python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &
 
-    nohup-nolog xcompmgr -C -f -D 3
+    # Add fade between xmonad desktop switches
+    nohup-nolog xcompmgr -f -C -n -D 3
 fi
 
 
@@ -36,8 +35,8 @@ elif [ "$HOSTNAME" == "erahhal-u620" ]; then
     pkill -f synergy
     nohup /usr/bin/synergyc -f --name erahhal-u620 crew-glue </dev/null >/dev/null 2>&1 &
 else
-    # syncthing indicator no longer needs to be started here on Ubuntu 18.04
-    # python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &
+    pkill -f gnome-screensaver
+    xscreensaver -no-splash &
 
     pkill -f pia_manager
     # ~/Scripts/random-wallpaper.sh

@@ -89,7 +89,7 @@ if hash apt-get 2>/dev/null; then
     echo "deb http://ppa.launchpad.net/x4121/ripgrep/ubuntu zesty main" | sudo tee /etc/apt/sources.list.d/ripgrep.list
 
     sudo apt-get update
-    sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs syncthing syncthing-inotify code gocode golang-go gccgo ack-grep silversearcher-ag ripgrep vim vim-nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xclip ack-grep mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client g++ libstdc++6 caffeine keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
+    sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs syncthing syncthing-inotify code gocode golang-go gccgo ack-grep silversearcher-ag ripgrep vim vim-nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xcompmgr ack-grep mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client g++ libstdc++6 caffeine keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
 
     # Disable tap-to-click on touchpads
     sudo apt-get install -y xserver-xorg-input-libinput
@@ -124,6 +124,8 @@ END
     # sudo apt remove --purge -y ubuntu-desktop
     # sudo apt-get install -y xfce4-power-manager
 
+    # Rust
+    sudo apt-get install -y cargo
     # Android USB file access
     sudo apt-get install -y jmtpfs
     # Google pinyin input
@@ -208,6 +210,15 @@ fi
 
 cd ~/Code-vendor
 
+# Patched exa with icons
+if [ ! -d "exa-asoderman" ]; then
+    git clone https://github.com/asoderman/exa.git exa-asoderman
+fi
+cd exa-asoderman
+make
+cargo install --force --path .
+cd ..
+
 if [ ! -d "xwindows-solarized" ]; then
     git clone https://github.com/solarized/xresources.git xwindows-solarized
 fi
@@ -287,7 +298,6 @@ if [ "$(readlink ~/.config/autostart/update-screen-pos.desktop)" != "$DIR/gnome/
 fi
 
 # FAC (Git Fix All Conflicts)
-
 go get github.com/mkchoi212/fac
 
 # udev
