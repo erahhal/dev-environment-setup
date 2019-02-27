@@ -487,9 +487,9 @@ map g/ <Plug>(incsearch-stay)
 Plug 'mileszs/ack.vim'
 
 if s:uname == "Linux"
-    let g:ackprg="ack -H --nocolor --nogroup --column"
+    let g:ackprg="ag --nocolor --nogroup --column"
 elseif s:uname == "Darwin"
-    let g:ackprg="ack -H -s --nocolor --nogroup --column"
+    let g:ackprg="ag --nocolor --nogroup --column"
 endif
 
 " -----------------------------------------------------
@@ -500,7 +500,7 @@ Plug 'scrooloose/nerdtree'
 " tab support
 Plug 'jistr/vim-nerdtree-tabs'
 " NERDTree integration with ack
-Plug 'tyok/nerdtree-ack'
+Plug 'erahhal/nerdtree-ack'
 
 " Start NERDTreeTabs on launch
 autocmd vimenter * NERDTree
