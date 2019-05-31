@@ -83,6 +83,9 @@ if hash apt-get 2>/dev/null; then
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     sudo apt-get install -y nodejs
 
+    # lsd
+    URL='https://github.com/Peltoche/lsd/releases/download/0.15.1/lsd_0.15.1_amd64.deb'; FILE=`mktemp`; wget "$URL" -qO $FILE && sudo dpkg -i $FILE; rm $FILE
+
     #ripgrep
     # sudo add-apt-repository -y ppa:x4121/ripgrep
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A03A097E3C3842E1

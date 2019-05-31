@@ -50,12 +50,12 @@ if [ "$(uname)" == "Darwin" ]; then
 
   alias vi='/usr/local/bin/nvim'
   alias vim='/usr/local/bin/nvim'
-  alias ls='ls -GFh'
+  alias ls='lsd'
   export PS1="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ "
   export LSCOLORS=ExFxBxDxCxegedabagacad
   export CLICOLOR=1
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-  alias ls='ls --color=auto'
+  alias ls='lsd'
   alias exa='exa --icons'
   # get xterm and other settings
   xrdb -merge ~/.Xresources

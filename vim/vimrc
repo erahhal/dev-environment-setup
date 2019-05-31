@@ -818,19 +818,19 @@ endif
 " Dev Icons
 Plug 'ryanoasis/vim-devicons'
 
-let g:workspace_powerline_separators = 1
-let g:workspace_tab_icon = "\uf00a"
-let g:workspace_left_trunc_icon = "\uf0a8"
-let g:workspace_right_trunc_icon = "\uf0a9"
+let g:buffet_powerline_separators = 1
+let g:buffet_tab_icon = "\uf00a"
+let g:buffet_left_trunc_icon = "\uf0a8"
+let g:buffet_right_trunc_icon = "\uf0a9"
 
 " Separate workspaces
-Plug 'bagrat/vim-workspace'
+Plug 'bagrat/vim-buffet'
 
-noremap <Tab> :WSNext<CR>
-noremap <S-Tab> :WSPrev<CR>
-noremap <Leader><Tab> :WSClose<CR>
-noremap <Leader><S-Tab> :WSClose!<CR>
-noremap <Leader>t :WSTabNew<CR>
+noremap <Tab> :bn<CR>
+noremap <S-Tab> :bp<CR>
+noremap <Leader><Tab> :Bw<CR>
+noremap <Leader><S-Tab> :Bw!<CR>
+noremap <Leader>t :tabnew split<CR>
 
 " a tree of undos
 Plug 'mbbill/undotree'
@@ -923,6 +923,16 @@ Plug 'tpope/vim-speeddating'
 
 " Calendar.  Use ":Calendar" to launch
 Plug 'mattn/calendar-vim'
+
+" -----------------------------------------------------
+" Notational Velocity
+" -----------------------------------------------------
+
+Plug 'alok/notational-fzf-vim'
+
+let g:nv_search_paths = ['~/Documents/org-mode']
+
+nnoremap <c-n> :NV<cr>
 
 " -----------------------------------------------------
 " Org Mode
