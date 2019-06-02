@@ -232,6 +232,15 @@ autocmd BufEnter * call UpdateFileTypes()
 autocmd BufEnter * :syntax sync fromstart
 
 " -----------------------------------------------------
+" Wrapping per file type
+" -----------------------------------------------------
+
+augroup WrapLineInTeXFile
+    autocmd!
+    autocmd FileType org setlocal wrap
+augroup END
+
+" -----------------------------------------------------
 " Line length highlight
 " -----------------------------------------------------
 
@@ -543,13 +552,42 @@ Plug 'tpope/vim-surround'
 " Autocompletion
 " -----------------------------------------------------
 
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
 " faster creation of HTML and CSS, handles expansion
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 " Auto complete popup for local vars
 Plug 'vim-scripts/AutoComplPop'
 " asynchronous completion
-Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+if 0
+    " Use deoplete.
+    " Seems to be hanging at the moment, breaking insert mode
+    " Also need to disable other autocomplete plugins and settings before using
+    let g:deoplete#enable_at_startup = 1
+endif
+
+" Required for operations modifying multiple buffers like rename.
+set hidden
+
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'javascript': ['~/.npm-packages/bin/javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['~/.npm-packages/bin/javascript-typescript-stdio'],
+    \ 'python': ['/usr/local/bin/pyls'],
+    \ }
+
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" Or map each action separately
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
 " tern js plugin for deoplete
 Plug 'carlitux/deoplete-ternjs'
 " Better javascript completion
@@ -631,13 +669,6 @@ Plug 'SirVer/ultisnips'
 let g:UltiSnipsExpandTrigger="<tab>"
 " let g:UltiSnipsJumpForwardTrigger="<tab>"
 " let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-
-if 0
-    " Use deoplete.
-    " Seems to be hanging at the moment, breaking insert mode
-    " Also need to disable other autocomplete plugins and settings before using
-    let g:deoplete#enable_at_startup = 1
-endif
 
 " -----------------------------------------------------
 " clang-format support
@@ -745,8 +776,6 @@ Plug 'tpope/vim-sleuth'
 
 " 100 language packs
 Plug 'sheerun/vim-polyglot'
-" Seems to attemp to load a non-existent python plugin orgmode
-let g:polyglot_disabled = ['org']
 
 " mustache syntax highlighting and completion
 Plug 'juvenn/mustache.vim'
@@ -901,13 +930,6 @@ if !empty($DISPLAY)
 endif
 
 " -----------------------------------------------------
-" File and Link opening
-" -----------------------------------------------------
-
-" Universal Text Linking
-Plug 'vim-scripts/utl.vim'
-
-" -----------------------------------------------------
 " Enhanced repeating
 " -----------------------------------------------------
 
@@ -920,9 +942,6 @@ Plug 'tpope/vim-repeat'
 
 " use ctrl-a and ctrl-x to to modify date
 Plug 'tpope/vim-speeddating'
-
-" Calendar.  Use ":Calendar" to launch
-Plug 'mattn/calendar-vim'
 
 " -----------------------------------------------------
 " Notational Velocity
@@ -937,6 +956,27 @@ nnoremap <c-n> :NV<cr>
 " -----------------------------------------------------
 " Org Mode
 " -----------------------------------------------------
+
+" Calendar.  Use ":Calendar" to launch
+Plug 'mattn/calendar-vim'
+
+" NarrowRegion. Narrowing (focusing on part of the buffer)
+"
+"    :NR           - Open the selected region in a new narrowed window
+"    :NW           - Open the current visual window in a new narrowed window
+"    :WidenRegion  - (In the narrowed window) write the changes back to the original buffer.
+"    :NRV          - Open the narrowed window for the region that was last visually selected.
+"    :NUD          - (In a unified diff) open the selected diff in 2 Narrowed windows
+"    :NRP          - Mark a region for a Multi narrowed window
+"    :NRM          - Create a new Multi narrowed window (after :NRP) - experimental!
+"    :NRS          - Enable Syncing the buffer content back (default on)
+"    :NRN          - Disable Syncing the buffer content back
+"    :NRL          - Reselect the last selected region and open it again in a narrowed window
+"
+Plug 'chrisbra/NrrwRgn'
+
+" Universal Text Linking
+Plug 'vim-scripts/utl.vim'
 
 if 1
   Plug 'hsitz/VimOrganizer'
@@ -964,9 +1004,15 @@ if 1
   " ,ci       clock in
   " ,co       clock out
 
-  let g:agenda_files=["~/Documents/Org Mode/agenda.org"]
+  fun! SetupOrg()
+    call org#SetOrgFileType()
+    " Override VimOrganizer keybinding
+    noremap <buffer> <C-N> :NV<cr>
+  endfun
+
+  let g:agenda_files=["~/Documents/org-mode/agenda.org"]
   au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
-  au BufEnter *.org call org#SetOrgFileType()
+  au BufEnter *.org call SetupOrg()
   command! OrgCapture :call org#CaptureBuffer()
   command! OrgCaptureFile :call org#OpenCaptureFile()
   let g:org_todo_setup='TODO WAITING | DONE'

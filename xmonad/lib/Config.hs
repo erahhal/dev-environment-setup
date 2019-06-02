@@ -147,8 +147,8 @@ myLayoutHook = ManageDocks.avoidStruts $ NoBorders.smartBorders $ XMonad.layoutH
 
 myDefaultConf = EmwhDesktops.ewmh XMonad.def {
       XMonad.modMask = myModMask
-    , XMonad.terminal = "kitty"
-    -- , XMonad.terminal = "gnome-terminal"
+    -- , XMonad.terminal = "kitty"
+    , XMonad.terminal = "gnome-terminal"
     , XMonad.workspaces = myWorkspaces
     , XMonad.handleEventHook = ServerMode.serverModeEventHook <+> XMonad.handleEventHook XMonad.def <+> EmwhDesktops.fullscreenEventHook
     , XMonad.manageHook = floatManageHooks <+> ManageDocks.manageDocks <+> (ManageHelpers.isFullscreen --> ManageHelpers.doFullFloat) <+> XMonad.manageHook XMonad.def <+> XMonad.composeAll myManagementHooks

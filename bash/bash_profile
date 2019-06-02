@@ -33,7 +33,7 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # override /usr/bin with /usr/local/bin
-export PATH="~/.cabal/bin:~/.cargo/bin:/usr/local/bin:/usr/local/sbin:$HOME/node_modules/.bin/:$HOME/npm-global/bin/:$HOME/Scripts:$HOME/Scripts/local:$PATH"
+export PATH="~/.cabal/bin:~/.cargo/bin:~/.local/bin:/usr/local/bin:/usr/local/sbin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/Scripts:$HOME/Scripts/local:$PATH"
 
 #-------------------------------------------------------------
 # Default editor
@@ -135,8 +135,4 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 
   # Colors
   export PS1='\[$(tput bold)\]\[$(tput setaf 6)\]\t \[$(tput setaf 2)\][\[$(tput setaf 7)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 7)\]\h \[$(tput setaf 6)\]\W\[$(tput setaf 2)\]]\[$(tput setaf 4)\]$(__git_ps1 " (%s)")\\$ \[$(tput sgr0)\]'
-
-  # npm
-  export NPM_PACKAGES="${HOME}/.npm-packages"
-  PATH="$NPM_PACKAGES/bin:$PATH"
 fi

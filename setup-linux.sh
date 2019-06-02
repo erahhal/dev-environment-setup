@@ -80,8 +80,10 @@ if hash apt-get 2>/dev/null; then
     curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
 
     # nodejs
-    curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
     sudo apt-get install -y nodejs
+    # delete global node_modules, as we want to use yarn instead
+    sudo rm -rf /usr/lib/node_modules
 
     # lsd
     URL='https://github.com/Peltoche/lsd/releases/download/0.15.1/lsd_0.15.1_amd64.deb'; FILE=`mktemp`; wget "$URL" -qO $FILE && sudo dpkg -i $FILE; rm $FILE
