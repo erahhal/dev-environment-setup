@@ -1,0 +1,5 @@
+#!/bin/bash
+
+restic backup ~/Pictures/Personal
+restic backup ~/Documents/Ellis\'\ Stuff/
+restic backup ~/Documents/personal
