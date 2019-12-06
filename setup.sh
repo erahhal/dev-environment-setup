@@ -271,6 +271,19 @@ if [ $(realpath "$DIR/irssi") != $(realpath ~/.irssi) ]; then
 fi
 
 #-------------------------------------------------------------
+# Synergy
+#-------------------------------------------------------------
+
+if [ "$HOSTNAME" = erahhal-u620 ]; then
+    sudo ln -sf $DIR/synergy/synergys.conf ~/synergys.conf
+fi
+
+if [ $(realpath "$DIR/irssi") != $(realpath ~/.irssi) ]; then
+    mv ~/.irssi ~/.irssi.orig
+    ln -s $DIR/irssi ~/.irssi
+fi
+
+#-------------------------------------------------------------
 # Google Cloud SDK
 #-------------------------------------------------------------
 

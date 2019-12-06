@@ -23,17 +23,17 @@ if [ "$DESKTOP_SESSION" == "gnome-xmonad" ] || [ "$DESKTOP_SESSION" == "xmonad" 
 fi
 
 
-if [ "$HOSTNAME" == "crew-glue" ]; then
+if [ "$HOSTNAME" == "erahhal-u620" ]; then
     pkill -f synergy
-    nohup /usr/bin/synergys -f --config ~/synergy.conf </dev/null >/dev/null 2>&1 &
+    nohup /usr/bin/synergys -f --config ~/synergys.conf </dev/null >/dev/null 2>&1 &
     # Monitor display changes
     xrandr --output DVI-I-1 --pos 0x400
     pkill -f check_resolution.py
-    nohup-nolog ~/Scripts/check_resolution.py on-display-change-crew-glue.sh
+    nohup-nolog ~/Scripts/check_resolution.py on-display-change.sh
     # feh --bg-scale /usr/share/backgrounds/The_Forbidden_City_by_Daniel_Mathis.jpg &
-elif [ "$HOSTNAME" == "erahhal-u620" ]; then
+elif [ "$HOSTNAME" == "crew-glue" ]; then
     pkill -f synergy
-    nohup /usr/bin/synergyc -f --name erahhal-u620 crew-glue </dev/null >/dev/null 2>&1 &
+    nohup /usr/bin/synergyc -f --name crew-glue erahhal-u620 </dev/null >/dev/null 2>&1 &
 else
     pkill -f gnome-screensaver
     xscreensaver -no-splash &
