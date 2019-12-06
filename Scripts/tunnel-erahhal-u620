@@ -1,0 +1,41 @@
+#!/usr/local/bin/bash
+
+REMOTE=erahhal-u620.spacex.corp
+
+killall autossh
+
+declare -A ports
+
+ports[1,1]=8000
+ports[1,2]=8000
+ports[2,1]=8080
+ports[2,2]=8080
+ports[3,1]=8082
+ports[3,2]=8082
+ports[4,1]=8083
+ports[4,2]=8083
+# ports[5,1]=11101
+ports[5,1]=10101
+ports[5,2]=10101
+# ports[6,1]=11201
+ports[6,1]=10201
+ports[6,2]=10201
+# ports[7,1]=11150
+ports[7,1]=10150
+ports[7,2]=10150
+
+for ((i=1;i<=7;i++)) do
+    REMOTE_PORT=${ports[$i,1]}
+    LOCAL_PORT=${ports[$i,2]}
+    autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L $LOCAL_PORT:$REMOTE:$REMOTE_PORT $USER@$REMOTE &
+done
+
+sleep 2
+
+# onExit() {
+#     killall autossh
+#     exit
+# }
+#
+# trap onExit EXIT
+

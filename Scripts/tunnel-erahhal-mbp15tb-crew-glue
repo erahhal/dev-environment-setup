@@ -20,17 +20,17 @@ ports=(
 )
 
 for port in "${ports[@]}"; do
-    /usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L $port:$REMOTE:$port $USER@$REMOTE
-    sleep 2
+#     /usr/local/bin/autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L $port:$REMOTE:$port $USER@$REMOTE
+    ssh -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L $port:$REMOTE:$port $USER@$REMOTE
 done
 
-onLogout() {
-    killall autossh
-    exit
-}
-
-trap 'onLogout' SIGINT SIGHUP SIGTERM
-while true; do
-    sleep 86400 &
-    wait $!
-done
+# onLogout() {
+#     killall autossh
+#     exit
+# }
+#
+# trap 'onLogout' SIGINT SIGHUP SIGTERM
+# while true; do
+#     sleep 86400 &
+#     wait $!
+# done

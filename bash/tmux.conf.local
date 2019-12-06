@@ -296,6 +296,8 @@ tmux_conf_copy_to_os_clipboard=false
 
 # -- Ellis' Settings -----------------------------------------------------------
 
+set-option -g default-shell /usr/local/bin/bash
+
 set -gu prefix2
 unbind C-a
 unbind C-b

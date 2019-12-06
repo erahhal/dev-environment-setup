@@ -94,14 +94,13 @@ myKeys = [ ((myModMask Bits..|. XMonad.shiftMask, XMonad.xK_z), XMonad.spawn "xs
           ((modifierKey Bits..|. myModMask, numberKey), XMonad.windows $ IndependentScreens.onCurrentScreen screenOperation windowSet)
                | (windowSet, numberKey) <- zip (IndependentScreens.workspaces' myDefaultConf) [XMonad.xK_1 .. XMonad.xK_9]
                , (screenOperation, modifierKey) <- [(StackSet.view, 0), (StackSet.shift, XMonad.shiftMask)]
+         ] ++
+         [
+         -- make sure screens are ordered by physical location rather than screen ID, as screen ID is unpredictable
+          ((modifierKey Bits..|. myModMask, physicalScreenKey), screenOperation screenCount)
+             | (physicalScreenKey, screenCount) <- zip [XMonad.xK_w, XMonad.xK_e, XMonad.xK_r] [0..]
+             , (screenOperation, modifierKey) <- [(PhysicalScreens.viewScreen, 0), (PhysicalScreens.sendToScreen, XMonad.shiftMask)]
          ]
-         -- ] ++
-         -- [
-         -- -- make sure screens are ordered by physical location rather than screen ID, as screen ID is unpredictable
-         --  ((modifierKey Bits..|. myModMask, physicalScreenKey), screenOperation screenCount)
-         --     | (physicalScreenKey, screenCount) <- zip [XMonad.xK_w, XMonad.xK_e, XMonad.xK_r] [0..]
-         --     , (screenOperation, modifierKey) <- [(PhysicalScreens.viewScreen, 0), (PhysicalScreens.sendToScreen, XMonad.shiftMask)]
-         -- ]
 
 -- Can get things from xprop using stringProperty "WM_NAME", or the like
 -- q =? x
@@ -147,7 +146,6 @@ myLayoutHook = ManageDocks.avoidStruts $ NoBorders.smartBorders $ XMonad.layoutH
 
 myDefaultConf = EmwhDesktops.ewmh XMonad.def {
       XMonad.modMask = myModMask
-    -- , XMonad.terminal = "kitty"
     , XMonad.terminal = "gnome-terminal"
     , XMonad.workspaces = myWorkspaces
     , XMonad.handleEventHook = ServerMode.serverModeEventHook <+> XMonad.handleEventHook XMonad.def <+> EmwhDesktops.fullscreenEventHook

@@ -94,7 +94,7 @@ if hash apt-get 2>/dev/null; then
     echo "deb http://ppa.launchpad.net/x4121/ripgrep/ubuntu zesty main" | sudo tee /etc/apt/sources.list.d/ripgrep.list
 
     sudo apt-get update
-    sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs syncthing syncthing-inotify code gocode golang-go gccgo ack-grep silversearcher-ag ripgrep vim vim-nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xcompmgr ack-grep mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client g++ libstdc++6 caffeine keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
+    sudo apt-get install -y software-properties-common python-software-properties vim postgresql nginx cmake python-dev cmake nodejs syncthing syncthing-inotify code gocode golang-go gccgo ack-grep silversearcher-ag ripgrep vim vim-nox-py2 xclip x11-xserver-utils python-dev python-pip python3-pip python-pkg-resources python-setuptools pylint pep8 ruby ruby-dev cmake xcompmgr ack-grep mosh tmux ibus-sunpinyin chromium-browser gnome-session-xmonad gnome-terminal gnome-tweak-tool spotify-client dialog g++ libstdc++6 caffeine keepass2 exuberant-ctags language-pack-zh-hans `check-language-support -l zh-hans`
 
     # Disable tap-to-click on touchpads
     sudo apt-get install -y xserver-xorg-input-libinput

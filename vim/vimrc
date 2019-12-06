@@ -184,9 +184,13 @@ au FileType hpp setl ts=4 sw=4 sts=4
 au FileType sh setl ts=4 sw=5 sts=4
 
 " Align function parameters that are on multiple lines
-if expand('%:t') =~ '\.cpp$' || expand('%:t') =~ '\.cc$' || expand('%:t') =~ '\.hpp$' || expand('%:t') =~ '\.h$' || expand('%:t') =~ '\.py$'
-    set cino+=(0
-endif
+fun! UpdateArgIndent()
+    if expand('%:t') =~ '\.cpp$' || expand('%:t') =~ '\.cc$' || expand('%:t') =~ '\.hpp$' || expand('%:t') =~ '\.h$' || expand('%:t') =~ '\.py$'
+       set cino+=(0
+    endif
+endfun
+
+autocmd BufEnter * call UpdateArgIndent()
 
 " -----------------------------------------------------
 " Look and feel
@@ -529,6 +533,12 @@ nmap ,m :NERDTreeToggle<CR>
 Plug 'tpope/vim-commentary'
 
 " -----------------------------------------------------
+" Automatic JSDoc generation
+" -----------------------------------------------------
+
+Plug 'joegesualdo/jsdoc.vim'
+
+" -----------------------------------------------------
 " Code delimiters
 " -----------------------------------------------------
 
@@ -795,7 +805,7 @@ Plug 'w0rp/ale'
 
 let g:ale_linters = { 'cpp': ['clang'] }
 if s:uname == "Linux"
-    let g:ale_javascript_eslint_executable = $HOME.'/node_modules/.bin/eslint'
+    let g:ale_javascript_eslint_executable = $HOME.'/.yarn/bin/eslint'
 elseif s:uname == "Darwin"
     let g:ale_javascript_eslint_executable = $HOME.'/npm-global/bin/eslint'
 endif
