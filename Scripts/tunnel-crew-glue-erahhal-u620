@@ -1,0 +1,23 @@
+#!/bin/bash
+
+REMOTE=erahhal-u620
+
+killall autossh
+
+ports=(
+    24800
+)
+
+for port in "${ports[@]}"; do
+    autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L $port:$REMOTE:$port $USER@$REMOTE &
+done
+
+sleep 2
+
+# onExit() {
+#     killall autossh
+#     exit
+# }
+#
+# trap onExit EXIT
+
