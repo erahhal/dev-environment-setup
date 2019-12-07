@@ -33,7 +33,7 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # override /usr/bin with /usr/local/bin
-export PATH="~/.cabal/bin:~/.cargo/bin:~/.local/bin:/usr/local/bin:/usr/local/sbin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/Scripts:$HOME/Scripts/local:$PATH"
+export PATH="~/.cabal/bin:~/.cargo/bin:~/.local/bin:/usr/local/bin:/usr/local/sbin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/Scripts:$HOME/Scripts/local:$PATH:/opt/wine-stable/bin"
 
 #-------------------------------------------------------------
 # Default editor

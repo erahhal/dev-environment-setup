@@ -675,10 +675,15 @@ set pumheight=20
 " *********
 
 Plug 'SirVer/ultisnips'
+" Snippets are separated from the engine.
+Plug 'honza/vim-snippets'
 
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<tab>"
 " let g:UltiSnipsJumpForwardTrigger="<tab>"
 " let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " -----------------------------------------------------
 " clang-format support
@@ -803,7 +808,7 @@ Plug 'pangloss/vim-javascript'
 
 Plug 'w0rp/ale'
 
-let g:ale_linters = { 'cpp': ['clang'] }
+let g:ale_linters = { 'cpp': ['clang', 'gcc'] }
 if s:uname == "Linux"
     let g:ale_javascript_eslint_executable = $HOME.'/.yarn/bin/eslint'
 elseif s:uname == "Darwin"
@@ -811,7 +816,12 @@ elseif s:uname == "Darwin"
 endif
 if findfile('.clang_complete', '.') == '.clang_complete'
     let g:ale_cpp_clang_options = '$(get-clang-compile-options .clang_complete)'
+else
+    let g:ale_cpp_clang_options = '-std=c++14 -stdlib=libc++ -isystem -I/usr/local/include -I/usr/include -I/usr/include/x86_64-linux-gnu'
+    let g:ale_cpp_gcc_options = '-std=c++14 -stdlib=libc++ -isystem -I/usr/local/include -I/usr/include -I/usr/include/x86_64-linux-gnu'
 endif
+let g:ale_c_build_dir = "./build"
+let g:ale_c_parse_makefile = 1
 " This defaults to "normal", which doesn't lint on change for heavy things like clang
 let g:ale_link_on_text_changed = 'always'
 let g:ale_html_tidy_options = '--custom-tags blocklevel'

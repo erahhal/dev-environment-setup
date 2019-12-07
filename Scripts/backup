@@ -1,5 +1,42 @@
 #!/bin/bash
 
-restic backup ~/Pictures/Personal
-restic backup ~/Documents/Ellis\'\ Stuff/
-restic backup ~/Documents/personal
+
+BACKUP_PATHS_FILE=~/Scripts/config/backups/paths
+
+function msg {
+    dashes=$(printf "%0.s-" {1..55})
+    printf "#$dashes\n$1\n#$dashes-\n" " "
+}
+
+for BACKUP_LOCATION in ~/Scripts/config/backups/destinations/*
+do
+    . $BACKUP_LOCATION
+    case "$BACKUP_TYPE" in
+        restic)
+            msg "Backing up to repo: $NAME"
+            while read BACKUP_PATH; do
+                RESOLVED_PATH="${BACKUP_PATH/#\~/$HOME}"
+                if [ ! -e "$RESOLVED_PATH" ]; then
+                    echo "Bad path: $BACKUP_PATH"
+                    exit 1
+                fi
+                restic --cache-dir $CACHE_DIR backup --cleanup-cache --repo $REPO "$RESOLVED_PATH"
+            done < $BACKUP_PATHS_FILE
+            ;;
+        rsync)
+            msg "Backing up to: $NAME"
+            while read BACKUP_PATH; do
+                RESOLVED_PATH="${BACKUP_PATH/#\~/$HOME}"
+                if [ ! -e "$RESOLVED_PATH" ]; then
+                    echo "Bad path: $BACKUP_PATH"
+                    exit 1
+                fi
+                rsync -avh --delete "$RESOLVED_PATH" "$BACKUP_DEST/"
+            done < $BACKUP_PATHS_FILE
+            ;;
+        *)
+            echo "invalid backup type: $BACKUP_TYPE"
+            exit 1
+            ;;
+    esac
+done

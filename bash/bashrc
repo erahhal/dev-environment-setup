@@ -34,15 +34,6 @@ if [ -e "$HOMEBREW_API_TOKEN_FILE" ]; then
   export HOMEBREW_GITHUB_API_TOKEN=$(cat ${HOMEBREW_API_TOKEN_FILE})
 fi
 
-#-------------------------------------------------------------
-# Backblaze
-#-------------------------------------------------------------
-
-BACKBLAZE_API_FILE=~/Scripts/config/backblaze
-if [ -e "$BACKBLAZE_API_FILE" ]; then
-  . "$BACKBLAZE_API_FILE"
-fi
-
 if [ "$(uname)" == "Darwin" ]; then
   #-------------------------------------------------------------
   # Mac
