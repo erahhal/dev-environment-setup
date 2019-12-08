@@ -97,9 +97,9 @@ myKeys = [ ((myModMask Bits..|. XMonad.shiftMask, XMonad.xK_z), XMonad.spawn "xs
          ] ++
          [
          -- make sure screens are ordered by physical location rather than screen ID, as screen ID is unpredictable
-          ((modifierKey Bits..|. myModMask, physicalScreenKey), screenOperation screenCount)
-             | (physicalScreenKey, screenCount) <- zip [XMonad.xK_w, XMonad.xK_e, XMonad.xK_r] [0..]
-             , (screenOperation, modifierKey) <- [(PhysicalScreens.viewScreen, 0), (PhysicalScreens.sendToScreen, XMonad.shiftMask)]
+          -- ((modifierKey Bits..|. myModMask, physicalScreenKey), screenOperation screenCount)
+          --    | (physicalScreenKey, screenCount) <- zip [XMonad.xK_w, XMonad.xK_e, XMonad.xK_r] [0..]
+          --    , (screenOperation, modifierKey) <- [(PhysicalScreens.viewScreen, 0), (PhysicalScreens.sendToScreen, XMonad.shiftMask)]
          ]
 
 -- Can get things from xprop using stringProperty "WM_NAME", or the like

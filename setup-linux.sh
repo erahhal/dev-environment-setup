@@ -41,20 +41,8 @@ if hash apt-get 2>/dev/null; then
     sudo wget -O - https://winswitch.org/gpg.asc | sudo apt-key add -
     echo "deb http://winswitch.org/ $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/winswitch.list;
 
-    # java
-    sudo add-apt-repository -y ppa:webupd8team/java
-
-    # # xmonad
-    # sudo add-apt-repository -y ppa:gekkio/xmonad
-
-    # Neovim
-    sudo add-apt-repository -y ppa:neovim-ppa/stable
-
     # # Keepass
     # sudo add-apt-repository -y ppa:jtaylor/keepass
-
-    # Caffeine
-    sudo add-apt-repository -y ppa:caffeine-developers/ppa
 
     # Gnome Xmonad session
     sudo add-apt-repository -y ppa:gekkio/xmonad
@@ -70,11 +58,10 @@ if hash apt-get 2>/dev/null; then
     curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
     echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list
 
-    # Add the Spotify repository signing keys to be able to verify downloaded packages
-    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886 0DF731E45CE24F27EEEB1450EFDC8610341D9410
+    # Spotify
+    curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo apt-key add -
+    echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 
-    # Add the Spotify repository
-    echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
     # Bazel
     echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
     curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
@@ -88,69 +75,73 @@ if hash apt-get 2>/dev/null; then
     # lsd
     URL='https://github.com/Peltoche/lsd/releases/download/0.15.1/lsd_0.15.1_amd64.deb'; FILE=`mktemp`; wget "$URL" -qO $FILE && sudo dpkg -i $FILE; rm $FILE
 
-    #ripgrep
+    # ripgrep
     # sudo add-apt-repository -y ppa:x4121/ripgrep
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A03A097E3C3842E1
     echo "deb http://ppa.launchpad.net/x4121/ripgrep/ubuntu zesty main" | sudo tee /etc/apt/sources.list.d/ripgrep.list
 
+    # Brave
+    curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
+    source /etc/os-release
+    echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/brave-browser-release-${UBUNTU_CODENAME}.list
+
     sudo apt-get update
     sudo apt-get install -y \
-      software-properties-common \
-      python-software-properties \
-      vim \
-      postgresql \
-      nginx \
-      cmake \
-      python-dev \
-      cmake \
-      nodejs \
-      synergy \
+      ack-grep \
       autossh \
-      syncthing \
-      syncthing-inotify \
-      code \
-      gocode \
-      golang-go \
-      gccgo \
-      ack-grep \
-      silversearcher-ag \
-      ripgrep \
-      vim \
-      vim-nox-py2 \
-      xclip \
-      x11-xserver-utils \
-      python-dev \
-      python-pip \
-      python3-pip \
-      python-pkg-resources \
-      python-setuptools \
-      pylint \
-      pep8 \
-      ruby \
-      ruby-dev \
+      brave-browser \
       build-essential \
-      gtk2.0 \
-      libgtk2.0-dev \
-      gtk+-3.0 \
-      cmake \
-      xcompmgr \
-      ack-grep \
-      mosh \
-      tmux \
-      ibus-sunpinyin \
+      caffeine \
       chromium-browser \
-      dconf-tools \
-      htop \
+      cmake \
+      code \
+      dconf-editor \
+      dialog \
+      exuberant-ctags \
+      feh \
+      g++ \
+      gccgo \
       gnome-session-xmonad \
       gnome-terminal \
       gnome-tweak-tool \
-      spotify-client \
-      dialog \
-      g++ \
-      libstdc++6 \
-      caffeine \
+      gocode \
+      golang-go \
+      gtk+-3.0 \
+      gtk2.0 \
+      htop \
+      ibus-sunpinyin \
       keepass2 \
-      exuberant-ctags \
+      libgtk2.0-dev \
+      libstdc++6 \
+      mosh \
+      nginx \
+      nodejs \
+      pep8 \
+      postgresql \
+      pylint \
+      python-dev \
+      python-dev \
+      python-pip \
+      python-pkg-resources \
+      python-setuptools \
+      python3-pip \
+      ripgrep \
+      ruby \
+      ruby-dev \
+      silversearcher-ag \
+      software-properties-common \
+      spotify-client \
+      syncthing \
+      # syncthing-inotify \
+      # synergy \
+      tmux \
+      vim \
+      vim-nox-py2 \
+      x11-xserver-utils \
+      xclip \
+      xcompmgr
+
+    sudo apt-get install -y \
       language-pack-zh-hans \
       `check-language-support -l zh-hans`
 
@@ -243,6 +234,9 @@ else
     echo "Unknown distribution"
     exit 1
 fi
+
+# Gnome settings
+gsettings set org.gnome.Terminal.Legacy.Settings headerbar false
 
 # Android
 sudo add-apt-repository -y ppa:paolorotolo/android-studio

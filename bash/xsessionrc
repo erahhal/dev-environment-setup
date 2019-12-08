@@ -43,13 +43,7 @@ else
     pkill -f gnome-screensaver
     xscreensaver -no-splash &
 
-    pkill -f pia_manager
     # ~/Scripts/random-wallpaper.sh
 
-    # # PIA is now run from Ubuntu's VPN manager
-    # ps aux | grep [p]ia_manager | awk '{ print $2 }' | xargs kill
-    # sleep 2
-    # ~/pia.sh &
-
-    feh --bg-scale ~/Pictures/3rd-party/wallpapers/e6ce738a-c1a4-4a62-9f75-89b1738b0efd.jpg
+    feh --bg-scale /usr/share/backgrounds/Beijling_park_burial_path_by_Mattias_Andersson.jpg
 fi

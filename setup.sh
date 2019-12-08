@@ -86,6 +86,10 @@ if [ $(realpath "$DIR/bash/tmux.conf") != $(realpath ~/.tmux.conf) ]; then
     mv ~/.tmux.conf ~/.tmux.conf.orig
     ln -s $DIR/bash/tmux.conf ~/.tmux.conf
 fi
+if [ $(realpath "$DIR/bash/tmux.conf.local") != $(realpath ~/.tmux.conf.local) ]; then
+    mv ~/.tmux.conf.local ~/.tmux.conf.local.orig
+    ln -s $DIR/bash/tmux.conf.local ~/.tmux.conf.local
+fi
 if [ ! -e ~/.tmux-plugins ]; then
     mkdir ~/.tmux-plugins
 fi
