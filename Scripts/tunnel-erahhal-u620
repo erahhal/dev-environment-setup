@@ -1,6 +1,7 @@
 #!/usr/local/bin/bash
 
 REMOTE=erahhal-u620.spacex.corp
+REMOTE=crew-glue.spacex.corp
 
 killall autossh
 
@@ -23,11 +24,19 @@ ports[6,2]=10201
 # ports[7,1]=11150
 ports[7,1]=10150
 ports[7,2]=10150
+ports[8,1]=13101
+ports[8,2]=13101
+ports[9,1]=13201
+ports[9,2]=13201
+ports[10,1]=13150
+ports[10,2]=13150
 
-for ((i=1;i<=7;i++)) do
+for ((i=1;i<=10;i++)) do
     REMOTE_PORT=${ports[$i,1]}
     LOCAL_PORT=${ports[$i,2]}
-    autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L $LOCAL_PORT:$REMOTE:$REMOTE_PORT $USER@$REMOTE &
+    # autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L $LOCAL_PORT:$REMOTE:$REMOTE_PORT $USER@$REMOTE &
+    echo "ssh -o \"ServerAliveInterval 30\" -o \"ServerAliveCountMax 3\" -f -T -N -L $LOCAL_PORT:$REMOTE:$REMOTE_PORT $USER@$REMOTE"
+    ssh -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -f -T -N -L $LOCAL_PORT:$REMOTE:$REMOTE_PORT $USER@$REMOTE
 done
 
 sleep 2

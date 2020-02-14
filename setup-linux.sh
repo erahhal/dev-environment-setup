@@ -58,6 +58,9 @@ if hash apt-get 2>/dev/null; then
     curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
     echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list
 
+    # Synergy 1.8.8
+    sudo add-apt-repository ppa:jonathonf/synergy
+
     # Spotify
     curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo apt-key add -
     echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
@@ -71,6 +74,9 @@ if hash apt-get 2>/dev/null; then
     sudo apt-get install -y nodejs
     # delete global node_modules, as we want to use yarn instead
     sudo rm -rf /usr/lib/node_modules
+
+    # eternal terminal
+    sudo add-apt-repoository ppa:jgmath2000/et
 
     # lsd
     URL='https://github.com/Peltoche/lsd/releases/download/0.15.1/lsd_0.15.1_amd64.deb'; FILE=`mktemp`; wget "$URL" -qO $FILE && sudo dpkg -i $FILE; rm $FILE
@@ -97,6 +103,7 @@ if hash apt-get 2>/dev/null; then
       code \
       dconf-editor \
       dialog \
+      et \
       exuberant-ctags \
       feh \
       g++ \
@@ -133,7 +140,7 @@ if hash apt-get 2>/dev/null; then
       spotify-client \
       syncthing \
       # syncthing-inotify \
-      # synergy \
+      synergy \
       tmux \
       vim \
       vim-nox-py2 \
@@ -216,11 +223,16 @@ END
     sudo update-alternatives --set vimdiff /usr/bin/vim.nox-py2
     sudo pip3 install --upgrade pip
     sudo pip2 install --upgrade pip
+    sudo pip2 install --upgrade flake8
+    sudo pip2 install --upgrade pylint
+    sudo pip3 install --upgrade flake8
+    sudo pip3 install --upgrade pylint
     sudo pip2 install --upgrade neovim
     sudo pip3 install --upgrade neovim
     sudo pip2 install --upgrade simplejson
     sudo pip2 install --upgrade pytz
     sudo pip2 install --upgrade requests_futures
+    sudo pip3 install --upgrade python-language-server
     sudo gem install neovim
     sudo apt-get install -y oracle-java8-installer
     sudo apt-get install -y xmonad*

@@ -114,6 +114,7 @@ set mouse=a                             " enable mouse support in xterm
 if 0
     set scrolloff=999                   " always keep the cursor vertically centered
 endif
+let g:python3_host_prog='/usr/bin/python3.6'
 
 " - enables filetype detection,
 " - enables filetype-specific scripts (ftplugins),
@@ -562,46 +563,63 @@ Plug 'tpope/vim-surround'
 " Autocompletion
 " -----------------------------------------------------
 
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+" show function signatures
+Plug 'Shougo/echodoc.vim'
+
+" set noshowmode
+set cmdheight=2 " gives room at bottom show function signature
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'popup'
+
+" Always draw the signcolumn
+set signcolumn=yes
 
 " faster creation of HTML and CSS, handles expansion
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 " Auto complete popup for local vars
 Plug 'vim-scripts/AutoComplPop'
-" asynchronous completion
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-if 0
-    " Use deoplete.
-    " Seems to be hanging at the moment, breaking insert mode
-    " Also need to disable other autocomplete plugins and settings before using
-    let g:deoplete#enable_at_startup = 1
-endif
+" asynchronous completion
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" let g:deoplete#enable_at_startup = 1
+" " tern js plugin for deoplete
+" Plug 'carlitux/deoplete-ternjs'
+" " Better javascript completion
+" Plug 'marijnh/tern_for_vim'
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
 
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['~/.npm-packages/bin/javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['~/.npm-packages/bin/javascript-typescript-stdio'],
-    \ 'python': ['/usr/local/bin/pyls'],
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
     \ }
 
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-" Or map each action separately
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+" Make sure that "python-language-server" is installed and not "pyls"
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'javascript': ['~/.yarn/bin/javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['~/.yarn/bin/javascript-typescript-stdio'],
+    \ 'python': ['/usr/local/bin/pyls'],
+    \ 'markdown': ['/usr/local/bin/pyls'],
+    \ 'cpp': ['clangd-8'],
+    \ }
 
-" tern js plugin for deoplete
-Plug 'carlitux/deoplete-ternjs'
-" Better javascript completion
-Plug 'marijnh/tern_for_vim'
+let g:LanguageClient_selectionUI = 'location-list'
+" let g:LanguageClient_selectionUI = 'quickfix'
+
+function LC_maps()
+  if has_key(g:LanguageClient_serverCommands, &filetype)
+    nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+    " Or map each action separately
+    nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+    nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+  endif
+endfunction
+
+autocmd FileType * call LC_maps()
 
 " Too many issues
 if 0
@@ -653,8 +671,8 @@ let g:clang_complete_macros = 1
 let g:clang_complete_patterns = 1
 let g:clang_snippets = 1
 let g:clang_conceal_snippets = 1
-let g:clang_snippets_engine = 'ultisnips'
-" let g:clang_snippets_engine = 'clang_complete'
+" this seems to conflict with Ultisnips, causing 'Snippets engine ultisnips not found' error
+" let g:clang_snippets_engine = 'ultisnips'
 " let g:clang_debug = 1
 
 " ***************************
@@ -802,6 +820,9 @@ Plug 'vim-scripts/SyntaxRange'
 " Improved Javascript indentation and syntax support.
 Plug 'pangloss/vim-javascript'
 
+" Better markdown syntax highlighting, including code blocks
+Plug 'plasticboy/vim-markdown'
+
 " -----------------------------------------------------
 " Syntax Checking
 " -----------------------------------------------------
@@ -875,11 +896,16 @@ let g:buffet_right_trunc_icon = "\uf0a9"
 " Separate workspaces
 Plug 'bagrat/vim-buffet'
 
+" Next buffer
 noremap <Tab> :bn<CR>
+" Previous buffer
 noremap <S-Tab> :bp<CR>
+" Close buffer
 noremap <Leader><Tab> :Bw<CR>
 noremap <Leader><S-Tab> :Bw!<CR>
+" New tab
 noremap <Leader>t :tabnew split<CR>
+
 
 " a tree of undos
 Plug 'mbbill/undotree'

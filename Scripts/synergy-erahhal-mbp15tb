@@ -1,4 +1,5 @@
 #!/bin/bash
 
+tunnel-erahhal-mbp15tb-erahhal-u620
 killall -9 synergyc
 nohup /Applications/Synergy.app/Contents/MacOS/synergyc -f --name erahhal-mbp15tb localhost </dev/null >/dev/null 2>&1 &
