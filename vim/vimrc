@@ -581,12 +581,15 @@ Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'vim-scripts/AutoComplPop'
 
 " asynchronous completion
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" let g:deoplete#enable_at_startup = 1
-" " tern js plugin for deoplete
-" Plug 'carlitux/deoplete-ternjs'
-" " Better javascript completion
-" Plug 'marijnh/tern_for_vim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+let g:deoplete#enable_at_startup = 1
+" tern js plugin for deoplete
+Plug 'carlitux/deoplete-ternjs'
+" Better javascript completion
+Plug 'marijnh/tern_for_vim'
+
+" using clang_complete for c/cpp
+autocmd FileType c,cc,cpp,cxx,h,hh,hpp,hxx let b:deoplete_disable_auto_complete = 1
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
