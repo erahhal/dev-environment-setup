@@ -168,6 +168,15 @@ else
 fi
 
 #-------------------------------------------------------------
+# zsh
+#-------------------------------------------------------------
+
+if [ $(realpath "$DIR/zsh/zshrc") != $(realpath ~/.zshrc) ]; then
+    mv ~/.zshrc ~/.zshrc.orig
+    ln -s $DIR/zsh/zshrc ~/.zshrc
+fi
+
+#-------------------------------------------------------------
 # html5-tidy
 #-------------------------------------------------------------
 
@@ -229,6 +238,22 @@ if [ ! -e ~/.vim/autoload/plug.vim ]; then
 fi
 vim -c "execute 'PlugInstall' | qa"
 vim -c "execute 'UpdateRemotePlugins' | qa"
+vim -c "execute 'CocInstall coc-actions' | qa"
+vim -c "execute 'CocInstall coc-clangd' | qa"
+vim -c "execute 'CocInstall coc-cmake' | qa"
+vim -c "execute 'CocInstall coc-css' | qa"
+vim -c "execute 'CocInstall coc-eslint' | qa"
+vim -c "execute 'CocInstall coc-git' | qa"
+vim -c "execute 'CocInstall coc-highlight' | qa"
+vim -c "execute 'CocInstall coc-html' | qa"
+vim -c "execute 'CocInstall coc-json' | qa"
+vim -c "execute 'CocInstall coc-markdownlint' | qa"
+vim -c "execute 'CocInstall coc-python' | qa"
+vim -c "execute 'CocInstall coc-spell-checker' | qa"
+vim -c "execute 'CocInstall coc-tslint' | qa"
+vim -c "execute 'CocInstall coc-tsserver' | qa"
+vim -c "execute 'CocInstall coc-vimlsp' | qa"
+vim -c "execute 'CocInstall coc-yaml' | qa"
 cp -R ~/.vim/bundle/vim-colors-solarized/colors ~/.vim
 if [ $(realpath "$DIR/vim/ycm_extra_conf.py") != $(realpath ~/.ycm_extra_conf.py) ]; then
     mv ~/.ycm_extra_conf.py ~/.ycm_extra_conf.py.orig

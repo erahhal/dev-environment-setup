@@ -53,6 +53,7 @@
 " yiw       - yank word
 " yi"       - yank between quotes
 " yiW       - yank to surrounding spaces
+" viw       - select word under cursor
 " viwp      - select word then replace
 " vi"p      - select between quotes and replace
 " viw"0p    - select word then replace with first selection rather than last replaced word
@@ -114,7 +115,14 @@ set mouse=a                             " enable mouse support in xterm
 if 0
     set scrolloff=999                   " always keep the cursor vertically centered
 endif
-let g:python3_host_prog='/usr/bin/python3.6'
+
+if s:uname == "Linux"
+    let g:python2_host_prog='/usr/bin/python2.7'
+    let g:python3_host_prog='/usr/bin/python3.6'
+elseif s:uname == "Darwin"
+    let g:python2_host_prog='~/.pyenv/versions/2.7.16/bin/python'
+    let g:python3_host_prog='/usr/local/bin/python3'
+endif
 
 " - enables filetype detection,
 " - enables filetype-specific scripts (ftplugins),
@@ -576,53 +584,84 @@ set signcolumn=yes
 
 " faster creation of HTML and CSS, handles expansion
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
+if 0
+    " asynchronous completion
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    let g:deoplete#enable_at_startup = 1
+    " tern js plugin for deoplete
+    Plug 'carlitux/deoplete-ternjs'
+    " Better javascript completion
+    Plug 'marijnh/tern_for_vim'
 
-" Auto complete popup for local vars
-Plug 'vim-scripts/AutoComplPop'
-
-" asynchronous completion
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-let g:deoplete#enable_at_startup = 1
-" tern js plugin for deoplete
-Plug 'carlitux/deoplete-ternjs'
-" Better javascript completion
-Plug 'marijnh/tern_for_vim'
-
-" using clang_complete for c/cpp
-autocmd FileType c,cc,cpp,cxx,h,hh,hpp,hxx let b:deoplete_disable_auto_complete = 1
+    " using clang_complete for c/cpp
+    autocmd FileType c,cc,cpp,cxx,h,hh,hpp,hxx let b:deoplete_disable_auto_complete = 1
+endif
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
 
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+" Doesn't resolve URL-based es6 modules
+" Also seems to choke easily and spam the display, corrupting it
+if 0
+  Plug 'autozimu/LanguageClient-neovim', {
+      \ 'branch': 'next',
+      \ 'do': 'bash install.sh',
+      \ }
 
-" Make sure that "python-language-server" is installed and not "pyls"
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['~/.yarn/bin/javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['~/.yarn/bin/javascript-typescript-stdio'],
-    \ 'python': ['/usr/local/bin/pyls'],
-    \ 'markdown': ['/usr/local/bin/pyls'],
-    \ 'cpp': ['clangd-8'],
-    \ }
-
-let g:LanguageClient_selectionUI = 'location-list'
-" let g:LanguageClient_selectionUI = 'quickfix'
-
-function LC_maps()
-  if has_key(g:LanguageClient_serverCommands, &filetype)
-    nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-    " Or map each action separately
-    nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-    nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-    nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+  " Make sure that "python-language-server" is installed and not "pyls"
+  if s:uname == "Linux"
+    let g:LanguageClient_serverCommands = {
+        \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+        \ 'javascript': ['~/.yarn/bin/javascript-typescript-stdio'],
+        \ 'javascript.jsx': ['~/.yarn/bin/javascript-typescript-stdio'],
+        \ 'python': ['/usr/local/bin/pyls'],
+        \ 'markdown': ['/usr/local/bin/pyls'],
+        \ 'cpp': ['clangd-8'],
+        \ }
+  elseif s:uname == "Darwin"
+    let g:LanguageClient_serverCommands = {
+        \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+        \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+        \ 'javascript.jsx': ['/usr/local/bin/javascript-typescript-stdio'],
+        \ 'python': ['/usr/local/bin/pyls'],
+        \ 'markdown': ['/usr/local/bin/pyls'],
+        \ 'cpp': ['clangd-8'],
+        \ }
   endif
-endfunction
 
-autocmd FileType * call LC_maps()
+  let g:LanguageClient_selectionUI = 'location-list'
+  " let g:LanguageClient_selectionUI = 'quickfix'
+
+  function LC_maps()
+    if has_key(g:LanguageClient_serverCommands, &filetype)
+      nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+      " Or map each action separately
+      nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+      nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+      nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+    endif
+  endfunction
+
+  autocmd FileType * call LC_maps()
+endif
+
+if 1
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+    " -- Map code-action of selected region
+    " <leader>a for the current selected range
+    " "<leader>aw for the current word
+    " "<leader>aas for the current sentence - USE THIS TO FIX LINTING ISSUES
+    " "<leader>aap for the current paragraph
+    function! s:cocActionsOpenFromSelected(type) abort
+      execute 'CocCommand actions.open ' . a:type
+    endfunction
+    xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
+    nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
+
+    nmap <silent> ,k <Plug>(coc-diagnostic-previous)
+    nmap <silent> ,j <Plug>(coc-diagnostic-next)
+endif
 
 " Too many issues
 if 0
@@ -695,7 +734,7 @@ set pumheight=20
 " UltiSnips
 " *********
 
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 " Snippets are separated from the engine.
 Plug 'honza/vim-snippets'
 
@@ -830,30 +869,32 @@ Plug 'plasticboy/vim-markdown'
 " Syntax Checking
 " -----------------------------------------------------
 
-Plug 'w0rp/ale'
+if 0
+  Plug 'w0rp/ale'
 
-let g:ale_linters = { 'cpp': ['clang', 'gcc'] }
-if s:uname == "Linux"
-    let g:ale_javascript_eslint_executable = $HOME.'/.yarn/bin/eslint'
-elseif s:uname == "Darwin"
-    let g:ale_javascript_eslint_executable = $HOME.'/npm-global/bin/eslint'
-endif
-if findfile('.clang_complete', '.') == '.clang_complete'
-    let g:ale_cpp_clang_options = '$(get-clang-compile-options .clang_complete)'
-else
-    let g:ale_cpp_clang_options = '-std=c++14 -stdlib=libc++ -isystem -I/usr/local/include -I/usr/include -I/usr/include/x86_64-linux-gnu'
-    let g:ale_cpp_gcc_options = '-std=c++14 -stdlib=libc++ -isystem -I/usr/local/include -I/usr/include -I/usr/include/x86_64-linux-gnu'
-endif
-let g:ale_c_build_dir = "./build"
-let g:ale_c_parse_makefile = 1
-" This defaults to "normal", which doesn't lint on change for heavy things like clang
-let g:ale_link_on_text_changed = 'always'
-let g:ale_html_tidy_options = '--custom-tags blocklevel'
-let g:ale_python_flake8_options = '--max-line-length=100'
-let g:ale_python_pylint_options = '--max-line-length=100'
+  let g:ale_linters = { 'cpp': ['clang', 'gcc'] }
+  if s:uname == "Linux"
+      let g:ale_javascript_eslint_executable = $HOME.'/.yarn/bin/eslint'
+  elseif s:uname == "Darwin"
+      let g:ale_javascript_eslint_executable = $HOME.'/npm-global/bin/eslint'
+  endif
+  if findfile('.clang_complete', '.') == '.clang_complete'
+      let g:ale_cpp_clang_options = '$(get-clang-compile-options .clang_complete)'
+  else
+      let g:ale_cpp_clang_options = '-std=c++14 -stdlib=libc++ -isystem -I/usr/local/include -I/usr/include -I/usr/include/x86_64-linux-gnu'
+      let g:ale_cpp_gcc_options = '-std=c++14 -stdlib=libc++ -isystem -I/usr/local/include -I/usr/include -I/usr/include/x86_64-linux-gnu'
+  endif
+  let g:ale_c_build_dir = "./build"
+  let g:ale_c_parse_makefile = 1
+  " This defaults to "normal", which doesn't lint on change for heavy things like clang
+  let g:ale_link_on_text_changed = 'always'
+  let g:ale_html_tidy_options = '--custom-tags blocklevel'
+  let g:ale_python_flake8_options = '--max-line-length=100'
+  let g:ale_python_pylint_options = '--max-line-length=100'
 
-nmap <silent> ,k <Plug>(ale_previous_wrap)
-nmap <silent> ,j <Plug>(ale_next_wrap)
+  nmap <silent> ,k <Plug>(ale_previous_wrap)
+  nmap <silent> ,j <Plug>(ale_next_wrap)
+endif
 
 " Syntastic is not asynchronous
 if 0
