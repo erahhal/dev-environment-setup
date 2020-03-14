@@ -582,6 +582,9 @@ let g:echodoc#type = 'popup'
 " Always draw the signcolumn
 set signcolumn=yes
 
+" asynchronous completion
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
 " faster creation of HTML and CSS, handles expansion
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 if 0
@@ -1068,7 +1071,7 @@ Plug 'chrisbra/NrrwRgn'
 " Universal Text Linking
 Plug 'vim-scripts/utl.vim'
 
-if 1
+if 0
   Plug 'hsitz/VimOrganizer'
   " ************
   " VimOrganizer
@@ -1176,7 +1179,7 @@ if 1
 endif
 
 " Better plugin but too slow. Try it out again sometime
-if 0
+if 1
     Plug 'jceb/vim-orgmode'
     let g:org_heading_highlight_colors = ['Title', 'Constant', 'Identifier', 'Statement', 'PreProc', 'Type', 'Special']
     " Enabling reverting back to solarized causes a load flicker for every file that is loaded

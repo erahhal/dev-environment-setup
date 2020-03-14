@@ -6,7 +6,7 @@ import qualified XMonad.Layout.IndependentScreens as IndependentScreens
 
 conf nScreens = Config.myDefaultConf {
       XMonad.borderWidth = 2
-    , XMonad.layoutHook = PerScreen.ifWider 1920 (Gaps.gaps [(Gaps.U, 48)] $ Config.myLayoutHook) (if nScreens > 1 then Gaps.gaps [(Gaps.U, 0)] $ Config.myLayoutHook else Gaps.gaps [(Gaps.U, 48)] $ Config.myLayoutHook)
+    , XMonad.layoutHook = PerScreen.ifWider 1920 (Gaps.gaps [(Gaps.U, 32)] $ Config.myLayoutHook) (if nScreens > 1 then Gaps.gaps [(Gaps.U, 0)] $ Config.myLayoutHook else Gaps.gaps [(Gaps.U, 32)] $ Config.myLayoutHook)
     }
 
 main = do

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+mv ~/Pictures/Messaging\ Photos\ Inbox/* ~/Pictures/Personal/
+mv ~/Pictures/Phone\ Photos\ Inbox/* ~/Pictures/Personal/
+mv ~/Pictures/Wechat\ Inbox/* ~/Pictures/Personal/
+
+echo "Don't forget to delete images from the phone!"

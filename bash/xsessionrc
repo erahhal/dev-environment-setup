@@ -19,7 +19,8 @@ if [ "$DESKTOP_SESSION" == "gnome-xmonad" ] || [ "$DESKTOP_SESSION" == "xmonad" 
     python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &
 
     # Add fade between xmonad desktop switches
-    nohup-nolog xcompmgr -f -C -n -D 3
+    # Currently commented out because the background is seen between fades which doesn't look good
+    # nohup-nolog xcompmgr -f -C -n -D 3
 
     # Disable super-p mappings that conflict with xmonad setup
     gsettings set org.gnome.settings-daemon.plugins.xrandr active false
@@ -41,8 +42,8 @@ elif [ "$HOSTNAME" == "crew-glue" ]; then
     pkill -f synergy
     nohup /usr/bin/synergyc -f --name crew-glue localhost </dev/null >/dev/null 2>&1 &
 else
-    pkill -f gnome-screensaver
-    xscreensaver -no-splash &
+    # pkill -f gnome-screensaver
+    # xscreensaver -no-splash &
 
     # ~/Scripts/random-wallpaper.sh
 

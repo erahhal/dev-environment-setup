@@ -31,6 +31,12 @@ brew tap homebrew/cask-cask
 brew update
 brew install ack
 brew install aspell
+brew install nodejs
+brew install yarn
+brew install mosh
+brew install llvm
+brew install vim --with-python --override-system-vim
+brew install cmake
 brew install bash-completion
 brew install cmake
 brew install coreutils

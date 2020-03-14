@@ -4,7 +4,7 @@ DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 #-------------------------------------------------------------
 # Linux
-#-------------------------------------------------------------
+-------------------------------------------------------------
 
 . /etc/os-release
 
@@ -19,147 +19,243 @@ else
     exit 1
 fi
 
-if hash apt-get 2>/dev/null; then
-    sudo apt-get install -y curl
-    . /etc/lsb-release
+sudo apt-get install -y curl
+. /etc/lsb-release
 
-    # # getdeb
-    # URL='http://archive.getdeb.net/install_deb/getdeb-repository_0.1-1~getdeb1_all.deb'; FILE=`mktemp`; wget "$URL" -qO $FILE && sudo dpkg -i $FILE; rm $FILE
-    # sudo rm /etc/apt/sources.list.d/getdeb.list.bck
+# diffmerge
+echo "deb http://debian.sourcegear.com/ubuntu precise main" | sudo tee /etc/apt/sources.list.d/sourcegear.list
+sudo wget -O - http://debian.sourcegear.com/SOURCEGEAR-GPG-KEY | sudo apt-key add -
 
-    # # Emacs
-    # sudo add-apt-repository -y ppa:ubuntu-elisp/ppa
+# xpra (used to scale lo-res apps to hidpi
+sudo wget -O - https://winswitch.org/gpg.asc | sudo apt-key add -
+echo "deb http://winswitch.org/ $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/winswitch.list;
 
-    # # What is this?
-    # sudo add-apt-repository -y ppa:fcwu-tw/ppa
+# Android
+sudo add-apt-repository -y ppa:paolorotolo/android-studio
 
-    # diffmerge
-    echo "deb http://debian.sourcegear.com/ubuntu precise main" | sudo tee /etc/apt/sources.list.d/sourcegear.list
-    sudo wget -O - http://debian.sourcegear.com/SOURCEGEAR-GPG-KEY | sudo apt-key add -
+# Gnome Xmonad session
+sudo add-apt-repository -y ppa:gekkio/xmonad
 
-    # xpra (used to scale lo-res apps to hidpi
-    sudo wget -O - https://winswitch.org/gpg.asc | sudo apt-key add -
-    echo "deb http://winswitch.org/ $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/winswitch.list;
+# VSCode
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo apt-key add -
+sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 
-    # # Keepass
-    # sudo add-apt-repository -y ppa:jtaylor/keepass
+# VIM 8
+sudo apt-add-repository -y ppa:jonathonf/vim
 
-    # Gnome Xmonad session
-    sudo add-apt-repository -y ppa:gekkio/xmonad
+# Syncthing
+curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
+echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list
 
-    # VSCode
-    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo apt-key add -
-    sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+# Synergy 1.8.8
+sudo add-apt-repository ppa:jonathonf/synergy
 
-    # VIM 8
-    sudo apt-add-repository -y ppa:jonathonf/vim
+# Spotify
+curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 
-    # Syncthing
-    curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
-    echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list
+# Bazel
+echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
+curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
 
-    # Synergy 1.8.8
-    sudo add-apt-repository ppa:jonathonf/synergy
+# nodejs
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt-get install -y nodejs
+# delete global node_modules, as we want to use yarn instead
+sudo rm -rf /usr/lib/node_modules
 
-    # Spotify
-    curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo apt-key add -
-    echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+# eternal terminal
+sudo add-apt-repoository ppa:jgmath2000/et
 
-    # Bazel
-    echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
-    curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
+# yarn
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
-    # nodejs
-    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-    sudo apt-get install -y nodejs
-    # delete global node_modules, as we want to use yarn instead
-    sudo rm -rf /usr/lib/node_modules
+# lsd
+URL='https://github.com/Peltoche/lsd/releases/download/0.15.1/lsd_0.15.1_amd64.deb'; FILE=`mktemp`; wget "$URL" -qO $FILE && sudo dpkg -i $FILE; rm $FILE
 
-    # eternal terminal
-    sudo add-apt-repoository ppa:jgmath2000/et
+# broot
+URL='https://dystroy.org/broot/download/x86_64-linux/broot';
+wget $URL
+sudo mv broot /usr/local/bin/
+sudo chmod +x /usr/local/bin/broot
 
-    # lsd
-    URL='https://github.com/Peltoche/lsd/releases/download/0.15.1/lsd_0.15.1_amd64.deb'; FILE=`mktemp`; wget "$URL" -qO $FILE && sudo dpkg -i $FILE; rm $FILE
+# ripgrep
+# sudo add-apt-repository -y ppa:x4121/ripgrep
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A03A097E3C3842E1
+echo "deb http://ppa.launchpad.net/x4121/ripgrep/ubuntu zesty main" | sudo tee /etc/apt/sources.list.d/ripgrep.list
 
-    # ripgrep
-    # sudo add-apt-repository -y ppa:x4121/ripgrep
-    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A03A097E3C3842E1
-    echo "deb http://ppa.launchpad.net/x4121/ripgrep/ubuntu zesty main" | sudo tee /etc/apt/sources.list.d/ripgrep.list
+# Plex
+echo deb https://downloads.plex.tv/repo/deb public main | sudo tee /etc/apt/sources.list.d/plexmediaserver.list
+curl https://downloads.plex.tv/plex-keys/PlexSign.key | sudo apt-key add -
 
-    # Brave
-    curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
-    source /etc/os-release
-    echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/brave-browser-release-${UBUNTU_CODENAME}.list
+# Brave
+curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
+source /etc/os-release
+echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/brave-browser-release-${UBUNTU_CODENAME}.list
 
-    sudo apt-get update
-    sudo apt-get install -y \
-      ack-grep \
-      autossh \
-      brave-browser \
-      build-essential \
-      caffeine \
-      chromium-browser \
-      cmake \
-      code \
-      dconf-editor \
-      dialog \
-      et \
-      exuberant-ctags \
-      feh \
-      g++ \
-      gccgo \
-      gnome-session-xmonad \
-      gnome-terminal \
-      gnome-tweak-tool \
-      gocode \
-      golang-go \
-      gtk+-3.0 \
-      gtk2.0 \
-      htop \
-      ibus-sunpinyin \
-      keepass2 \
-      libgtk2.0-dev \
-      libstdc++6 \
-      mosh \
-      nginx \
-      nodejs \
-      pep8 \
-      postgresql \
-      pylint \
-      python-dev \
-      python-dev \
-      python-pip \
-      python-pkg-resources \
-      python-setuptools \
-      python3-pip \
-      ripgrep \
-      ruby \
-      ruby-dev \
-      silversearcher-ag \
-      software-properties-common \
-      spotify-client \
-      syncthing \
-      # syncthing-inotify \
-      synergy \
-      tmux \
-      vim \
-      vim-nox-py2 \
-      x11-xserver-utils \
-      xclip \
-      xcompmgr
+sudo apt-get update
 
-    sudo apt-get install -y \
-      language-pack-zh-hans \
-      `check-language-support -l zh-hans`
+# System utilities
+sudo apt-get install -y \
+  ack-grep \
+  autossh \
+  dconf-editor \
+  dialog \
+  et \
+  feh \
+  ffmpeg \
+  gnome-tweak-tool \
+  htop \
+  # Android USB file access
+  jmtpfs \
+  mosh \
+  nginx \
+  partclone \
+  restic \
+  ripgrep \
+  # tools like add-apt-repository
+  software-properties-common \
+  silversearcher-ag \
+  syncthing \
+  synergy \
+  tmux \
+  # Contains xrandr
+  x11-xserver-utils \
+  xclip
 
-    # Disable tap-to-click on touchpads
-    sudo apt-get install -y xserver-xorg-input-libinput
-    sudo apt-get remove --purge -y xserver-xorg-input-synaptics
+# Libraries
+sudo apt-get install -y \
+  gtk+-3.0 \
+  gtk2.0 \
+  # android dev
+  lib32z1 \
+  # android dev
+  libbz2-1.0:i386 \
+  # android dev
+  libc6:386 \
+  libclang-3.9 \
+  libgtk2.0-dev \
+  # android dev
+  libncurses5:i386 \
+  libstdc++6 \
+  # android dev
+  ibstdc++6:i386
 
-    if [ "$DISTRIB_CODENAME" == "xenial" ]; then
-        sudo apt-get install -y redshift redshift-gtk geoclue-2.0
+# Programming
+sudo apt-get install -y \
+  android-tools-adb \
+  bazel \
+  build-essential \
+  cabal-install \
+  cargo \
+  ccache \
+  clang \
+  clang-3.9 \
+  clang-format \
+  cmake \
+  code \
+  cscope \
+  docker.io \
+  exuberant-ctags \
+  llvm \
+  lldb \
+  g++ \
+  gccgo \
+  ghc \
+  gocode \
+  golang-go \
+  pep8 \
+  postgresql \
+  pylint \
+  python-dev \
+  python-pip \
+  python-pkg-resources \
+  python-setuptools \
+  python3-pip \
+  python3-pyqt5 \
+  nodejs \
+  oracle-java8-installer \
+  ruby \
+  ruby-dev \
+  # To build html5-tidy man page
+  xsltproc \
+  yarn
 
-        # Redshift
+# Fix lldb symlinks
+sudo ln -sf /usr/lib/x86_64-linux-gnu/libLLVM-3.8.so.1 /usr/lib/python2.7/dist-packages/lldb/libLLVM-3.8.0.so.1
+sudo ln -sf /usr/lib/x86_64-linux-gnu/libLLVM-3.8.so.1 /usr/lib/python2.7/dist-packages/lldb/libLLVM-3.8.so.1
+sudo ln -sf /usr/lib/llvm-3.8/lib/liblldb.so.1 /usr/lib/python2.7/dist-packages/lldb/_lldb.so
+
+# Xmonad
+sudo apt-get install -y \
+  gnome-session-xmonad \
+  xmonad \
+  xmobar \
+  xcompmgr \
+  suckless-tools \
+  xmobar \
+  scrot \
+  stalonetray \
+  dmenu
+
+# Remove bottom bar from gnome xmonad session
+dconf write /org/gnome/gnome-panel/layout/toplevel-id-list "['top-panel']"
+# To re-display bottom bar, use:
+# dconf write /org/gnome/gnome-panel/layout/toplevel-id-list "['top-panel','bottom-panel']"
+
+# xscreensaver
+sudo apt-get install -y \
+  xscreensaver \
+  xscreensaver-gl-extra \
+  xscreensaver-data-extra \
+  xfishtank \
+  xdaliclock \
+  fortune
+
+# Applications
+sudo apt-get install -y \
+  brave-browser \
+  caffeine \
+  chrome-gnome-shell \
+  chromium-browser \
+  gimp \
+  gnome-terminal \
+  mpv \
+  neovim
+  plexmediaserver \
+  qjackctl \
+  spotify-client \
+  vim \
+  vim-nox-py2
+
+# Chinese input method support
+sudo apt-get install -y \
+  fcitx \
+  fcitx-googlepinyin \
+  fcitx-table-wbpy \
+  fcitx-pinyin \
+  fcitx-sunpinyin \
+  ibus-sunpinyin
+
+# Chinese language support
+sudo apt-get install -y \
+  language-pack-zh-hans \
+  `check-language-support -l zh-hans`
+
+# Disable tap-to-click on touchpads
+sudo apt-get install -y xserver-xorg-input-libinput
+sudo apt-get remove --purge -y xserver-xorg-input-synaptics
+
+# # Installing xubuntu causes hwe (hardware enablement) versions of xorg to be removed...
+# sudo apt-get install -y xubuntu-desktop
+# sudo apt remove --purge -y ubuntu-desktop
+# sudo apt-get install -y xfce4-power-manager
+
+if [ "$DISTRIB_CODENAME" == "xenial" ]; then
+  sudo apt-get install -y redshift redshift-gtk geoclue-2.0
+
+  # Redshift
 REDSHIFT_CONFIG=$(cat <<-END
 [redshift]
 allowed=true
@@ -167,94 +263,65 @@ system=false
 users=
 END
 )
-      if ! grep -q "redshift" /etc/geoclue/geoclue.conf
-      then
-        echo "$REDSHIFT_CONFIG" | sudo tee -a /etc/geoclue/geoclue.conf
-        sudo service geoclue restart
-        fi
-    fi
-
-    if [ "$DISTRIB_CODENAME" == "artful" ]; then
-        sudo apt-get install -y chrome-gnome-shell gnome-shell-extensions gnome-shell-extension-caffeine gnome-shell-extension-multi-monitors gnome-shell-extension-trash gnome-shell-extension-system-monitor gnome-shell-extension-mediaplayer
-    fi
-
-    # sudo apt-get install -y emacs-snapshot
-
-    # # Installing xubuntu causes hwe (hardware enablement) versions of xorg to be removed...
-    # sudo apt-get install -y xubuntu-desktop
-    # sudo apt remove --purge -y ubuntu-desktop
-    # sudo apt-get install -y xfce4-power-manager
-
-    # Rust
-    sudo apt-get install -y cargo
-    # Android USB file access
-    sudo apt-get install -y jmtpfs
-    # Google pinyin input
-    sudo apt-get install -y fcitx fcitx-googlepinyin fcitx-table-wbpy fcitx-pinyin fcitx-sunpinyin
-    sudo apt-get install -y choqok
-    sudo apt-get install -y neovim
-    sudo apt-get install -y clang
-    sudo apt-get install -y clang-3.9
-    # For vim
-    sudo apt-get install -y libclang-3.9
-    sudo apt-get install -y clang-format
-    sudo apt-get install -y llvm
-    sudo apt-get install -y lldb
-    sudo apt-get install -y bazel
-    # To build html5-tidy man page
-    sudo apt-get install -y xsltproc
-    # Remove bottom bar from gnome xmonad session
-    dconf write /org/gnome/gnome-panel/layout/toplevel-id-list "['top-panel']"
-    # To re-display bottom bar, use:
-    # dconf write /org/gnome/gnome-panel/layout/toplevel-id-list "['top-panel','bottom-panel']"
-
-    # Fix lldb symlinks
-    sudo ln -sf /usr/lib/x86_64-linux-gnu/libLLVM-3.8.so.1 /usr/lib/python2.7/dist-packages/lldb/libLLVM-3.8.0.so.1
-    sudo ln -sf /usr/lib/x86_64-linux-gnu/libLLVM-3.8.so.1 /usr/lib/python2.7/dist-packages/lldb/libLLVM-3.8.so.1
-    sudo ln -sf /usr/lib/llvm-3.8/lib/liblldb.so.1 /usr/lib/python2.7/dist-packages/lldb/_lldb.so
-    sudo apt-get install -y cscope
-    sudo apt-get install -y ccache
-    sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
-    sudo update-alternatives --set vi /usr/bin/nvim
-    sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
-    sudo update-alternatives --set vim /usr/bin/nvim
-    sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
-    sudo update-alternatives --set editor /usr/bin/nvim
-    sudo update-alternatives --set vimdiff /usr/bin/vim.nox-py2
-    sudo pip3 install --upgrade pip
-    sudo pip2 install --upgrade pip
-    sudo pip2 install --upgrade flake8
-    sudo pip2 install --upgrade pylint
-    sudo pip3 install --upgrade flake8
-    sudo pip3 install --upgrade pylint
-    sudo pip2 install --upgrade neovim
-    sudo pip3 install --upgrade neovim
-    sudo pip2 install --upgrade simplejson
-    sudo pip2 install --upgrade pytz
-    sudo pip2 install --upgrade requests_futures
-    sudo pip3 install --upgrade python-language-server
-    sudo gem install neovim
-    sudo apt-get install -y oracle-java8-installer
-    sudo apt-get install -y xmonad*
-    sudo apt-get install -y suckless-tools xscreensaver xmobar scrot stalonetray dmenu cabal-install
-    sudo cabal update
-    sudo cabal install --global yeganesh
-    sudo apt-get install -y xscreensaver xscreensaver-gl-extra xscreensaver-data-extra xfishtank xdaliclock fortune
-elif hash yum 2>/dev/null; then
-    sudo yum install -y ack
-else
-    echo "Unknown distribution"
-    exit 1
+  if ! grep -q "redshift" /etc/geoclue/geoclue.conf
+  then
+    echo "$REDSHIFT_CONFIG" | sudo tee -a /etc/geoclue/geoclue.conf
+    sudo service geoclue restart
+  fi
 fi
+
+# Haskell
+sudo cabal update
+sudo cabal install --global yeganesh
+
+sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
+sudo update-alternatives --set vi /usr/bin/nvim
+sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
+sudo update-alternatives --set vim /usr/bin/nvim
+sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
+sudo update-alternatives --set editor /usr/bin/nvim
+sudo update-alternatives --set vimdiff /usr/bin/vim.nox-py2
+
+# python
+sudo pip3 install --upgrade pip
+sudo pip2 install --upgrade pip
+sudo pip2 install --upgrade flake8
+sudo pip3 install --upgrade flake8
+sudo pip2 install --upgrade pylint
+sudo pip3 install --upgrade pylint
+sudo pip2 install --upgrade neovim
+sudo pip3 install --upgrade neovim
+sudo pip2 install --upgrade simplejson
+sudo pip2 install --upgrade pytz
+sudo pip2 install --upgrade requests_futures
+sudo pip2 install --upgrade python-dateutil
+sudo pip2 install --upgrade jinja2
+sudo pip3 install --upgrade jinja2
+sudo pip2 install --upgrade python-language-server
+sudo pip3 install --upgrade python-language-server
+
+# ruby
+sudo gem install neovim
+
+# npm
+yarn global add javascript-typescript-langserver
+
+# Minecraft.  PPA-based installer doesn't seem to work
+sudo snap install mc-installer
+
+# Install lightdm, as gdm3 has some issues with visual and other corruption on logout
+echo "gdm3 shared/default-x-display-manager select lightdm" | sudo debconf-set-selections
+echo "lightdm shared/default-x-display-manager select lightdm" | sudo debconf-set-selections
+apt-get install lightdm
 
 # Gnome settings
 gsettings set org.gnome.Terminal.Legacy.Settings headerbar false
 
-# Android
-sudo add-apt-repository -y ppa:paolorotolo/android-studio
-sudo apt-get update -y
-sudo apt-get install -y libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
-sudo apt-get install -y android-tools-adb
+# Setup PIA
+cd ~/Code
+git clone https://github.com/erahhal/pia-openvpn.git
+cd pia-openvpn
+./install.sh
 
 # lib fix for building Unreal editor
 sudo ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libstdc++.so
@@ -278,15 +345,6 @@ if ! hash platformio 2>/dev/null; then
 fi
 
 cd ~/Code-vendor
-
-# Patched exa with icons
-if [ ! -d "exa-asoderman" ]; then
-    git clone https://github.com/asoderman/exa.git exa-asoderman
-fi
-cd exa-asoderman
-make
-cargo install --force --path .
-cd ..
 
 if [ ! -d "xwindows-solarized" ]; then
     git clone https://github.com/solarized/xresources.git xwindows-solarized
@@ -375,7 +433,7 @@ go get github.com/mkchoi212/fac
 sudo cp $DIR/udev/* /etc/udev/rules.d/
 # Android rules
 sudo ln -sf /lib/udev/rules.d/70-android-tools-adb.rules /etc/udev/rules.d/
-sudo ln -sf $DIR/android/70-onepluse3.rules /etc/udev/rules.d/
+sudo ln -sf $DIR/android/70-oneplus3.rules /etc/udev/rules.d/
 sudo udevadm control --reload-rules
 sudo service udev restart
 sudo adb kill-server

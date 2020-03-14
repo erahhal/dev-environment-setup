@@ -1,0 +1,15 @@
+#!/bin/bash
+
+docker run -d --name=motion \
+    -p 7999:7999 \
+    -p 8081:8081 \
+    -p 8082:8082 \
+    -p 8083:8083 \
+    -p 8084:8084 \
+    -p 8085:8085 \
+    -p 8087:8087 \
+    -e TZ="America/Los_Angeles" \
+    -v ~/Code/dev-environment-setup/motion/config:/usr/local/etc/motion \
+    -v ~/Videos/motion:/var/lib/motion \
+    --restart=always \
+    motionproject/motion:latest

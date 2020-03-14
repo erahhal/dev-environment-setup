@@ -63,7 +63,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     xset r rate 250 30
   fi
   alias irssi='TERM=screen-256color irssi'
-  alias open=gnome-open
+  alias open=xdg-open
   . "/etc/bash_completion"
   . "$DIR/../git/git-prompt.sh"
   export PS1='\[$(tput bold)\]\[$(tput setaf 6)\]\t \[$(tput setaf 2)\][\[$(tput setaf 7)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 7)\]\h \[$(tput setaf 6)\]\W\[$(tput setaf 2)\]]\[$(tput setaf 4)\]$(__git_ps1 " (%s)")\\$ \[$(tput sgr0)\]'
@@ -77,3 +77,5 @@ if [ -f '/home/erahhal/google-cloud-sdk/path.bash.inc' ]; then . '/home/erahhal/
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/erahhal/google-cloud-sdk/completion.bash.inc' ]; then . '/home/erahhal/google-cloud-sdk/completion.bash.inc'; fi
+
+source /home/erahhal/.config/broot/launcher/bash/br

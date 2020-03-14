@@ -44,7 +44,7 @@ myManagementHooks = [ gnomeManageHook ]
 
 -- must run in a bash context to utilize $PATH
 -- font of 15 is about the same size as the panel
-myLauncher = "/bin/bash -c \"$(yeganesh -x -- -fn 'DroidSansMono Nerd Font-15' -p 'CHOOSE YOUR POISON \57521\57521')\""
+myLauncher = "/bin/bash -c \"$(yeganesh -x -- -fn 'DroidSansMono Nerd Font-12' -p 'CHOOSE YOUR POISON \57521\57521')\""
 
 -- "do" notation is shorthand for stringing together monads, in this case an IO monad
 myStartupHook = do
@@ -77,6 +77,7 @@ myKeys = [ ((myModMask Bits..|. XMonad.shiftMask, XMonad.xK_z), XMonad.spawn "xs
          -- Use this to launch programs without a key binding.
          , ((myModMask, XMonad.xK_p), XMonad.spawn myLauncher)
          , ((XMonad.mod1Mask, XMonad.xK_Tab), windows StackSet.focusDown)
+         , ((XMonad.mod1Mask Bits..|. XMonad.shiftMask, XMonad.xK_Tab), windows StackSet.focusUp)
          ] ++
          [
          -- workspaces are distinct per physical screen

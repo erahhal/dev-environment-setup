@@ -1,0 +1,13 @@
+#!/bin/bash
+
+me=`basename "$0"`
+
+if [ "$#" -ne 3 ]; then
+    echo "Usage:"
+    echo ""
+    echo "    $me <image folder> <image gz files basename> <img output file>"
+    echo ""
+    exit 1
+fi
+
+cat $1/$2.gz.* | gunzip | sudo partclone.restore --restore_raw_file -C -s - -o $3
