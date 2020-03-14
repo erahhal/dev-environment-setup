@@ -118,7 +118,7 @@ endif
 
 if s:uname == "Linux"
     let g:python2_host_prog='/usr/bin/python2.7'
-    let g:python3_host_prog='/usr/bin/python3.6'
+    let g:python3_host_prog='/usr/bin/python3.7'
 elseif s:uname == "Darwin"
     let g:python2_host_prog='~/.pyenv/versions/2.7.16/bin/python'
     let g:python3_host_prog='/usr/local/bin/python3'

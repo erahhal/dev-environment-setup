@@ -287,18 +287,22 @@ sudo pip3 install --upgrade pip
 sudo pip2 install --upgrade pip
 sudo pip2 install --upgrade flake8
 sudo pip3 install --upgrade flake8
-sudo pip2 install --upgrade pylint
-sudo pip3 install --upgrade pylint
-sudo pip2 install --upgrade neovim
-sudo pip3 install --upgrade neovim
-sudo pip2 install --upgrade simplejson
-sudo pip2 install --upgrade pytz
-sudo pip2 install --upgrade requests_futures
-sudo pip2 install --upgrade python-dateutil
 sudo pip2 install --upgrade jinja2
 sudo pip3 install --upgrade jinja2
+sudo pip2 install --upgrade pylint
+sudo pip3 install --upgrade pylint
+sudo pip2 install --upgrade msgpack
+sudo pip3 install --upgrade msgpack
+sudo pip2 install --upgrade neovim
+sudo pip3 install --upgrade neovim
+sudo pip2 install --upgrade pynvim
+sudo pip3 install --upgrade pynvim
+sudo pip2 install --upgrade python-dateutil
 sudo pip2 install --upgrade python-language-server
 sudo pip3 install --upgrade python-language-server
+sudo pip2 install --upgrade pytz
+sudo pip2 install --upgrade requests_futures
+sudo pip2 install --upgrade simplejson
 
 # ruby
 sudo gem install neovim
