@@ -105,6 +105,7 @@ sudo apt-get install -y \
   et \
   feh \
   ffmpeg \
+  fuse \
   gnome-tweak-tool \
   htop \
   # Android USB file access
@@ -130,14 +131,26 @@ sudo apt-get install -y \
   gtk2.0 \
   # android dev
   lib32z1 \
+  # Read mac volumes
+  libattr1-dev \
   # android dev
   libbz2-1.0:i386 \
+  # Read mac volumes
+  libbz2-dev \
   # android dev
   libc6:386 \
   libclang-3.9 \
+  # Read mac volumes
+  libfuse-dev \
+  # Read mac volumes
+  libfuse3-dev \
   libgtk2.0-dev \
+  # Read mac volumes
+  libicu-dev \
   # android dev
   libncurses5:i386 \
+  # Read mac volumes
+  libfsapfs-utils \
   libstdc++6 \
   # android dev
   ibstdc++6:i386
@@ -323,9 +336,27 @@ gsettings set org.gnome.Terminal.Legacy.Settings headerbar false
 
 # Setup PIA
 cd ~/Code
-git clone https://github.com/erahhal/pia-openvpn.git
+if [ ! -d "pia-openvpn" ]; then
+  git clone https://github.com/erahhal/pia-openvpn.git
+fi
 cd pia-openvpn
+git pull
 ./install.sh
+
+# Setup mac os apfs fuse for mac disk support
+cd ~/Code-vendor
+if [ ! -d "apfs-fuse" ]; then
+  git clone https://github.com/sgan81/apfs-fuse.git
+fi
+cd apfs-fuse
+git pull
+git submodule init
+git submodule update
+mkdir -p build
+cd build
+cmake ..
+make
+sudo cp apfs-* /usr/local/bin
 
 # lib fix for building Unreal editor
 sudo ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libstdc++.so
