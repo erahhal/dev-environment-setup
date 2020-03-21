@@ -43,6 +43,9 @@ sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode s
 # VIM 8
 sudo apt-add-repository -y ppa:jonathonf/vim
 
+# Latest neovim
+sudo add-apt-repository ppa:neovim-ppa/unstable
+
 # Syncthing
 curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
 echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list
@@ -168,6 +171,7 @@ sudo apt-get install -y \
   clang-format \
   cmake \
   code \
+  cpanminus \
   cscope \
   docker.io \
   exuberant-ctags \
@@ -321,11 +325,18 @@ sudo pip2 install --upgrade pytz
 sudo pip2 install --upgrade requests_futures
 sudo pip2 install --upgrade simplejson
 
+# perl
+
+sudo cpanm install Neovim::Ext
+
 # ruby
 sudo gem install neovim
 
 # npm
 yarn global add javascript-typescript-langserver
+yarn global upgrade javascript-typescript-langserver
+yarn global add neovim
+yarn global upgrade neovim
 
 # Minecraft.  PPA-based installer doesn't seem to work
 sudo snap install mc-installer

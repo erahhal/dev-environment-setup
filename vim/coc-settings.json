@@ -1,5 +1,17 @@
 {
   "git.enableGutters": true,
+  "cSpell.enabledLanguageIds": [
+    "csharp",
+    "go",
+    "javascript",
+    "javascriptreact",
+    "markdown",
+    "php",
+    "plaintext",
+    "typescript",
+    "typescriptreact",
+    "yml"
+  ],
   "cSpell.userWords": [
     "Anand",
     "Graphiql",

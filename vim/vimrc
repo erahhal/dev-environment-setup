@@ -677,20 +677,12 @@ if 1
     nmap <silent> ,f <Plug>(coc-fix-current)
     nmap <silent> ,k <Plug>(coc-diagnostic-previous)
     nmap <silent> ,j <Plug>(coc-diagnostic-next)
+    nmap <silent> gd <Plug>(coc-definition)
     nmap <silent> ,d <Plug>(coc-definition)
+    nmap <silent> gr <Plug>(coc-references)
     nmap <silent> ,r <Plug>(coc-references)
     nmap <silent> ,i <Plug>(coc-implementation)
-
-    " fun! SetSpellCheck()
-    "     if &ft =~ 'vim'
-    "         <Plug>(coc-action-deactivateExtension coc-spell-checker)
-    "         :%s/\s\+$//e
-    "     endif
-    " endfun
-
-    " augroup vimrc_autocmds
-    "   autocmd BufEnter * call SetSpellCheck()
-    " augroup END
+    nmap <silent> gi <Plug>(coc-implementation)
 endif
 
 " Too many issues
