@@ -582,8 +582,11 @@ let g:echodoc#type = 'popup'
 " Always draw the signcolumn
 set signcolumn=yes
 
-" asynchronous completion
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Not needed with coc
+if 0
+  " asynchronous completion
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+endif
 
 " faster creation of HTML and CSS, handles expansion
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -650,20 +653,44 @@ endif
 
 if 1
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'iamcco/coc-actions', {'do': 'yarn install --frozen-lockfile && yarn build'}
+    Plug 'clangd/coc-clangd', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'voldikss/coc-cmake', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-denite', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-git', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-highlight', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-html', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'fannheyward/coc-markdownlint', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-snippets', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'iamcco/coc-spell-checker', {'do': 'yarn install --frozen-lockfile && yarn build'}
+    Plug 'neoclide/coc-tslint', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'iamcco/coc-vimlsp', {'do': 'yarn install --frozen-lockfile && yarn build'}
+    Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
 
-    " -- Map code-action of selected region
-    " <leader>a for the current selected range
-    " "<leader>aw for the current word
-    " "<leader>aas for the current sentence - USE THIS TO FIX LINTING ISSUES
-    " "<leader>aap for the current paragraph
-    function! s:cocActionsOpenFromSelected(type) abort
-      execute 'CocCommand actions.open ' . a:type
-    endfunction
-    xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
-    nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
-
+    nmap <silent> ,c :CocCommand actions.open<CR>
+    nmap <silent> ,f <Plug>(coc-fix-current)
     nmap <silent> ,k <Plug>(coc-diagnostic-previous)
     nmap <silent> ,j <Plug>(coc-diagnostic-next)
+    nmap <silent> ,d <Plug>(coc-definition)
+    nmap <silent> ,r <Plug>(coc-references)
+    nmap <silent> ,i <Plug>(coc-implementation)
+
+    " fun! SetSpellCheck()
+    "     if &ft =~ 'vim'
+    "         <Plug>(coc-action-deactivateExtension coc-spell-checker)
+    "         :%s/\s\+$//e
+    "     endif
+    " endfun
+
+    " augroup vimrc_autocmds
+    "   autocmd BufEnter * call SetSpellCheck()
+    " augroup END
 endif
 
 " Too many issues
@@ -867,6 +894,13 @@ Plug 'pangloss/vim-javascript'
 
 " Better markdown syntax highlighting, including code blocks
 Plug 'plasticboy/vim-markdown'
+
+let g:markdown_fenced_languages = [
+  \ 'vim',
+  \ 'help',
+  \ 'html',
+  \ 'python'
+  \]
 
 " -----------------------------------------------------
 " Syntax Checking

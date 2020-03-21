@@ -54,6 +54,8 @@ brew install neovim/neovim/neovim
 brew install nodejs
 brew install pyenv
 brew install python
+# For building Synergy
+brew install qt5
 # Needed for tmux copy and paste
 brew install reattach-to-user-namespace
 brew install ripgrep
@@ -125,6 +127,30 @@ sudo gem install neovim
 
 # Add emacs daemon as service
 launchctl load -w ${DIR}/emacs/gnu.emacs.daemon.plist
+
+# Build and install synergy
+cd ~/Code-personal
+if [ ! -d "synergy-core" ]; then
+  git clone git@github.com:erahhal/synergy-core.git
+fi
+cd synergy-core
+git checkout v1.8.8-ssl-patched
+cd ext
+mkdir -p gmock-1.6.0
+cd gmock-1.6.0
+unzip -o ../gmock-1.6.0.zip
+cd ..
+mkdir -p gtest-1.6.0
+cd gtest-1.6.0
+unzip -o ../gtest-1.6.0.zip
+cd ../..
+mkdir -p build
+cd build
+QT5_VERSION=$(ls -t /usr/local/Cellar/qt | head -1)
+cmake .. -DCMAKE_PREFIX_PATH=/usr/local/Cellar/qt/$QT5_VERSION
+make
+cd ..
+cp bin/syn* /usr/local/bin
 
 # Arduino 1.16.13, which is latest version supported by teensy
 brew cask install https://raw.githubusercontent.com/caskroom/homebrew-cask/5ed77c9d0e487f2a2925c2b8c68b846fbd382109/Casks/arduino.rb

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# tunnel-erahhal-mbp15tb-erahhal-u620
+killall -9 synergyc
+nohup synergyc -f --name netflix-mbp ironwood </dev/null >/dev/null 2>&1 &
