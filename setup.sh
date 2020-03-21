@@ -274,6 +274,12 @@ sudo npm install -g
 # ruby extconf.rb
 # make
 
+# Link Coc settings
+if [ $(realpath "$DIR/vim/coc-settings.json") != $(realpath ~/.vim/coc-settings.json) ]; then
+    mv ~/.vim/coc-settings.json ~/.vim/coc-settings.json.orig
+    ln -s $DIR/vim/coc-settings.json ~/.vim/coc-settings.json
+fi
+
 #-------------------------------------------------------------
 # Emacs
 #-------------------------------------------------------------
