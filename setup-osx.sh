@@ -15,12 +15,6 @@ sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 # Disable two-finger swipe navigation in browsers
 defaults write "Apple Global Domain" AppleEnableSwipeNavigateWithScrolls -int 0
 
-# ZSH setup
-# Based on: https://gist.github.com/kevin-smets/8568070
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
-chmod -R 755 /usr/local/share/zsh
-
 # Install homebrew
 if hash brew 2>/dev/null; then
   echo "Homebrew already installed"

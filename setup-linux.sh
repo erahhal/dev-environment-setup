@@ -47,9 +47,6 @@ sudo apt-add-repository -y ppa:jonathonf/vim
 curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
 echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list
 
-# Synergy 1.8.8
-sudo add-apt-repository ppa:jonathonf/synergy
-
 # Spotify
 curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
@@ -119,11 +116,12 @@ sudo apt-get install -y \
   software-properties-common \
   silversearcher-ag \
   syncthing \
-  synergy \
   tmux \
   # Contains xrandr
   x11-xserver-utils \
-  xclip
+  xclip \
+  zsh \
+  zsh-syntax-highlighting
 
 # Libraries
 sudo apt-get install -y \
@@ -133,6 +131,8 @@ sudo apt-get install -y \
   lib32z1 \
   # Read mac volumes
   libattr1-dev \
+  # building synergy
+  libavahi-compat-libdnssd-dev \
   # android dev
   libbz2-1.0:i386 \
   # Read mac volumes
@@ -235,6 +235,7 @@ sudo apt-get install -y \
   gimp \
   gnome-terminal \
   mpv \
+  nemo \
   neovim
   plexmediaserver \
   qjackctl \
@@ -259,6 +260,9 @@ sudo apt-get install -y \
 # Disable tap-to-click on touchpads
 sudo apt-get install -y xserver-xorg-input-libinput
 sudo apt-get remove --purge -y xserver-xorg-input-synaptics
+
+# Disable gnome file indexing
+sudo apt remove -y tracker tracker-extract tracker-miner-fs
 
 # # Installing xubuntu causes hwe (hardware enablement) versions of xorg to be removed...
 # sudo apt-get install -y xubuntu-desktop
@@ -342,6 +346,30 @@ fi
 cd pia-openvpn
 git pull
 ./install.sh
+
+# Setup synergy
+cd ~/Code
+if [ ! -d "synergy-core" ]; then
+  git clone git@github.com:erahhal/synergy-core.git
+fi
+cd synergy-core
+git checkout v1.8.8-ssl-patched
+git pull
+cd ext
+mkdir -p gmock-1.6.0
+cd gmock-1.6.0
+unzip -o ../gmock-1.6.0.zip
+cd ..
+mkdir -p gtest-1.6.0
+cd gtest-1.6.0
+unzip -o ../gtest-1.6.0.zip
+cd ../..
+mkdir -p build
+cd build
+cmake ..
+make
+cd ..
+sudo cp bin/syn* /usr/local/bin
 
 # Setup mac os apfs fuse for mac disk support
 cd ~/Code-vendor

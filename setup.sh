@@ -171,6 +171,22 @@ fi
 # zsh
 #-------------------------------------------------------------
 
+sudo chmod -R 755 /usr/local/share/zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+cd ~/Code-vendor
+ZSH_CUSTOM=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}
+if [ ! -e $ZSH_CUSTOM/themes/powerlevel10k ]; then
+    git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+fi
+cd $ZSH_CUSTOM/themes/powerlevel10k
+git pull
+
+if [ ! -e $ZSH_CUSTOM/plugins/zsh-autosuggestions ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+fi
+cd $ZSH_CUSTOM/plugins/zsh-autosuggestions
+git pull
+
 if [ $(realpath "$DIR/zsh/zshrc") != $(realpath ~/.zshrc) ]; then
     mv ~/.zshrc ~/.zshrc.orig
     ln -s $DIR/zsh/zshrc ~/.zshrc

@@ -9,6 +9,8 @@ fi
 
 # artsy has gnome shell extensions instead
 if [ "$DESKTOP_SESSION" == "gnome-xmonad" ] || [ "$DESKTOP_SESSION" == "xmonad" ] || [ "$DESKTOP_SESSION" == "gnome-flashback-xmonad" ]; then
+    feh --bg-scale /usr/share/backgrounds/Beijling_park_burial_path_by_Mattias_Andersson.jpg
+
     pkill -f caffeine
     caffeine-indicator &
     pkill -f redshift
@@ -16,7 +18,9 @@ if [ "$DESKTOP_SESSION" == "gnome-xmonad" ] || [ "$DESKTOP_SESSION" == "xmonad" 
     if [ "$DISTRIB_CODENAME" == "xenial" ]; then
         redshift-gtk &
     fi
-    python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &
+
+    # App indicator support doesn't seem to be in Ubuntu 19.10
+    # python2 ~/Code-vendor/syncthing-ubuntu-indicator/syncthing-ubuntu-indicator.py &
 
     # Add fade between xmonad desktop switches
     # Currently commented out because the background is seen between fades which doesn't look good
@@ -31,7 +35,7 @@ fi
 
 if [ "$HOSTNAME" == "erahhal-u620" ]; then
     pkill -f synergy
-    nohup /usr/bin/synergys -f --config ~/synergys.conf </dev/null >/dev/null 2>&1 &
+    nohup /usr/local/bin/synergys -f --config ~/synergys.conf </dev/null >/dev/null 2>&1 &
     # Monitor display changes
     xrandr --output DVI-I-1 --pos 0x400
     pkill -f check_resolution.py
@@ -40,12 +44,12 @@ if [ "$HOSTNAME" == "erahhal-u620" ]; then
 elif [ "$HOSTNAME" == "crew-glue" ]; then
     tunnel-crew-glue-erahhal-u620
     pkill -f synergy
-    nohup /usr/bin/synergyc -f --name crew-glue localhost </dev/null >/dev/null 2>&1 &
-else
+    nohup /usr/local/bin/synergyc -f --name crew-glue localhost </dev/null >/dev/null 2>&1 &
+elif [ "$HOSTNAME" == "ironwood" ]; then
     # pkill -f gnome-screensaver
     # xscreensaver -no-splash &
-
     # ~/Scripts/random-wallpaper.sh
 
-    feh --bg-scale /usr/share/backgrounds/Beijling_park_burial_path_by_Mattias_Andersson.jpg
+    pkill -f synergy
+    nohup /usr/local/bin/synergys -f --config ~/synergys.conf </dev/null >/dev/null 2>&1 &
 fi
