@@ -653,24 +653,36 @@ endif
 
 if 1
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
     Plug 'iamcco/coc-actions', {'do': 'yarn install --frozen-lockfile && yarn build'}
+    Plug 'voldikss/coc-browser', {'do': 'yarn install --frozen-lockfile'}
     Plug 'clangd/coc-clangd', {'do': 'yarn install --frozen-lockfile'}
     Plug 'voldikss/coc-cmake', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'iamcco/coc-cspell-dicts', {'do': 'yarn install --frozen-lockfile && yarn build'}
     Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'Tallestthomas/coc-css-block-comments', {'do': 'yarn install --frozen-lockfile && yarn add webpack webpack-cli && yarn build'}
+    Plug 'antonk52/coc-cssmodules', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-denite', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'josa42/coc-docker', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-git', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-highlight', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-html', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'fannheyward/coc-lit-html', {'do': 'yarn install --frozen-lockfile && yarn add webpack webpack-cli --dev && yarn build'}
     Plug 'fannheyward/coc-markdownlint', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'josa42/coc-sh', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-snippets', {'do': 'yarn install --frozen-lockfile'}
     Plug 'iamcco/coc-spell-checker', {'do': 'yarn install --frozen-lockfile && yarn build'}
+    Plug 'fannheyward/coc-sql', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-stylelint',  {'do': 'yarn install --frozen-lockfile'}
+    Plug 'bmatcuk/coc-stylelintplus',  {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-tslint', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'coc-extensions/coc-utils', {'do': 'yarn install --frozen-lockfile && yarn compile'}
     Plug 'iamcco/coc-vimlsp', {'do': 'yarn install --frozen-lockfile && yarn build'}
+    Plug 'fannheyward/coc-xml', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
 
     nmap <silent> ,c :CocCommand actions.open<CR>
@@ -747,6 +759,8 @@ let g:clang_conceal_snippets = 1
 set concealcursor=vin
 " Don't open preview window
 set completeopt-=preview
+" Needed for kite
+set completeopt+=menuone,noinsert
 " Popup menu height
 set pumheight=20
 "" Hides certain bits of text, like quotes in json files and brackets in markdown links

@@ -29,6 +29,13 @@ POWERLEVEL9K_MODE="awesome-patched"
 if [ "$(uname)" "==" "Darwin" ]; then
   source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 else
+  # To disable cursor highlighting altogether:
+  # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+
+  ZSH_HIGHLIGHT_HIGHLIGHTERS=(main cursor)
+  typeset -A ZSH_HIGHLIGHT_STYLES
+  # ZSH_HIGHLIGHT_STYLES=(cursor bold)
+  ZSH_HIGHLIGHT_STYLES[cursor]=underline
   source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
