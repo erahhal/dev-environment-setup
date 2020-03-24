@@ -94,9 +94,12 @@ echo ""
 read -p "Press enter after installed."
 
 # FAC (Git Fix All Conflicts)
-
 brew tap mkchoi212/fac https://github.com/mkchoi212/fac.git
 brew install fac
+
+# Java 8
+brew tap homebrew/cask-versions
+brew cask install zulu8
 
 # Python setup
 pyenv install 2.7.16
