@@ -115,6 +115,10 @@ pip3 install --upgrade neovim
 pip3 install --upgrade simplejson
 pip3 install --upgrade pep8
 pip3 install --upgrade pylint
+pip3 install --upgrade jedi
+pip3 install --upgrade flake8
+pip3 install --upgrade rope
+pip3 install --upgrade pysocks
 
 # for python libs that need freetype headers
 ln -s /usr/local/include/freetype2 /usr/local/include/freetype

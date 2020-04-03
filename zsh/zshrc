@@ -29,13 +29,10 @@ POWERLEVEL9K_MODE="awesome-patched"
 if [ "$(uname)" "==" "Darwin" ]; then
   source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 else
-  # To disable cursor highlighting altogether:
-  # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
-
-  ZSH_HIGHLIGHT_HIGHLIGHTERS=(main cursor)
+  ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+  # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main cursor)
   typeset -A ZSH_HIGHLIGHT_STYLES
-  # ZSH_HIGHLIGHT_STYLES=(cursor bold)
-  ZSH_HIGHLIGHT_STYLES[cursor]=underline
+  # ZSH_HIGHLIGHT_STYLES[cursor]=underline
   source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
@@ -128,6 +125,13 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Don't share history across windows
+setopt noincappendhistory
+setopt nosharehistory
+
 # Set to local python version
 if [ "$(uname)" "==" "Darwin" ]; then
   pyenv global 2.7.16
@@ -138,12 +142,22 @@ else
   alias vi='/usr/bin/nvim'
   alias vim='/usr/bin/nvim'
   alias br='broot'
+  alias open='xdg-open'
 fi
 
 alias vimdiff='nvim -d'
 alias ls='lsd'
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if [ ! -z $DISPLAY ]; then
+  # keyboard rate
+  xset r rate 250 30
+fi
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --no-messages --hidden --follow --glob "!.git/*"'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_OPTS='
+--color fg:242,bg:236,hl:65,fg+:15,bg+:239,hl+:108
+--color info:108,prompt:109,spinner:108,pointer:168,marker:168
+'
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

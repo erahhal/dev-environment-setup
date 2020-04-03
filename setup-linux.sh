@@ -312,6 +312,14 @@ sudo pip2 install --upgrade jinja2
 sudo pip3 install --upgrade jinja2
 sudo pip2 install --upgrade pylint
 sudo pip3 install --upgrade pylint
+sudo pip2 install --upgrade jedi
+sudo pip3 install --upgrade jedi
+sudo pip2 install --upgrade pep8
+sudo pip3 install --upgrade pep8
+sudo pip2 install --upgrade pysocks
+sudo pip3 install --upgrade pysocks
+sudo pip2 install --upgrade rope
+sudo pip3 install --upgrade rope
 sudo pip2 install --upgrade msgpack
 sudo pip3 install --upgrade msgpack
 sudo pip2 install --upgrade neovim
