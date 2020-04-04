@@ -29,10 +29,12 @@ POWERLEVEL9K_MODE="awesome-patched"
 if [ "$(uname)" "==" "Darwin" ]; then
   source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 else
-  ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+  # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
   # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main cursor)
-  typeset -A ZSH_HIGHLIGHT_STYLES
   # ZSH_HIGHLIGHT_STYLES[cursor]=underline
+
+  ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+  typeset -A ZSH_HIGHLIGHT_STYLES
   source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
@@ -95,6 +97,8 @@ fi
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
+
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#004444,bg=#00aaaa,bold,underline"
 plugins=(zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
