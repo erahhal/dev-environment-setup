@@ -919,6 +919,9 @@ Plug 'tpope/vim-sleuth'
 " 100 language packs
 Plug 'sheerun/vim-polyglot'
 
+" CSound IDE support
+Plug 'luisjure/csound-vim'
+
 " mustache syntax highlighting and completion
 Plug 'juvenn/mustache.vim'
 

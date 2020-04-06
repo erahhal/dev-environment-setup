@@ -120,9 +120,12 @@ sudo apt-get install -y \
   silversearcher-ag \
   syncthing \
   tmux \
+  trash-cli \
   # Contains xrandr
   x11-xserver-utils \
   xclip \
+  # for using run_scaled
+  xpra \
   zsh \
   zsh-syntax-highlighting
 
@@ -143,6 +146,10 @@ sudo apt-get install -y \
   # android dev
   libc6:386 \
   libclang-3.9 \
+  # csound dev
+  libcsnd-dev \
+  # csound dev
+  libcsound64-dev \
   # Read mac volumes
   libfuse-dev \
   # Read mac volumes
@@ -365,6 +372,14 @@ fi
 cd pia-openvpn
 git pull
 ./install.sh
+
+# Setup run_scaled
+cd ~/Code-vendor
+if [ ! -d "run_scaled" ]; then
+  git clone https://github.com/kaueraal/run_scaled.git
+fi
+cd run_scaled
+git pull
 
 # Setup synergy
 cd ~/Code
