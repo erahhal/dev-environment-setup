@@ -57,6 +57,10 @@
 " viwp      - select word then replace
 " vi"p      - select between quotes and replace
 " viw"0p    - select word then replace with first selection rather than last replaced word
+" :cn       - next in quickfix list
+" :cp       - previous in quickfix list
+" :copen    - open quickfix list
+" :ccl      - close quickfix list
 "
 " Search and Replace in files
 " ---------------------------
@@ -162,6 +166,22 @@ endfun
 augroup LargeFile
   autocmd BufReadPre * call OptimizeLargeFile()
 augroup END
+
+" Indented folding
+" Modified from http://dhruvasagar.com/2013/03/28/vim-better-foldtext
+function! NeatFoldText()
+  let indent_level = indent(v:foldstart)
+  let indent = repeat(' ',indent_level)
+  let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
+  let lines_count = v:foldend - v:foldstart + 1
+  let lines_count_text = '-' . printf("%10s", lines_count . ' lines') . ' '
+  let foldchar = matchstr(&fillchars, 'fold:\zs.')
+  let foldtextstart = strpart('+' . repeat(foldchar, v:foldlevel*2) . line, 0, (winwidth(0)*2)/3)
+  let foldtextend = lines_count_text . repeat(foldchar, 8)
+  let foldtextlength = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g')) + &foldcolumn
+  return indent . foldtextstart . repeat(foldchar, winwidth(0)-foldtextlength) . foldtextend
+endfunction
+set foldtext=NeatFoldText()
 
 " -----------------------------------------------------
 " Backspace settings
@@ -310,7 +330,6 @@ autocmd BufRead,BufNewFile *.md setlocal spell
 " -----------------------------------------------------
 
 set fdm=marker
-hi Folded ctermfg=255 ctermbg=23
 "set foldmethod=indent
 "set foldlevelstart=0
 " javascript folding doesn't work very well with several levels of nested anonymous functions
@@ -831,7 +850,20 @@ autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 " -----------------------------------------------------
 "
 " Git wrapper
+" :G<command> or :Git <command>    - run a git command
 Plug 'tpope/vim-fugitive'
+
+" git branch viewer
+" :Flog or :Flogsplit       - open viewer (all commands below only work in viewer)
+"       <C-N> and <C-P>     - jump between commits
+"       u                   - refresh graph
+"       a                   - toggle all branches
+"       gb                  - toggle bisect mode
+"       gm                  - toggle displaying no merges
+"       gr                  - toggle reflog
+"       gq                  - quit
+"       g?                  - help
+Plug 'rbong/vim-flog'
 
 " Show diff marks
 Plug 'mhinz/vim-signify'
@@ -843,6 +875,11 @@ let g:signify_vcs_cmds = {
 highlight SignColumn ctermbg=237
 
 " Magit
+" :Magit            - open
+" <C-n> an <C-p>    - jump between hunks
+" S                 - stage a hunk
+" CC                - commit staged hunks
+" CC or :w          - finalize commit
 Plug 'jreybert/vimagit'
 
 " slow and conflicts with VimOrganizer
@@ -921,6 +958,17 @@ Plug 'sheerun/vim-polyglot'
 
 " CSound IDE support
 Plug 'luisjure/csound-vim'
+
+" saves present file, compiles with flags in options, returns to vim
+:noremap <leader>ct :up <CR> :!csound "%:p" <CR>
+" saves present file, compiles and sends to audio output, returns to vim
+:noremap <leader>co :up <CR> :!csound -d -o devaudio "%:p" <CR> <CR>
+" saves present file, compiles and writes output to file, returns to vim
+:noremap <leader>cc :up <CR> :!csound -W -d -o "%:p:r.wav" "%:p" <CR> <CR>
+" saves present file, compiles and writes output to file, stays in console (for debugging)
+:noremap <leader>cs :up <CR> :!csound -W -d -o "%:p:r.wav" "%:p" <CR>
+" plays last compiled file
+:noremap <leader>cp :!aplay "%:p:r.wav" <CR><CR>
 
 " mustache syntax highlighting and completion
 Plug 'juvenn/mustache.vim'
