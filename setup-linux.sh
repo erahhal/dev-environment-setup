@@ -352,6 +352,7 @@ yarn global add javascript-typescript-langserver
 yarn global upgrade javascript-typescript-langserver
 yarn global add neovim
 yarn global upgrade neovim
+yarn global add gtop
 
 # Minecraft.  PPA-based installer doesn't seem to work
 sudo snap install mc-installer
@@ -523,6 +524,9 @@ fi
 
 # FAC (Git Fix All Conflicts)
 go get github.com/mkchoi212/fac
+
+# ytop
+cargo install -f --git https://github.com/cjbassi/ytop ytop
 
 # udev
 

@@ -110,10 +110,8 @@ set enc=utf-8
 
 let mapleader=" "                       " Set leader
 let maplocalleader=" "                  " Set local leader
-set nocompatible                        " Be iMproved
 set exrc                                " enable per-directory .vimrc files
 set secure                              " disable unsafe commands in local .vimrc files
-set pastetoggle=<F10>                   " use F10 to disable and enable all indentation options
 set viminfo='20,<1000,s1000             " increase copy and paste buffer size
 set mouse=a                             " enable mouse support in xterm
 if 0
@@ -134,8 +132,10 @@ endif
 " Things like ctrl-w ctrl-] won't find custom ctag files without this
 filetype plugin indent on
 
-" Automatically resize splits when window is resized
-autocmd FocusGained,FocusLost,VimResized * wincmd =
+augroup AutoResize
+    " Automatically resize splits when window is resized
+    autocmd FocusGained,FocusLost,VimResized * wincmd =
+augroup end
 
 " Automatically set working directory to the folder of open file.
 " Helps with things like syntastic/pylint, which look in parent folders for rc
@@ -164,22 +164,22 @@ fun! OptimizeLargeFile()
 endfun
 
 augroup LargeFile
-  autocmd BufReadPre * call OptimizeLargeFile()
+    autocmd BufReadPre * call OptimizeLargeFile()
 augroup END
 
 " Indented folding
 " Modified from http://dhruvasagar.com/2013/03/28/vim-better-foldtext
 function! NeatFoldText()
-  let indent_level = indent(v:foldstart)
-  let indent = repeat(' ',indent_level)
-  let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
-  let lines_count = v:foldend - v:foldstart + 1
-  let lines_count_text = '-' . printf("%10s", lines_count . ' lines') . ' '
-  let foldchar = matchstr(&fillchars, 'fold:\zs.')
-  let foldtextstart = strpart('+' . repeat(foldchar, v:foldlevel*2) . line, 0, (winwidth(0)*2)/3)
-  let foldtextend = lines_count_text . repeat(foldchar, 8)
-  let foldtextlength = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g')) + &foldcolumn
-  return indent . foldtextstart . repeat(foldchar, winwidth(0)-foldtextlength) . foldtextend
+    let indent_level = indent(v:foldstart)
+    let indent = repeat(' ',indent_level)
+    let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
+    let lines_count = v:foldend - v:foldstart + 1
+    let lines_count_text = '-' . printf("%10s", lines_count . ' lines') . ' '
+    let foldchar = matchstr(&fillchars, 'fold:\zs.')
+    let foldtextstart = strpart('+' . repeat(foldchar, v:foldlevel*2) . line, 0, (winwidth(0)*2)/3)
+    let foldtextend = lines_count_text . repeat(foldchar, 8)
+    let foldtextlength = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g')) + &foldcolumn
+    return indent . foldtextstart . repeat(foldchar, winwidth(0)-foldtextlength) . foldtextend
 endfunction
 set foldtext=NeatFoldText()
 
@@ -219,7 +219,9 @@ fun! UpdateArgIndent()
     endif
 endfun
 
-autocmd BufEnter * call UpdateArgIndent()
+augroup ArgIndent
+    autocmd BufEnter * call UpdateArgIndent()
+augroup END
 
 " -----------------------------------------------------
 " Look and feel
@@ -259,10 +261,14 @@ fun! UpdateFileTypes()
     endif
 endfun
 
-autocmd BufEnter * call UpdateFileTypes()
+augroup FileTypeUpdate
+    autocmd BufEnter * call UpdateFileTypes()
+augroup END
 
-" Make sure syntax highlighting doesn't break when viewing from middle of a file
-autocmd BufEnter * :syntax sync fromstart
+augroup SyntaxHilightFix
+    " Make sure syntax highlighting doesn't break when viewing from middle of a file
+    autocmd BufEnter * :syntax sync fromstart
+augroup END
 
 " -----------------------------------------------------
 " Wrapping per file type
@@ -305,7 +311,7 @@ fun! ShowLineLengthBoundary()
     endif
 endfun
 
-augroup vimrc_autocmds
+augroup LineLengthVis
     autocmd BufEnter * call ShowLineLengthBoundary()
 augroup END
 
@@ -314,8 +320,11 @@ augroup END
 " -----------------------------------------------------
 
 setlocal spell spelllang=en_us
-autocmd BufRead,BufNewFile *.txt setlocal spell
-autocmd BufRead,BufNewFile *.md setlocal spell
+
+augroup SpellCheck
+    autocmd BufRead,BufNewFile *.txt setlocal spell
+    autocmd BufRead,BufNewFile *.md setlocal spell
+augroup END
 
 " -----------------------------------------------------
 " Fold settings
@@ -349,8 +358,8 @@ fun! TrimTrailingWhitespace()
     endif
 endfun
 
-augroup vimrc_autocmds
-  autocmd BufWritePre * call TrimTrailingWhitespace()
+augroup WhiteSpaceTrim
+    autocmd BufWritePre * call TrimTrailingWhitespace()
 augroup END
 
 " -----------------------------------------------------
@@ -374,7 +383,7 @@ fun! HighlightTrailingWhitespace()
     endif
 endfun
 
-augroup vimrc_autocmds
+augroup TrailingWhitespaceHighlight
     autocmd BufEnter * call HighlightTrailingWhitespace()
 augroup END
 
@@ -391,7 +400,7 @@ fun! HighlightTabs()
     endif
 endfun
 
-augroup vimrc_autocmds
+augroup TabHighlight
     autocmd BufEnter * call HighlightTabs()
 augroup END
 
@@ -498,8 +507,10 @@ set tags=./tags;,tags;./TAGS;,TAGS;
 
 Plug 'majutsushi/tagbar'
 
-" open Tagbar for supported files
-" autocmd BufEnter * nested :call tagbar#autoopen(0)
+" augroup AutoTagBar
+"     " open Tagbar for supported files
+"     autocmd BufEnter * nested :call tagbar#autoopen(0)
+" augroup END
 
 let g:tagbar_width = 31
 nnoremap <leader>c :TagbarToggle<CR>
@@ -509,7 +520,9 @@ nnoremap <leader>c :TagbarToggle<CR>
 " let g:tagbar_type_javascript = { 'ctagsbin' : '~/node_modules/.bin/jsctags' }
 " let g:tagbar_type_javascript = { 'ctagsbin' : '/Users/erahhal/node_modules/jsctags/bin/jsctags.js' }
 
-" autocmd FileType c,cpp,python,javascript,bash,sh,vim nested :TagbarOpen
+" augroup TagBarOpen
+"     autocmd FileType c,cpp,python,javascript,bash,sh,vim nested :TagbarOpen
+" augroup END
 
 " -----------------------------------------------------
 " Live search highlighting
@@ -543,15 +556,17 @@ Plug 'jistr/vim-nerdtree-tabs'
 " NERDTree integration with ack
 Plug 'erahhal/nerdtree-ack'
 
-" Start NERDTreeTabs on launch
-autocmd vimenter * NERDTree
 let g:nerdtree_tabs_open_on_console_startup = 1
 " Show hidden files
 let NERDTreeShowHidden=1
-" Make sure focus is on buffer
-autocmd VimEnter * wincmd p
 nmap ,n :NERDTreeFind<CR>
 nmap ,m :NERDTreeToggle<CR>
+augroup NERDTree
+    " Start NERDTreeTabs on launch
+    autocmd vimenter * NERDTree
+    " Make sure focus is on buffer
+    autocmd VimEnter * wincmd p
+augroup END
 
 " -----------------------------------------------------
 " Code commenting
@@ -571,7 +586,7 @@ Plug 'joegesualdo/jsdoc.vim'
 " -----------------------------------------------------
 
 " Automatic closing quotes, brackets, etc
-Plug 'Raimondi/delimitMate'
+Plug 'doums/coBra'
 
 " " This expands a carriage return into two, but doesn't always behave as expected
 " let delimitMate_expand_cr = 2
@@ -603,8 +618,8 @@ set signcolumn=yes
 
 " Not needed with coc
 if 0
-  " asynchronous completion
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    " asynchronous completion
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 endif
 
 " faster creation of HTML and CSS, handles expansion
@@ -618,8 +633,10 @@ if 0
     " Better javascript completion
     Plug 'marijnh/tern_for_vim'
 
-    " using clang_complete for c/cpp
-    autocmd FileType c,cc,cpp,cxx,h,hh,hpp,hxx let b:deoplete_disable_auto_complete = 1
+    augroup DisableAutoComplete
+        " using clang_complete for c/cpp
+        autocmd FileType c,cc,cpp,cxx,h,hh,hpp,hxx let b:deoplete_disable_auto_complete = 1
+    augroup END
 endif
 
 " Required for operations modifying multiple buffers like rename.
@@ -658,16 +675,18 @@ if 0
   " let g:LanguageClient_selectionUI = 'quickfix'
 
   function LC_maps()
-    if has_key(g:LanguageClient_serverCommands, &filetype)
-      nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-      " Or map each action separately
-      nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-      nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-      nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-    endif
+      if has_key(g:LanguageClient_serverCommands, &filetype)
+          nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+          " Or map each action separately
+          nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+          nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+          nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+      endif
   endfunction
 
-  autocmd FileType * call LC_maps()
+  augroup LCMaps
+      autocmd FileType * call LC_maps()
+  augroup END
 endif
 
 if 1
@@ -731,13 +750,13 @@ if 1
     " Snippets
     imap <C-l> <Plug>(coc-snippets-expand)
     inoremap <silent><expr> <TAB>
-      \ pumvisible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+        \ pumvisible() ? coc#_select_confirm() :
+        \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
     function! s:check_back_space() abort
-      let col = col('.') - 1
-      return !col || getline('.')[col - 1]  =~# '\s'
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~# '\s'
     endfunction
     let g:coc_snippet_next = '<tab>'
     let g:coc_snippet_prev = '<s-tab>'
@@ -837,11 +856,13 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 Plug 'rhysd/vim-clang-format'
 
-" map to <Leader>cf in C++ code
-autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-" if you install vim-operator-user
-"autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
+augroup ClangFormat
+    " map to <Leader>cf in C++ code
+    autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+    autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+    " if you install vim-operator-user
+    "autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
+augroup END
 " Toggle auto formatting:
 "nmap <Leader>C :ClangFormatAutoToggle<CR>
 
@@ -888,7 +909,9 @@ if 0
     Plug 'airblade/vim-gitgutter'
 
     if exists(":GitGutterLineHighlightsEnable")
-        autocmd VimEnter * GitGutterLineHighlightsEnable
+        augroup GitGutterHighlight
+            autocmd VimEnter * GitGutterLineHighlightsEnable
+        augroup END
     endif
 
     " compare against last ancestor commit before branch
@@ -930,7 +953,9 @@ if &diff
         endif
     endfunction
 
-    autocmd CursorMoved * call CheckDiff()
+    augroup CheckDiff
+        autocmd CursorMoved * call CheckDiff()
+    augroup END
 endif
 
 " -----------------------------------------------------
@@ -984,41 +1009,41 @@ Plug 'pangloss/vim-javascript'
 Plug 'plasticboy/vim-markdown'
 
 let g:markdown_fenced_languages = [
-  \ 'vim',
-  \ 'help',
-  \ 'html',
-  \ 'python'
-  \]
+    \ 'vim',
+    \ 'help',
+    \ 'html',
+    \ 'python'
+    \]
 
 " -----------------------------------------------------
 " Syntax Checking
 " -----------------------------------------------------
 
 if 0
-  Plug 'w0rp/ale'
+    Plug 'w0rp/ale'
 
-  let g:ale_linters = { 'cpp': ['clang', 'gcc'] }
-  if s:uname == "Linux"
-      let g:ale_javascript_eslint_executable = $HOME.'/.yarn/bin/eslint'
-  elseif s:uname == "Darwin"
-      let g:ale_javascript_eslint_executable = $HOME.'/npm-global/bin/eslint'
-  endif
-  if findfile('.clang_complete', '.') == '.clang_complete'
-      let g:ale_cpp_clang_options = '$(get-clang-compile-options .clang_complete)'
-  else
-      let g:ale_cpp_clang_options = '-std=c++14 -stdlib=libc++ -isystem -I/usr/local/include -I/usr/include -I/usr/include/x86_64-linux-gnu'
-      let g:ale_cpp_gcc_options = '-std=c++14 -stdlib=libc++ -isystem -I/usr/local/include -I/usr/include -I/usr/include/x86_64-linux-gnu'
-  endif
-  let g:ale_c_build_dir = "./build"
-  let g:ale_c_parse_makefile = 1
-  " This defaults to "normal", which doesn't lint on change for heavy things like clang
-  let g:ale_link_on_text_changed = 'always'
-  let g:ale_html_tidy_options = '--custom-tags blocklevel'
-  let g:ale_python_flake8_options = '--max-line-length=100'
-  let g:ale_python_pylint_options = '--max-line-length=100'
+    let g:ale_linters = { 'cpp': ['clang', 'gcc'] }
+    if s:uname == "Linux"
+        let g:ale_javascript_eslint_executable = $HOME.'/.yarn/bin/eslint'
+    elseif s:uname == "Darwin"
+        let g:ale_javascript_eslint_executable = $HOME.'/npm-global/bin/eslint'
+    endif
+    if findfile('.clang_complete', '.') == '.clang_complete'
+        let g:ale_cpp_clang_options = '$(get-clang-compile-options .clang_complete)'
+    else
+        let g:ale_cpp_clang_options = '-std=c++14 -stdlib=libc++ -isystem -I/usr/local/include -I/usr/include -I/usr/include/x86_64-linux-gnu'
+        let g:ale_cpp_gcc_options = '-std=c++14 -stdlib=libc++ -isystem -I/usr/local/include -I/usr/include -I/usr/include/x86_64-linux-gnu'
+    endif
+    let g:ale_c_build_dir = "./build"
+    let g:ale_c_parse_makefile = 1
+    " This defaults to "normal", which doesn't lint on change for heavy things like clang
+    let g:ale_link_on_text_changed = 'always'
+    let g:ale_html_tidy_options = '--custom-tags blocklevel'
+    let g:ale_python_flake8_options = '--max-line-length=100'
+    let g:ale_python_pylint_options = '--max-line-length=100'
 
-  nmap <silent> ,k <Plug>(ale_previous_wrap)
-  nmap <silent> ,j <Plug>(ale_next_wrap)
+    nmap <silent> ,k <Plug>(ale_previous_wrap)
+    nmap <silent> ,j <Plug>(ale_next_wrap)
 endif
 
 " Syntastic is not asynchronous
@@ -1075,7 +1100,6 @@ noremap <Leader><S-Tab> :Bw!<CR>
 " New tab
 noremap <Leader>t :tabnew split<CR>
 
-
 " a tree of undos
 Plug 'mbbill/undotree'
 
@@ -1091,6 +1115,7 @@ Plug 'hlissner/vim-multiedit'
 
 " Quickly navigate around a file
 " <leader><leader>w - jump to any word
+" <leader><leader>b - jump to any word backwards
 " <leader><leader>f<char> - jump to character
 " <leader><leader>j - jump to lines below
 " <leader><leader>k - jump to lines above
@@ -1102,12 +1127,12 @@ Plug 'haya14busa/vim-easyoperator-phrase'
 
 " Doesn't work with NERDTree
 if 0
-  " Automatically resize panes on small screens
-  Plug 'roman/golden-ratio'
+    " Automatically resize panes on small screens
+    Plug 'roman/golden-ratio'
 
-  let g:golden_ratio_exclude_nonmodifiable = 1
-  let b:golden_ratio_resizing_ignored = 1
-  let g:golden_ratio_filetypes_blacklist = ["nerdtree", "unite"]
+    let g:golden_ratio_exclude_nonmodifiable = 1
+    let b:golden_ratio_resizing_ignored = 1
+    let g:golden_ratio_filetypes_blacklist = ["nerdtree", "unite"]
 endif
 
 " -----------------------------------------------------
@@ -1194,120 +1219,122 @@ Plug 'chrisbra/NrrwRgn'
 Plug 'vim-scripts/utl.vim'
 
 if 0
-  Plug 'hsitz/VimOrganizer'
-  " ************
-  " VimOrganizer
-  " ************
-  " Keybindings
-  " https://github.com/hsitz/VimOrganizer/blob/master/doc/vimorg.txt
-  " <enter>   new item
-  " <tab>     expand/collapse
-  " >>        indent
-  " <<        unindent
-  " ,m        mark/unmark (selection)
-  " <,        Move heading tree up
-  " >.        Move headng tree down
-  " ,dd       enter DEADLINE date for headline
-  " ,ds       enter SCHEDULED date for headline
-  " ,dc       enter CLOSED date for headline
-  " ,dt       enter timestamp date (i.e., no indicator) for headline
-  " ,dg       set date at cursor
-  " ,r        refile
-  " ,le       add link
-  " ,ln       next link
-  " ,lp       previous link
-  " ,ci       clock in
-  " ,co       clock out
+    Plug 'hsitz/VimOrganizer'
+    " ************
+    " VimOrganizer
+    " ************
+    " Keybindings
+    " https://github.com/hsitz/VimOrganizer/blob/master/doc/vimorg.txt
+    " <enter>   new item
+    " <tab>     expand/collapse
+    " >>        indent
+    " <<        unindent
+    " ,m        mark/unmark (selection)
+    " <,        Move heading tree up
+    " >.        Move headng tree down
+    " ,dd       enter DEADLINE date for headline
+    " ,ds       enter SCHEDULED date for headline
+    " ,dc       enter CLOSED date for headline
+    " ,dt       enter timestamp date (i.e., no indicator) for headline
+    " ,dg       set date at cursor
+    " ,r        refile
+    " ,le       add link
+    " ,ln       next link
+    " ,lp       previous link
+    " ,ci       clock in
+    " ,co       clock out
 
-  fun! SetupOrg()
-    call org#SetOrgFileType()
-    " Override VimOrganizer keybinding
-    noremap <buffer> <C-N> :NV<cr>
-  endfun
+    fun! SetupOrg()
+        call org#SetOrgFileType()
+        " Override VimOrganizer keybinding
+        noremap <buffer> <C-N> :NV<cr>
+    endfun
 
-  let g:agenda_files=["~/Documents/org-mode/agenda.org"]
-  au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
-  au BufEnter *.org call SetupOrg()
-  command! OrgCapture :call org#CaptureBuffer()
-  command! OrgCaptureFile :call org#OpenCaptureFile()
-  let g:org_todo_setup='TODO WAITING | DONE'
+    let g:agenda_files=["~/Documents/org-mode/agenda.org"]
+    au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
+    au BufEnter *.org call SetupOrg()
+    command! OrgCapture :call org#CaptureBuffer()
+    command! OrgCaptureFile :call org#OpenCaptureFile()
+    let g:org_todo_setup='TODO WAITING | DONE'
 
-  function! OrgCustomColors()
-      "hi Folded ctermfg=255 ctermbg=017
-      hi Folded ctermfg=255 ctermbg=000
-      " various Org syntax item highlighting statements below
-      " are the current defaults.  Uncomment and edit a line if you
-      " want different highlighting for the element.
+    function! OrgCustomColors()
+        "hi Folded ctermfg=255 ctermbg=017
+        hi Folded ctermfg=255 ctermbg=000
+        " various Org syntax item highlighting statements below
+        " are the current defaults.  Uncomment and edit a line if you
+        " want different highlighting for the element.
 
-      " Below are defaults for any TODOS you define.  TODOS that
-      " come before the | in a definition will use  'NOTDONETODO'
-      " and those that come after are DONETODO
-      hi! DONETODO guifg=green ctermfg=green
-      hi! NOTDONETODO guifg=red ctermfg=lightred
+        " Below are defaults for any TODOS you define.  TODOS that
+        " come before the | in a definition will use  'NOTDONETODO'
+        " and those that come after are DONETODO
+        hi! DONETODO guifg=green ctermfg=green
+        hi! NOTDONETODO guifg=red ctermfg=lightred
 
-      " Heading level highlighting is done in pairs, one for the
-      " heading when unfolded and one for folded.  Default is to make
-      " them the same except for the folded version being bold:
-      " assign OL1 pair for level 1, OL2 pair for level 2, etc.
-      "hi! OL1 guifg=somecolor guibg=somecolor
-      "hi! OL1Folded guifg=somecolor guibg=somecolor gui=bold
+        " Heading level highlighting is done in pairs, one for the
+        " heading when unfolded and one for folded.  Default is to make
+        " them the same except for the folded version being bold:
+        " assign OL1 pair for level 1, OL2 pair for level 2, etc.
+        "hi! OL1 guifg=somecolor guibg=somecolor
+        "hi! OL1Folded guifg=somecolor guibg=somecolor gui=bold
 
 
-      " Tags are lines below headings that have :colon:separated:tags:
-      "hi! Org_Tag guifg=lightgreen ctermfg=blue
+        " Tags are lines below headings that have :colon:separated:tags:
+        "hi! Org_Tag guifg=lightgreen ctermfg=blue
 
-      "  Lines that begin with '#+' in column 0 are config lines
-      "hi! Org_Config_Line guifg=darkgray ctermfg=magenta
+        "  Lines that begin with '#+' in column 0 are config lines
+        "hi! Org_Config_Line guifg=darkgray ctermfg=magenta
 
-      " Drawers are :PROPERTIES: and :LOGBOOK: lines and their associated
-      " :END: lines
-      "hi! Org_Drawer guifg=pink ctermfg=magenta
-      "hi! Org_Drawer_Folded guifg=pink ctermfg=magenta gui=bold cterm=bold
+        " Drawers are :PROPERTIES: and :LOGBOOK: lines and their associated
+        " :END: lines
+        "hi! Org_Drawer guifg=pink ctermfg=magenta
+        "hi! Org_Drawer_Folded guifg=pink ctermfg=magenta gui=bold cterm=bold
 
-      " This applies to value names in :PROPERTIES: blocks
-      "hi! Org_Property_Value guifg=pink ctermfg=magenta
+        " This applies to value names in :PROPERTIES: blocks
+        "hi! Org_Property_Value guifg=pink ctermfg=magenta
 
-      " Three lines below apply to different kinds of blocks
-      "hi! Org_Block guifg=#555555 ctermfg=magenta
-      "hi! Org_Src_Block guifg=#555555 ctermfg=magenta
-      "hi! Org_Table guifg=#888888 guibg=#333333 ctermfg=magenta
+        " Three lines below apply to different kinds of blocks
+        "hi! Org_Block guifg=#555555 ctermfg=magenta
+        "hi! Org_Src_Block guifg=#555555 ctermfg=magenta
+        "hi! Org_Table guifg=#888888 guibg=#333333 ctermfg=magenta
 
-      " Dates are date specs between angle brackets (<>) or square brackets ([])
-      "hi! Org_Date guifg=magenta ctermfg=magenta gui=underline cterm=underline
+        " Dates are date specs between angle brackets (<>) or square brackets ([])
+        "hi! Org_Date guifg=magenta ctermfg=magenta gui=underline cterm=underline
 
-      " Org_Star is used to "hide" initial asterisks in a heading
-      hi! Org_Star guifg=bg ctermfg=bg
+        " Org_Star is used to "hide" initial asterisks in a heading
+        hi! Org_Star guifg=bg ctermfg=bg
 
-      "hi! Props guifg=#ffa0a0 ctermfg=gray
+        "hi! Props guifg=#ffa0a0 ctermfg=gray
 
-      " Bold, italics, underline, and code are highlights applied
-      " to character formatting
-      "hi! Org_Code guifg=darkgray gui=bold ctermfg=14
-      "hi! Org_Itals gui=italic guifg=#aaaaaa ctermfg=lightgray
-      "hi! Org_Bold gui=bold guifg=#aaaaaa ctermfg=lightgray
-      "hi! Org_Underline gui=underline guifg=#aaaaaa ctermfg=lightgray
-      "hi! Org_Lnumber guifg=#999999 ctermfg=gray
+        " Bold, italics, underline, and code are highlights applied
+        " to character formatting
+        "hi! Org_Code guifg=darkgray gui=bold ctermfg=14
+        "hi! Org_Itals gui=italic guifg=#aaaaaa ctermfg=lightgray
+        "hi! Org_Bold gui=bold guifg=#aaaaaa ctermfg=lightgray
+        "hi! Org_Underline gui=underline guifg=#aaaaaa ctermfg=lightgray
+        "hi! Org_Lnumber guifg=#999999 ctermfg=gray
 
-      " These lines apply to links: [[link]], and [[link][link desc]]
-      "if has("conceal")
-      "    hi! default linkends guifg=blue ctermfg=blue
-      "endif
-      "hi! Org_Full_Link guifg=cyan gui=underline ctermfg=lightblue cterm=underline
-      "hi! Org_Half_Link guifg=cyan gui=underline ctermfg=lightblue cterm=underline
+        " These lines apply to links: [[link]], and [[link][link desc]]
+        "if has("conceal")
+        "    hi! default linkends guifg=blue ctermfg=blue
+        "endif
+        "hi! Org_Full_Link guifg=cyan gui=underline ctermfg=lightblue cterm=underline
+        "hi! Org_Half_Link guifg=cyan gui=underline ctermfg=lightblue cterm=underline
 
-      "  Applies to the Heading line that can be displayed in column view
-      "highlight OrgColumnHeadings guibg=#444444 guifg=#aaaaaa gui=underline
-  endfunction
+        "  Applies to the Heading line that can be displayed in column view
+        "highlight OrgColumnHeadings guibg=#444444 guifg=#aaaaaa gui=underline
+    endfunction
 endif
 
 " Better plugin but too slow. Try it out again sometime
 if 1
     Plug 'jceb/vim-orgmode'
     let g:org_heading_highlight_colors = ['Title', 'Constant', 'Identifier', 'Statement', 'PreProc', 'Type', 'Special']
-    " Enabling reverting back to solarized causes a load flicker for every file that is loaded
-    " autocmd BufEnter *.org colorscheme solarized
+    " augroup VimOrgmode
+    "     " Enabling reverting back to solarized causes a load flicker for every file that is loaded
+    "     autocmd BufEnter *.org colorscheme solarized
 
-    " autocmd BufEnter *.org highlight Folded cterm=bold gui=bold
+    "     autocmd BufEnter *.org highlight Folded cterm=bold gui=bold
+    " augroup END
     let g:org_agenda_files=["~/Documents/org-mode/agenda.org"]
 endif
 
@@ -1385,6 +1412,18 @@ if 0
 endif
 
 " -----------------------------------------------------
+" Integrated Terminal
+" -----------------------------------------------------
+
+Plug 'voldikss/vim-floaterm'
+" Example command:
+" FloatermNew height=0.6 width=0.4 wintype='floating' name='floaterm1' position='topleft' ranger --cmd="cd ~"
+let g:floaterm_keymap_toggle    = '<leader>b'
+" let g:floaterm_keymap_new       = '<leader>g'
+" let g:floaterm_keymap_prev      = '<F8>'
+" let g:floaterm_keymap_next      = '<F9>'
+
+" -----------------------------------------------------
 " Color Schemes
 " -----------------------------------------------------
 
@@ -1398,7 +1437,6 @@ Plug '29decibel/codeschool-vim-theme'
 Plug 'vim-scripts/phd'
 
 call plug#end()
-
 " -----------------------------------------------------
 " Color Scheme Config (Must be located AFTER plug#end()
 " -----------------------------------------------------
@@ -1413,7 +1451,7 @@ try
     " colorscheme solarized
     colorscheme gruvbox
 catch /^Vim\%((\a\+)\)\=:E185/
-  " deal with it
+    " deal with it
 endtry
 
 " Diff colors
@@ -1430,6 +1468,9 @@ highlight DiffChange cterm=bold ctermfg=223 ctermbg=239 gui=none guifg=bg guibg=
 " DiffText - part of line that changed
 " highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
 highlight DiffText   cterm=bold ctermfg=15 ctermbg=124 gui=none guifg=bg guibg=Red
+
+highlight FloatermNF ctermbg=black
+highlight FloatermBorderNF ctermbg=black ctermfg=22
 
 " -----------------------------------------------------
 " Denite Config (Must be located AFTER plug#end()
