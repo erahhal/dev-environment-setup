@@ -1090,6 +1090,16 @@ let g:buffet_left_trunc_icon = "\uf0a8"
 let g:buffet_right_trunc_icon = "\uf0a9"
 
 " Separate workspaces
+"   This function needs to be set before the vim-buffet plugin is loaded
+function! g:BuffetSetCustomColors()
+    " The colors seems to be set incorrectly with multiple tabs open
+    " Black
+    highlight! BuffetBuffer ctermfg=8 ctermfg=0
+    " White
+    highlight! BuffetCurrentBuffer ctermfg=8 ctermfg=7
+    " White
+    highlight! BuffetActiveBuffer ctermfg=8 ctermfg=7
+endfunction
 Plug 'bagrat/vim-buffet'
 
 " Next buffer
@@ -1471,6 +1481,7 @@ highlight DiffChange cterm=bold ctermfg=223 ctermbg=239 gui=none guifg=bg guibg=
 " highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
 highlight DiffText   cterm=bold ctermfg=15 ctermbg=124 gui=none guifg=bg guibg=Red
 
+" floating terminal colors
 highlight FloatermNF ctermbg=black
 highlight FloatermBorderNF ctermbg=black ctermfg=22
 
