@@ -28,8 +28,13 @@
 # General setup
 #-------------------------------------------------------------
 
-if [ -f ~/.bashrc ]; then
-  . ~/.bashrc
+if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+  if [ ! -z "$TMUX" ]; then
+    TERM=screen-256color
+  else
+    TERM=xterm-256color
+  fi
+  export TERM
 fi
 
 # override /usr/bin with /usr/local/bin
@@ -50,13 +55,6 @@ set -o vi
 #-------------------------------------------------------------
 
 export GIT_EDITOR="$VISUAL"
-
-# Put Git branch name in shell prompt
-parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-}
-gitbranch="\$(parse_git_branch)"
-# PS1="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] $gitbranch\$ "
 export CLICOLOR=1
 export LSCOLORS=gxfxaxdxcxegedabagacad
 
@@ -90,7 +88,7 @@ export PATH=$PATH:$GOPATH/bin
 #-------------------------------------------------------------
 # FZF
 #-------------------------------------------------------------
-#
+
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --no-messages --hidden --follow --glob "!.git/*"'
 # export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -103,16 +101,30 @@ export FZF_DEFAULT_OPTS='
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 #-------------------------------------------------------------
+# Aliases
+#-------------------------------------------------------------
+
+alias vimdiff='nvim -d'
+alias ls='lsd'
+if [ "$(uname)" == "Darwin" ]; then
+  alias vi='/usr/local/bin/nvim'
+  alias vim='/usr/local/bin/nvim'
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+  alias exa='exa --icons'
+  alias irssi='TERM=screen-256color irssi'
+  alias open=xdg-open
+fi
+
+#-------------------------------------------------------------
 # Platform specific
 #-------------------------------------------------------------
+
 if [ "$(uname)" == "Darwin" ]; then
   export PATH="$PATH:~/Library/Android/sdk/platform-tools"
   export JAVA_HOME=$(/usr/libexec/java_home)
   export ANDROID_SDK="/Applications/Android Studio.app/sdk"
   export ANDROID_HOME="/Applications/Android Studio.app/sdk"
 
-  # Colors
-  export PS1="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ "
   export LSCOLORS=ExFxBxDxCxegedabagacad
   export CLICOLOR=1
 
@@ -132,9 +144,16 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # keyboard rate
     xset r rate 250 30
   fi
-
-  # Colors
-  # export PS1='\[$(tput bold)\]\[$(tput setaf 6)\]\t \[$(tput setaf 2)\][\[$(tput setaf 7)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 7)\]\h \[$(tput setaf 6)\]\W\[$(tput setaf 2)\]]\[$(tput setaf 4)\]$(__git_ps1 " (%s)")\\$ \[$(tput sgr0)\]'
+  # get xterm and other settings
+  xrdb -merge ~/.Xresources
+  xrdb -merge ~/Code-vendor/xwindows-solarized/Xresources.dark
+  clear
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/erahhal/google-cloud-sdk/path.bash.inc' ]; then . '/home/erahhal/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/erahhal/google-cloud-sdk/completion.bash.inc' ]; then . '/home/erahhal/google-cloud-sdk/completion.bash.inc'; fi
 
 source /home/erahhal/.config/broot/launcher/bash/br

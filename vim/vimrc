@@ -729,7 +729,7 @@ if 1
     " https://github.com/neoclide/coc.nvim/blob/master/README.md
     " https://github.com/neoclide/coc.nvim/blob/master/doc/coc.txt
 
-    nmap <silent> ,c :CocCommand actions.open<CR>
+    nmap <silent> ,a :CocCommand actions.open<CR>
     nmap <silent> ,f <Plug>(coc-fix-current)
     nmap <silent> ,k <Plug>(coc-diagnostic-previous)
     nmap <silent> ,j <Plug>(coc-diagnostic-next)
@@ -1344,7 +1344,6 @@ if 1
     " augroup VimOrgmode
     "     " Enabling reverting back to solarized causes a load flicker for every file that is loaded
     "     autocmd BufEnter *.org colorscheme solarized
-
     "     autocmd BufEnter *.org highlight Folded cterm=bold gui=bold
     " augroup END
     let g:org_agenda_files=["~/Documents/org-mode/agenda.org"]
@@ -1441,6 +1440,7 @@ let g:floaterm_keymap_toggle    = '<leader>b'
 
 Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
+Plug 'sainnhe/gruvbox-material'
 Plug 'aliou/moriarty.vim'
 Plug 'roosta/srcery'
 Plug 'shaond/vim-guru'

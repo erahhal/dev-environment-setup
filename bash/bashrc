@@ -6,6 +6,8 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+zenity --display=:0 --info --text="running .bashrc"
+
 #-------------------------------------------------------------
 # Source global definitions (if any)
 #-------------------------------------------------------------
