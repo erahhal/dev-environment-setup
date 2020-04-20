@@ -1,8 +1,5 @@
 {
   "extends": ["eslint:recommended", "airbnb-base"],
-  "parserOptions": {
-    "ecmaVersion": 6
-  },
   "env": {
     "browser": true
   },
@@ -19,13 +16,11 @@
     }],
     "consistent-return": "off",
     "no-underscore-dangle": "off",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "no-mixed-operators": "off",
     "quote-props": "off",
     "class-methods-use-this": "off",
     "no-plusplus": "off",
     "max-len": ["error", 120]
-  },
-  "globals": {
-    "Polymer": true
   }
 }

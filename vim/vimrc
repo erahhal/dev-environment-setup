@@ -274,7 +274,7 @@ augroup END
 " Wrapping per file type
 " -----------------------------------------------------
 
-augroup WrapLineInTeXFile
+augroup WrapLinePerFiletype
     autocmd!
     autocmd FileType org setlocal wrap
 augroup END
@@ -474,6 +474,10 @@ let g:fzf_action = {
     \ 'ctrl-v': 'vsplit' }
 nnoremap <c-p> :FZF<cr>
 nnoremap <c-s> :Ag<cr>
+nnoremap <c-m> :Buffers<cr>
+" Other commands
+" GFiles Buffers Colors Lines BLines Tags BTags Marks Windows History History:
+" History/ Snippets Commits BCommits Commands Maps Helptags Filetypes
 
 " Required by FuzzyFinder
 Plug 'vim-scripts/L9'
@@ -1447,6 +1451,11 @@ Plug 'shaond/vim-guru'
 Plug 'sjl/badwolf'
 Plug '29decibel/codeschool-vim-theme'
 Plug 'vim-scripts/phd'
+Plug 'cocopon/iceberg.vim'
+Plug 'arcticicestudio/nord-vim'
+Plug 'challenger-deep-theme/vim'
+Plug 'junegunn/seoul256.vim'
+Plug 'nanotech/jellybeans.vim'
 
 call plug#end()
 " -----------------------------------------------------
@@ -1462,6 +1471,10 @@ endif
 try
     " colorscheme solarized
     colorscheme gruvbox
+    " colorscheme challenger_deep
+    " colorscheme iceberg
+    " colorscheme seoul256
+    " colorscheme jellybeans
 catch /^Vim\%((\a\+)\)\=:E185/
     " deal with it
 endtry
