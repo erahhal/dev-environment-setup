@@ -38,7 +38,7 @@ if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 fi
 
 # override /usr/bin with /usr/local/bin
-export PATH="$HOME/.cabal/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/Scripts:$HOME/Scripts/local:$PATH:/opt/wine-stable/bin"
+export PATH="$HOME/.cabal/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$(yarn global bin):$HOME/Scripts:$HOME/Scripts/local:$PATH:/opt/wine-stable/bin"
 
 #-------------------------------------------------------------
 # Default editor

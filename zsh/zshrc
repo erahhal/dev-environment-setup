@@ -8,8 +8,10 @@ fi
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# yarn binaries
-export PATH="$(yarn global bin):$PATH"
+if [ "$(uname)" "==" "Darwin" ]; then
+  # We don't seem to be picking up PATH from .profile
+  export PATH="$HOME/.cabal/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$(yarn global bin):$HOME/Scripts:$HOME/Scripts/local:$PATH:/opt/wine-stable/bin"
+fi
 
 # Path to your oh-my-zsh installation.
 if [ "$(uname)" "==" "Darwin" ]; then
