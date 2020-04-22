@@ -894,6 +894,9 @@ Plug 'rbong/vim-flog'
 
 " Visual git management
 Plug 'sodapopcan/vim-twiggy'
+nnoremap <c-g> :Twiggy<cr>
+
+Plug 'lambdalisue/gina.vim'
 
 " Show diff marks
 Plug 'mhinz/vim-signify'
