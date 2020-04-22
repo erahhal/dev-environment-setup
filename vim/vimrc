@@ -735,7 +735,7 @@ if 1
 
     nmap <silent> ,a :CocCommand actions.open<CR>
     nmap <silent> ,f <Plug>(coc-fix-current)
-    nmap <silent> ,k <Plug>(coc-diagnostic-previous)
+    nmap <silent> ,k <Plug>(coc-diagnostic-prev)
     nmap <silent> ,j <Plug>(coc-diagnostic-next)
     nmap <silent> gd <Plug>(coc-definition)
     nmap <silent> ,d <Plug>(coc-definition)
