@@ -1,0 +1,46 @@
+Reading package lists... Done                                                                                        
+Building dependency tree                                                                                               
+Reading state information... Done                                                                                      
+The following package was automatically installed and is no longer required:                                           
+  libnvidia-common-435                                                                                                 
+Use 'sudo apt autoremove' to remove it.                                                                                
+The following additional packages will be installed:                                                                   
+  cuda-10-2 cuda-command-line-tools-10-2 cuda-compiler-10-2 cuda-cudart-10-2 cuda-cudart-dev-10-2 cuda-cufft-10-2      
+  cuda-cufft-dev-10-2 cuda-cuobjdump-10-2 cuda-cupti-10-2 cuda-cupti-dev-10-2 cuda-curand-10-2 cuda-curand-dev-10-2    
+  cuda-cusolver-10-2 cuda-cusolver-dev-10-2 cuda-cusparse-10-2 cuda-cusparse-dev-10-2 cuda-demo-suite-10-2             
+  cuda-documentation-10-2 cuda-driver-dev-10-2 cuda-drivers cuda-gdb-10-2 cuda-libraries-10-2                          
+  cuda-libraries-dev-10-2 cuda-license-10-2 cuda-memcheck-10-2 cuda-misc-headers-10-2 cuda-npp-10-2                                                                                                                                           
+  cuda-npp-dev-10-2 cuda-nsight-10-2 cuda-nsight-compute-10-2 cuda-nsight-systems-10-2 cuda-nvcc-10-2                  
+  cuda-nvdisasm-10-2 cuda-nvgraph-10-2 cuda-nvgraph-dev-10-2 cuda-nvjpeg-10-2 cuda-nvjpeg-dev-10-2                     
+  cuda-nvml-dev-10-2 cuda-nvprof-10-2 cuda-nvprune-10-2 cuda-nvrtc-10-2 cuda-nvrtc-dev-10-2 cuda-nvtx-10-2             
+  cuda-nvvp-10-2 cuda-runtime-10-2 cuda-samples-10-2 cuda-sanitizer-api-10-2 cuda-toolkit-10-2 cuda-tools-10-2         
+  cuda-visual-tools-10-2 freeglut3-dev libcublas-dev libcublas10 libnvidia-cfg1-440 libnvidia-common-440               
+  libnvidia-compute-440 libnvidia-decode-440 libnvidia-encode-440 libnvidia-fbc1-440 libnvidia-gl-440                  
+  libnvidia-ifr1-440 libxmu-dev libxmu-headers node-html5shiv nsight-compute nsight-systems nvidia-compute-utils-440   
+  nvidia-dkms-440 nvidia-driver-440 nvidia-kernel-common-440 nvidia-kernel-source-440 nvidia-modprobe                  
+  nvidia-settings nvidia-utils-440 xserver-xorg-video-nvidia-440                                                       
+Recommended packages:                                                                                                  
+  libnvidia-compute-440:i386 libnvidia-decode-440:i386 libnvidia-encode-440:i386 libnvidia-ifr1-440:i386               
+  libnvidia-fbc1-440:i386 libnvidia-gl-440:i386                                                                        
+The following packages will be REMOVED:                                                                                
+  libnvidia-cfg1-435 libnvidia-compute-435 libnvidia-compute-435:i386 libnvidia-decode-435 libnvidia-decode-435:i386   
+  libnvidia-encode-435 libnvidia-encode-435:i386 libnvidia-fbc1-435 libnvidia-fbc1-435:i386 libnvidia-gl-435           
+  libnvidia-gl-435:i386 libnvidia-ifr1-435 libnvidia-ifr1-435:i386 nvidia-compute-utils-435 nvidia-dkms-435            
+  nvidia-driver-435 nvidia-kernel-common-435 nvidia-kernel-source-435 nvidia-utils-435 xserver-xorg-video-nvidia-435   
+The following NEW packages will be installed:                                                                          
+  cuda cuda-10-2 cuda-command-line-tools-10-2 cuda-compiler-10-2 cuda-cudart-10-2 cuda-cudart-dev-10-2                 
+  cuda-cufft-10-2 cuda-cufft-dev-10-2 cuda-cuobjdump-10-2 cuda-cupti-10-2 cuda-cupti-dev-10-2 cuda-curand-10-2         
+  cuda-curand-dev-10-2 cuda-cusolver-10-2 cuda-cusolver-dev-10-2 cuda-cusparse-10-2 cuda-cusparse-dev-10-2             
+  cuda-demo-suite-10-2 cuda-documentation-10-2 cuda-driver-dev-10-2 cuda-drivers cuda-gdb-10-2 cuda-libraries-10-2     
+  cuda-libraries-dev-10-2 cuda-license-10-2 cuda-memcheck-10-2 cuda-misc-headers-10-2 cuda-npp-10-2                    
+  cuda-npp-dev-10-2 cuda-nsight-10-2 cuda-nsight-compute-10-2 cuda-nsight-systems-10-2 cuda-nvcc-10-2                  
+  cuda-nvdisasm-10-2 cuda-nvgraph-10-2 cuda-nvgraph-dev-10-2 cuda-nvjpeg-10-2 cuda-nvjpeg-dev-10-2                     
+  cuda-nvml-dev-10-2 cuda-nvprof-10-2 cuda-nvprune-10-2 cuda-nvrtc-10-2 cuda-nvrtc-dev-10-2 cuda-nvtx-10-2             
+  cuda-nvvp-10-2 cuda-runtime-10-2 cuda-samples-10-2 cuda-sanitizer-api-10-2 cuda-toolkit-10-2 cuda-tools-10-2         
+  cuda-visual-tools-10-2 freeglut3-dev libcublas-dev libcublas10 libnvidia-cfg1-440 libnvidia-common-440               
+  libnvidia-compute-440 libnvidia-decode-440 libnvidia-encode-440 libnvidia-fbc1-440 libnvidia-gl-440                  
+  libnvidia-ifr1-440 libxmu-dev libxmu-headers node-html5shiv nsight-compute nsight-systems nvidia-compute-utils-440   
+  nvidia-dkms-440 nvidia-driver-440 nvidia-kernel-common-440 nvidia-kernel-source-440 nvidia-modprobe                  
+  nvidia-utils-440 xserver-xorg-video-nvidia-440                                                                       
+The following packages will be upgraded:                                                                               
+  nvidia-settings                                                                                     

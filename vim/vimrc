@@ -892,6 +892,9 @@ Plug 'tpope/vim-fugitive'
 "       g?                  - help
 Plug 'rbong/vim-flog'
 
+" Visual git management
+Plug 'sodapopcan/vim-twiggy'
+
 " Show diff marks
 Plug 'mhinz/vim-signify'
 

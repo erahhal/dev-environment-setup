@@ -528,7 +528,8 @@ go get github.com/mkchoi212/fac
 # ytop
 cargo install -f --git https://github.com/cjbassi/ytop ytop
 
-# udev
+# CUDA
+$DIR/cuda/install-cuda.sh
 
 # Add teensy board udev rules
 sudo cp $DIR/udev/* /etc/udev/rules.d/

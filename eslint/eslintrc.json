@@ -8,7 +8,7 @@
   ],
   "rules": {
     "brace-style": "off",
-    "arrow-parens": ["error", "always"],
+    "arrow-parens": ["error", "as-needed"],
     "new-cap": ["error", { "capIsNewExceptions": ["Polymer"] }],
     "require-jsdoc": "off",
     "indent": ["error", 4, {
