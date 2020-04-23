@@ -474,7 +474,7 @@ let g:fzf_action = {
     \ 'ctrl-v': 'vsplit' }
 nnoremap <c-p> :FZF<cr>
 nnoremap <c-s> :Ag<cr>
-nnoremap <c-m> :Buffers<cr>
+nnoremap <c-y> :Buffers<cr>
 " Other commands
 " GFiles Buffers Colors Lines BLines Tags BTags Marks Windows History History:
 " History/ Snippets Commits BCommits Commands Maps Helptags Filetypes
