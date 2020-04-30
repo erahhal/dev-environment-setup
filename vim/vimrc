@@ -475,6 +475,8 @@ let g:fzf_action = {
 nnoremap <c-p> :FZF<cr>
 nnoremap <c-s> :Ag<cr>
 nnoremap <c-y> :Buffers<cr>
+" ctrl-/ maps to ctrl-_
+nnoremap <c-_> :History<cr>
 " Other commands
 " GFiles Buffers Colors Lines BLines Tags BTags Marks Windows History History:
 " History/ Snippets Commits BCommits Commands Maps Helptags Filetypes
@@ -562,17 +564,21 @@ Plug 'erahhal/nerdtree-ack'
 " Git integration
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
-let g:nerdtree_tabs_open_on_console_startup = 1
 " Show hidden files
 let NERDTreeShowHidden=1
 nmap ,n :NERDTreeFind<CR>
 nmap ,m :NERDTreeToggle<CR>
-augroup NERDTree
-    " Start NERDTreeTabs on launch
-    autocmd vimenter * NERDTree
-    " Make sure focus is on buffer
-    autocmd VimEnter * wincmd p
-augroup END
+
+" Let's try not having NERDTree on by default
+if 0
+  let g:nerdtree_tabs_open_on_console_startup = 1
+  augroup NERDTree
+      " Start NERDTreeTabs on launch
+      autocmd vimenter * NERDTree
+      " Make sure focus is on buffer
+      autocmd VimEnter * wincmd p
+  augroup END
+endif
 
 " -----------------------------------------------------
 " Code commenting
