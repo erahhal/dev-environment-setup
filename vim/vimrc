@@ -475,7 +475,7 @@ let g:fzf_action = {
 nnoremap <c-p> :FZF<cr>
 nnoremap <c-s> :Ag<cr>
 nnoremap <c-y> :Buffers<cr>
-" ctrl-/ maps to ctrl-_
+" ctrl-_ also maps to ctrl-/
 nnoremap <c-_> :History<cr>
 " Other commands
 " GFiles Buffers Colors Lines BLines Tags BTags Marks Windows History History:
@@ -586,6 +586,20 @@ endif
 
 " Type "gc" to comment
 Plug 'tpope/vim-commentary'
+
+" -----------------------------------------------------
+" Argument splitting
+" -----------------------------------------------------
+
+Plug 'FooSoft/vim-argwrap'
+nnoremap <silent> gs :ArgWrap<CR>
+let g:argwrap_padded_braces = '[{'
+let g:argwrap_tail_comma_braces = '[{'
+" let g:argwrap_tail_comma = 1
+" let g:argwrap_tail_indent_braces = '('
+" let g:argwrap_wrap_closing_brace = 0
+" let g:argwrap_comma_first = 1
+" let g:argwrap_comma_first_indent = 1
 
 " -----------------------------------------------------
 " Automatic JSDoc generation

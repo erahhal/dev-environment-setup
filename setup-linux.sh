@@ -129,6 +129,12 @@ sudo apt-get install -y \
   zsh \
   zsh-syntax-highlighting
 
+# OS
+sudo apt-get install -y \
+  gnome-themes-extra \
+  gnome-themes-extra:i386 \
+  gnome-themes-standard
+
 # Libraries
 sudo apt-get install -y \
   gtk+-3.0 \
@@ -163,7 +169,9 @@ sudo apt-get install -y \
   libfsapfs-utils \
   libstdc++6 \
   # android dev
-  ibstdc++6:i386
+  ibstdc++6:i386 \
+  mesa-utils \
+  mesa-utils:i386
 
 # Programming
 sudo apt-get install -y \
