@@ -742,7 +742,7 @@ if 1
     Plug 'fannheyward/coc-sql', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-stylelint',  {'do': 'yarn install --frozen-lockfile'}
     Plug 'bmatcuk/coc-stylelintplus',  {'do': 'yarn install --frozen-lockfile'}
-    Plug 'neoclide/coc-tslint', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-tabnine', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
     Plug 'coc-extensions/coc-utils', {'do': 'yarn install --frozen-lockfile && yarn compile'}
     Plug 'iamcco/coc-vimlsp', {'do': 'yarn install --frozen-lockfile && yarn build'}

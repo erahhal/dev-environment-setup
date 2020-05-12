@@ -1,5 +1,6 @@
 {
   "git.enableGutters": true,
+  "javascript.validate.enable": false,
   "cSpell.enabledLanguageIds": [
     "csharp",
     "go",
@@ -21,6 +22,7 @@
     "Jitsi",
     "Magit",
     "Raman",
+    "SPARKSQL",
     "TYPEAHEAD",
     "Ulti",
     "Ultisnips",
@@ -37,6 +39,7 @@
     "codemirror's",
     "config's",
     "datachannel",
+    "dataclient",
     "deadzones",
     "debounced",
     "debouncer",
@@ -48,6 +51,7 @@
     "jwks",
     "ldquo",
     "lifecyle",
+    "linkify",
     "llvm",
     "mhinz",
     "middot",
@@ -63,6 +67,7 @@
     "overscroll",
     "overscrolling",
     "pagerduty",
+    "pkce",
     "prestosql",
     "prodhive",
     "rdquo",
