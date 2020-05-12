@@ -614,6 +614,35 @@ Plug 'joegesualdo/jsdoc.vim'
 " Automatic closing quotes, brackets, etc
 Plug 'doums/coBra'
 
+" Single quotes disable for org mode, double quotes disabled for vim
+let g:coBraPairs = {
+  \  'default': [
+  \    ['"', '"'],
+  \    ["'", "'"],
+  \    ['`', '`'],
+  \    ['<', '>'],
+  \    ['{', '}'],
+  \    ['(', ')'],
+  \    ['[', ']']
+  \  ],
+  \  'vim': [
+  \    ["'", "'"],
+  \    ['`', '`'],
+  \    ['<', '>'],
+  \    ['{', '}'],
+  \    ['(', ')'],
+  \    ['[', ']']
+  \  ],
+  \  'org': [
+  \    ['"', '"'],
+  \    ['`', '`'],
+  \    ['<', '>'],
+  \    ['{', '}'],
+  \    ['(', ')'],
+  \    ['[', ']']
+  \  ]
+  \ }
+
 " " This expands a carriage return into two, but doesn't always behave as expected
 " let delimitMate_expand_cr = 2
 
@@ -631,13 +660,16 @@ Plug 'tpope/vim-surround'
 " Autocompletion
 " -----------------------------------------------------
 
-" show function signatures
-Plug 'Shougo/echodoc.vim'
+" coc seems to handle this well enough
+if 0
+  " show function signatures
+  Plug 'Shougo/echodoc.vim'
 
-" set noshowmode
-set cmdheight=2 " gives room at bottom show function signature
-let g:echodoc#enable_at_startup = 1
-let g:echodoc#type = 'popup'
+  " set noshowmode
+  set cmdheight=2 " gives room at bottom show function signature
+  let g:echodoc#enable_at_startup = 1
+  let g:echodoc#type = 'popup'
+endif
 
 " Always draw the signcolumn
 set signcolumn=yes
