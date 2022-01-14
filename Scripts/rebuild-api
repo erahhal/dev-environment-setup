@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd ~/Code/nflx-data-api
+docker prune
+newt clean
+newt local
+newt build

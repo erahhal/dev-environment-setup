@@ -1,0 +1,10 @@
+#!/bin/bash
+
+while sleep 1; do
+  OUTPUT=$(ioreg -p IOUSB -l -b)
+  # if ! echo "$OUTPUT" | grep -q "0x1000cd9cc"; then
+  if ! echo "$OUTPUT" | grep -q "Freestyle Edge Keyboard"; then
+    # /usr/local/bin/ddcctl -d 1 -i 17
+    /usr/local/bin/ddcctl -d 2 -i 18
+  fi
+done
