@@ -10,7 +10,9 @@ fi
 
 if [ "$(uname)" "==" "Darwin" ]; then
   # We don't seem to be picking up PATH from .profile
-  export PATH="$HOME/.cabal/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$(yarn global bin):$HOME/Scripts:$HOME/Scripts/local:$PATH:/opt/wine-stable/bin"
+  export PATH="$HOME/.cabal/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$(yarn global bin):$HOME/Scripts:$HOME/Scripts/local:/usr/local/opt/ruby/bin:$PATH:/opt/wine-stable/bin"
+  # Ignore nodenv for now
+  # export PATH="$HOME/.nodenv/shims:$PATH"
 fi
 
 # Path to your oh-my-zsh installation.
@@ -130,21 +132,31 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+
 # Don't share history across windows
 setopt noincappendhistory
 setopt nosharehistory
 
 # Set to local python version
 if [ "$(uname)" "==" "Darwin" ]; then
-  pyenv global 2.7.16
-  eval "$(pyenv init -)"
+  # pyenv global 2.7.16
+  pyenv global 3.9.5
+  eval "$(pyenv init --path)"
   alias vi='/usr/local/bin/nvim'
   alias vim='/usr/local/bin/nvim'
+  # alias pip='/Users/erahhal/.pyenv/versions/2.7.16/bin/pip'
+  alias pip3='/Users/erahhal/.pyenv/versions/3.9.5/bin/pip'
 else
   alias vi='/usr/bin/nvim'
   alias vim='/usr/bin/nvim'
   alias br='broot'
   alias open='xdg-open'
+fi
+
+# Java
+if [ "$(uname)" "==" "Darwin" ]; then
+  export JAVA_HOME=$(/usr/libexec/java_home)
 fi
 
 alias vimdiff='nvim -d'
@@ -179,3 +191,14 @@ export FZF_DEFAULT_OPTS='
 --color info:108,prompt:109,spinner:108,pointer:168,marker:168
 '
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+bindkey -v
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/Users/erahhal/.zshrc'
+
+autoload -Uz compinit
+compinit

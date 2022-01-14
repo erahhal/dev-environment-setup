@@ -20,6 +20,7 @@
 " ^wgf      - Go to file in new tab
 " ~         - Swap case
 " g~        - Swap case for <modifier>
+" gS        - Split/Unsplit function arguments to multiple lines
 " gu        - Lower case
 " gU        - Upper case
 " %         - Move to matching item for bracket under or after cursor.
@@ -123,7 +124,7 @@ if s:uname == "Linux"
     let g:python3_host_prog='/usr/bin/python3.7'
 elseif s:uname == "Darwin"
     let g:python2_host_prog='~/.pyenv/versions/2.7.16/bin/python'
-    let g:python3_host_prog='/usr/local/bin/python3'
+    let g:python3_host_prog='~/.pyenv/versions/3.9.5/bin/python'
 endif
 
 " - enables filetype detection,
@@ -611,48 +612,55 @@ Plug 'joegesualdo/jsdoc.vim'
 " Code delimiters
 " -----------------------------------------------------
 
-" Automatic closing quotes, brackets, etc
-Plug 'doums/coBra'
+" Disabled - seems to be adding extra quotes at the end
+if 0
+    " Automatic closing quotes, brackets, etc
+    Plug 'doums/coBra'
 
-" Single quotes disable for org mode, double quotes disabled for vim
-let g:coBraPairs = {
-  \  'default': [
-  \    ['"', '"'],
-  \    ["'", "'"],
-  \    ['`', '`'],
-  \    ['{', '}'],
-  \    ['(', ')'],
-  \    ['[', ']']
-  \  ],
-  \  'html': [
-  \    ['"', '"'],
-  \    ["'", "'"],
-  \    ['`', '`'],
-  \    ['{', '}'],
-  \    ['(', ')'],
-  \    ['[', ']'],
-  \    ['<', '>']
-  \  ],
-  \  'vim': [
-  \    ["'", "'"],
-  \    ['`', '`'],
-  \    ['<', '>'],
-  \    ['{', '}'],
-  \    ['(', ')'],
-  \    ['[', ']']
-  \  ],
-  \  'org': [
-  \    ['"', '"'],
-  \    ['`', '`'],
-  \    ['<', '>'],
-  \    ['{', '}'],
-  \    ['(', ')'],
-  \    ['[', ']']
-  \  ]
-  \ }
+    " Single quotes disable for org mode, double quotes disabled for vim
+    let g:coBraPairs = {
+      \  'default': [
+      \    ['"', '"'],
+      \    ["'", "'"],
+      \    ['`', '`'],
+      \    ['{', '}'],
+      \    ['(', ')'],
+      \    ['[', ']']
+      \  ],
+      \  'html': [
+      \    ['"', '"'],
+      \    ["'", "'"],
+      \    ['`', '`'],
+      \    ['{', '}'],
+      \    ['(', ')'],
+      \    ['[', ']'],
+      \    ['<', '>']
+      \  ],
+      \  'vim': [
+      \    ["'", "'"],
+      \    ['`', '`'],
+      \    ['<', '>'],
+      \    ['{', '}'],
+      \    ['(', ')'],
+      \    ['[', ']']
+      \  ],
+      \  'org': [
+      \    ['"', '"'],
+      \    ['`', '`'],
+      \    ['<', '>'],
+      \    ['{', '}'],
+      \    ['(', ')'],
+      \    ['[', ']']
+      \  ]
+      \ }
+endif
 
-" " This expands a carriage return into two, but doesn't always behave as expected
-" let delimitMate_expand_cr = 2
+if 1
+    Plug 'Raimondi/delimitMate'
+
+    " This expands a carriage return into two, but doesn't always behave as expected
+    let delimitMate_expand_cr = 2
+endif
 
 " support surrounding tags (dst)
 Plug 'tpope/vim-surround'
@@ -771,6 +779,7 @@ if 1
     Plug 'neoclide/coc-git', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-highlight', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-html', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-java', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
     Plug 'fannheyward/coc-lit-html', {'do': 'yarn install --frozen-lockfile && yarn add webpack webpack-cli --dev && yarn build'}
     Plug 'fannheyward/coc-markdownlint', {'do': 'yarn install --frozen-lockfile'}
@@ -782,7 +791,7 @@ if 1
     Plug 'fannheyward/coc-sql', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-stylelint',  {'do': 'yarn install --frozen-lockfile'}
     Plug 'bmatcuk/coc-stylelintplus',  {'do': 'yarn install --frozen-lockfile'}
-    Plug 'neoclide/coc-tabnine', {'do': 'yarn install --frozen-lockfile'}
+    " Plug 'neoclide/coc-tabnine', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
     Plug 'coc-extensions/coc-utils', {'do': 'yarn install --frozen-lockfile && yarn compile'}
     Plug 'iamcco/coc-vimlsp', {'do': 'yarn install --frozen-lockfile && yarn build'}
@@ -872,9 +881,12 @@ if s:uname == "Linux"
         let g:clang_library_path='/usr/lib/llvm-3.9/lib'
     endif
 elseif s:uname == "Darwin"
-    let cmd = "brew list llvm | sed -n 1p | sed 's/^\\(.*\\/llvm\\/[^/]*\\).*$/\\1/'"
+    " This cmd is too slow
+    " let cmd = "brew list llvm | sed -n 1p | sed 's/^\\(.*\\/llvm\\/[^/]*\\).*$/\\1/'"
+    let cmd = "/usr/local/Cellar/llvm/12.0.0"
     let g:clang_library_path = substitute(system(cmd), '\n\+$', '', '') . '/lib'
 endif
+
 let g:clang_auto_select = 1
 " Complete macros
 let g:clang_complete_macros = 1

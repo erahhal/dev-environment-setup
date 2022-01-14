@@ -42,6 +42,7 @@ brew install git
 brew install gnu-sed
 brew install go
 brew install llvm
+brew install little-snitch
 brew install lsd
 brew install mosh
 brew install neovim/neovim/neovim
@@ -105,20 +106,23 @@ brew cask install zulu8
 pyenv install 2.7.16
 pyenv global 2.7.16
 PIP2=$(pyenv root)/versions/2.7.16/bin/pip
+pyenv install 3.9.5
+pyenv global 3.9.5
+PIP3=$(pyenv root)/versions/3.9.5/bin/pip
 
 $PIP2 install --upgrade neovim
-pip3 install --upgrade neovim
-pip3 install --upgrade PIL
-pip3 install --upgrade Pillow
-pip3 install --upgrade neovim
+$PIP3 install --upgrade neovim
+$PIP3 install --upgrade PIL
+$PIP3 install --upgrade Pillow
+$PIP3 install --upgrade neovim
 # for FormatJSON command in VIM
-pip3 install --upgrade simplejson
-pip3 install --upgrade pep8
-pip3 install --upgrade pylint
-pip3 install --upgrade jedi
-pip3 install --upgrade flake8
-pip3 install --upgrade rope
-pip3 install --upgrade pysocks
+$PIP3 install --upgrade simplejson
+$PIP3 install --upgrade pep8
+$PIP3 install --upgrade pylint
+$PIP3 install --upgrade jedi
+$PIP3 install --upgrade flake8
+$PIP3 install --upgrade rope
+$PIP3 install --upgrade pysocks
 
 # for python libs that need freetype headers
 ln -s /usr/local/include/freetype2 /usr/local/include/freetype
